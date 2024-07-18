@@ -1,0 +1,13 @@
+Run,PtType,Block,primer,glue,adhesion_force
+1,1,1,primerA,glueA,4.511
+2,1,1,primerA,glueA,7.601
+3,1,1,primerA,glueA,6.024
+4,1,1,primerB,glueA,15.254
+5,1,1,primerB,glueA,15.986
+6,1,1,primerB,glueA,16.618
+7,1,1,primerA,glueB,21.959
+8,1,1,primerA,glueB,24.938
+9,1,1,primerA,glueB,24.408
+10,1,1,primerB,glueB,32.65
+11,1,1,primerB,glueB,30.837
+12,1,1,primerB,glueB,32.208
