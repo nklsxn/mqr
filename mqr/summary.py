@@ -84,10 +84,13 @@ class Sample:
 
     outliers: np.ndarray = field(default=None, repr=False)
 
-    def __init__(self, data: pd.Series, conf=0.95, ddof=1):
+    def __init__(self, data, conf=0.95, ddof=1):
         import scipy.stats as st
 
-        self.name = data.name
+        if hasattr(data, 'name'):
+            self.name = data.name
+        else:
+            self.name = 'data'
         self.conf = conf
         self.data = data
 
@@ -143,6 +146,7 @@ class Study:
     samples (dict[str, mqr.process.Sample]) -- Automatically constructed. Dict
         of `mqr.process.Sample` for each KPI in the dataframe.
     conf (float) -- Confidence level to use for confidence intervals.
+    num_display_fmt (int) -- The format specifier to use when displaying data as text.
     """
     name: str
     data: pd.DataFrame = field(repr=False)
@@ -150,18 +154,25 @@ class Study:
     samples: dict[str, Sample] = field(repr=False)
     conf: float = field(repr=False)
 
-    def __init__(self, data:pd.DataFrame, measurements:list[str]=None, conf=0.95, ddof=1):
+    num_display_fmt: str = field(repr=False)
+
+    def __init__(self, data:pd.DataFrame, measurements:list[str]=None, conf=0.95, ddof=1, num_display_fmt='#.5g'):
         try:
             self.name = data.name
         except:
             self.name = 'Dataset'
 
         self.data = data
-        self.measurements = measurements
+        if measurements is not None:
+            self.measurements = measurements
+        else:
+            self.measurements = data.columns
         self.samples = {
             name: Sample(data[name], conf=conf, ddof=ddof)
-            for name in measurements}
+            for name in self.measurements}
         self.conf = conf
+
+        self.num_display_fmt = num_display_fmt
 
     def get_data(self, exclude_inputs=True):
         if exclude_inputs:
@@ -173,11 +184,11 @@ class Study:
         return self.samples[index]
 
     def _repr_html_(self):
-        return html(self)
+        return html(self, self.num_display_fmt)
 
-def html(d:Study, precision:int=3):
+def html(d:Study, display_fmt):
     conf = d.conf
-    prec = precision
+    fmt = display_fmt
 
     def join(s):
         return ''.join(s)
@@ -191,13 +202,13 @@ def html(d:Study, precision:int=3):
         return f'<td>{s}</td>'
 
     def fmt_g(value):
-        return f'{value:#.{prec}g}'
+        return f'{value:{display_fmt}}'
 
     def fmt_conf(value, interval):
         return (
-            f'{value:#.{prec}g} '
-            f'<font color="gray">({interval[0]:#.{prec}g}, '
-            f'{interval[1]:#.{prec}g}) '
+            f'{value:{display_fmt}} '
+            f'<font color="gray">({interval[0]:{display_fmt}}, '
+            f'{interval[1]:{display_fmt}}) '
             f'<sup>{conf*100:.0f}%</sup></font>')
         # return f'{value:.{prec}g} [{values[0]:.{prec}g}, {values[1]:.{prec}g}]'
 
@@ -313,7 +324,7 @@ def html(d:Study, precision:int=3):
             <thead><tr></tr></thead>
             <tr>
                 <th scope="row">N Outliers</th>
-                {join(map(td, map(fmt_g, outliers)))}
+                {join(map(td, outliers))}
             </tr>
         </tbody>
         <tfoot>
