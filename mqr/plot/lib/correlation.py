@@ -36,6 +36,7 @@ def matrix(data, ax, conf=0.95, show_conf=False, cmap='coolwarm'):
     assert data.ndim == 2, '`data` must be a 2-dimensional array.'
 
     fig = ax[0, 0].get_figure()
+    fig.set_layout_engine(None)
     fig.subplots_adjust(wspace=0, hspace=0)
 
     alpha = 1 - conf
