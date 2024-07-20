@@ -7,7 +7,7 @@ import seaborn as sns
 
 from mqr import inference
 
-def matrix(data, ax, conf=0.95, cmap='coolwarm'):
+def matrix(data, ax, conf=0.95, show_conf=False, cmap='coolwarm'):
     """
     Plot a correlation matrix and associated statistics.
 
@@ -38,6 +38,7 @@ def matrix(data, ax, conf=0.95, cmap='coolwarm'):
     fig = ax[0, 0].get_figure()
     fig.subplots_adjust(wspace=0, hspace=0)
 
+    alpha = 1 - conf
     axis_names = data.columns #[name for name in study.samples]
 
     # Plot histograms
@@ -55,32 +56,39 @@ def matrix(data, ax, conf=0.95, cmap='coolwarm'):
             ax[i, j].set_ylabel(None)
             if i >= j: continue
 
-            ci = inference.correlation.confint(
-                x=data.iloc[:, i],
-                y=data.iloc[:, j],
-                conf=conf)
+            if show_conf:
+                ci = inference.correlation.confint(
+                    x=data.iloc[:, i],
+                    y=data.iloc[:, j],
+                    conf=conf)
             test = inference.correlation.test(
                 x=data.iloc[:, i],
                 y=data.iloc[:, j])
             rho = test.sample_stat_value
             p = test.pvalue
-            text = (
-                f'r={rho:.2f}\n(p={p:.2f})\n\n'
-                f'{ci.conf*100:.0f}% CI:\n[{ci.lower:.2f}, {ci.upper:.2f}]')
-            alpha = 1 - conf
-            fontweight = 'bold' if p < alpha else 'normal'
-            color = 'k' if p < alpha else 'gray'
+
+            text = f'r={rho:.2f}\n(p={p:.2f})'
+            if show_conf:
+                text += f'\n\n{ci.conf*100:.0f}% CI:\n[{ci.lower:.2f}, {ci.upper:.2f}]'
+                ci = 100 * conf
+                color = 'k' if p < alpha else 'gray'
+                fontweight = 'bold' if p < alpha else 'normal'
+            else:
+                ci = None
+                color = 'k'
+                fontweight = 'normal'
 
             sns.regplot(x=data.iloc[:, i], y=data.iloc[:, j], x_ci='ci',
                         marker='.',
                         scatter_kws={'color':color, 'alpha':0.6, 'marker':'.', 'linewidths':0},
                         line_kws={'color':color, 'alpha':0.6, 'linewidth':0.8},
                         color=color,
-                        ci=100*(1-alpha),
+                        ci=ci,
                         ax=ax[j, i])
 
-            (r, g, b, a) = colormap((rho + 1) / 2)
-            ax[i, j].set_facecolor((r, g, b, a))
+            if show_conf:
+                (r, g, b, a) = colormap((1 - rho) / 2)
+                ax[i, j].set_facecolor((r, g, b, a))
             ax[i, j].text(0.5, 0.5,
                           text,
                           ha='center', va='center',
