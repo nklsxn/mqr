@@ -147,3 +147,6 @@ This package is provided under the BSD License (3-clause).
 Credit
 ------
 Copyright (c) 2024 Nikolas Crossan, Kevin Otto
+
+Supported by the University of Melbourne  
+Department of Mechanical Engineering
