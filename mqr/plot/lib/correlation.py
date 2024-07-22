@@ -15,8 +15,15 @@ def matrix(data, ax, conf=0.95, show_conf=False, cmap='coolwarm'):
     and row corresponds to a column in the dataframe `data`. The lower diagonal
     shows scatter plots between the corresponding variables. The upper diagonal
     shows the statistics (1) Pearson correlation coefficient, (2) p-value for
-    the correlation coefficient, (3) confidence interval for the correlation
-    coefficient.
+    the correlation coefficient, and when `show_conf` is true, (3) confidence
+    interval for the correlation coefficient.
+
+    Also:
+    * Whenever the p-value is less than the significance level (`1-conf`), the
+    values are printed in bold.
+    * When `show_conf` is true, the upper triangle is also coloured according to
+    the correlation coefficient. Positive correlations are shown in blue while
+    negative correlations are shown in red.
 
     Arguments
     ---------
@@ -27,6 +34,7 @@ def matrix(data, ax, conf=0.95, show_conf=False, cmap='coolwarm'):
     Optional
     --------
     conf (float) -- Confidence level of the interval.
+    show_conf (bool) -- Shows confidence intervals and colours when true.
     cmap (matplotlib.colors.Colormap) -- Correlation coefficient is mapped to a
         colour in this colourmap and shown in the upper triangle.
     """
@@ -78,6 +86,7 @@ def matrix(data, ax, conf=0.95, show_conf=False, cmap='coolwarm'):
                 ci = None
                 color = 'k'
                 fontweight = 'normal'
+            fontsize = 8
 
             sns.regplot(x=data.iloc[:, i], y=data.iloc[:, j], x_ci='ci',
                         marker='.',
@@ -95,6 +104,7 @@ def matrix(data, ax, conf=0.95, show_conf=False, cmap='coolwarm'):
                           ha='center', va='center',
                           transform=ax[i, j].transAxes,
                           fontweight=fontweight,
+                          fontsize=fontsize,
                           color='k',)
 
     # Share axes along rows and down columns ...
