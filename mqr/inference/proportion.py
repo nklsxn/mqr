@@ -123,7 +123,7 @@ def confint_1sample(count, nobs, conf=0.95, method='beta'):
         upper=upper,
         conf=conf)
 
-def confint_2sample(count1, nobs1, count2, nobs2, conf=0.95, method='wald'):
+def confint_2sample(count1, nobs1, count2, nobs2, conf=0.95, method='newcomb'):
     """
     Confidence interval for difference between proportions
     `count1 / nobs1 - count2 / nobs2`.
