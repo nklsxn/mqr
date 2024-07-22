@@ -84,11 +84,13 @@ class Sample:
 
     outliers: np.ndarray = field(default=None, repr=False)
 
-    def __init__(self, data, conf=0.95, ddof=1):
+    def __init__(self, data, conf=0.95, ddof=1, name=None):
         import scipy.stats as st
 
         if hasattr(data, 'name'):
             self.name = data.name
+        elif name is not None:
+            self.name = name
         else:
             self.name = 'data'
         self.conf = conf
