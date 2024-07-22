@@ -1,18 +1,21 @@
-mqr
----
+mqr-quality
+-----------
 Tools for learning and practising manufacturing quality with python.
 
 Installation
 ------------
-`pip install mqr`
+`pip install mqr-quality`  
+
+Import the package using:  
+`import mqr`
 
 See `examples` directory in the source code for notebooks with sample code.
 
 Introduction
 ------------
-This library is called `mqr` which stands for manufacturing quality and
-reliability. Most of the tools are related to quite general statistical methods
-that are commonly used in fields outside manufacturing.
+This library is a toolkit for manufacturing quality activities using python.
+Most of the tools are related to quite general statistical methods that are
+commonly used in fields outside manufacturing.
 
 Most of this library falls into one of two categories:
 1. **Code that automates commonly used plots and tables.** These are elementary,
