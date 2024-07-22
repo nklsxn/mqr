@@ -76,7 +76,7 @@ class Sample:
     iqr: np.float64 = field(default=np.nan, repr=False)
 
     conf_mean: mqr.inference.confint.ConfidenceInterval = field(default=None, repr=False)
-    # conf_std: mqr.confint.ConfidenceInterval = field(default=None, repr=False)
+    conf_std: mqr.inference.confint.ConfidenceInterval = field(default=None, repr=False)
     conf_var: mqr.inference.confint.ConfidenceInterval = field(default=None, repr=False)
     conf_quartile1: mqr.inference.confint.ConfidenceInterval = field(default=None, repr=False)
     conf_median: mqr.inference.confint.ConfidenceInterval = field(default=None, repr=False)
@@ -114,7 +114,7 @@ class Sample:
         self.iqr = self.quartile3 - self.quartile1
         
         self.conf_mean = mqr.inference.mean.confint_1sample(data, conf=conf)
-        # self.conf_std = mqr.inference.std.confint_1sample(data, conf=conf)
+        self.conf_std = mqr.inference.stddev.confint_1sample(data, conf=conf)
         self.conf_var = mqr.inference.variance.confint_1sample(data, conf=conf)
 
         self.conf_quartile1 = mqr.inference.nonparametric.quantile.confint_1sample(data, q=0.25, conf=conf)
