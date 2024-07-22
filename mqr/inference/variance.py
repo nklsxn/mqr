@@ -16,6 +16,8 @@ def size_1sample(effect, alpha, beta, alternative='two-sided'):
     """
     Calculate sample size for test of variance of a sample.
 
+    Null-hypothesis: `effect == var / var_0 == 1` (two-sided).
+
     Arguments
     ---------
     effect (float) -- Required effect size.
@@ -70,7 +72,7 @@ def size_2sample(var_ratio, alpha, beta, alternative='two-sided'):
     """
     Calculate sample size for test of ratio of variances.
 
-    Null-hypothesis: `var_ratio = sigma / sigma0 == 1` (two-sided).
+    Null-hypothesis: `var_ratio == var_1 / var_2 == 1` (two-sided).
 
     Arguments
     ---------
