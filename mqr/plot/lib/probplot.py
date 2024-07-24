@@ -43,7 +43,7 @@ def pp_grp(x, grp_ax, grp=None, dist=None, grp_kwargs=None):
         grp_kwargs = [{}] * N
 
     if not isinstance(grp_ax, Iterable):
-        grp_ax = [grp_ax]
+        grp_ax = np.array([grp_ax])
     grp_ax = grp_ax.flatten()
 
     if dist is None:
@@ -85,6 +85,9 @@ def pp_grp_cdfline(x, grp_ax, dist=None, grp_kwargs=None):
     from collections.abc import Iterable
     import scipy
 
+    if not isinstance(grp_ax, Iterable):
+        grp_ax = np.array([grp_ax])
+
     N = len(grp_ax)
 
     if (grp_kwargs is not None) and (len(grp_kwargs) != N):
@@ -92,9 +95,6 @@ def pp_grp_cdfline(x, grp_ax, dist=None, grp_kwargs=None):
 
     if grp_kwargs is None:
         grp_kwargs = [{}] * N
-
-    if not isinstance(grp_ax, Iterable):
-        grp_ax = [grp_ax]
 
     if dist is None:
         dist = st.norm(np.mean(x), np.std(x, ddof=1))
@@ -132,6 +132,10 @@ def pp_grp_qline(x, grp_ax, q_lower=0.25, q_upper=0.75, dist=None, grp_kwargs=No
     import scipy
 
     n = len(x)
+
+    if not isinstance(grp_ax, Iterable):
+        grp_ax = np.array([grp_ax])
+
     N = len(grp_ax)
 
     if (grp_kwargs is not None) and (len(grp_kwargs) != N):
@@ -139,9 +143,6 @@ def pp_grp_qline(x, grp_ax, q_lower=0.25, q_upper=0.75, dist=None, grp_kwargs=No
 
     if grp_kwargs is None:
         grp_kwargs = [{}] * N
-
-    if not isinstance(grp_ax, Iterable):
-        grp_ax = [grp_ax]
 
     if dist is None:
         dist = st.norm(np.mean(x), np.std(x, ddof=1))
