@@ -84,7 +84,9 @@ class Sample:
 
     outliers: np.ndarray = field(default=None, repr=False)
 
-    def __init__(self, data, conf=0.95, ddof=1, name=None):
+    num_display_fmt: str = field(default='#.5g', repr=False)
+
+    def __init__(self, data, conf=0.95, ddof=1, name=None, num_display_fmt='#.5g'):
         import scipy.stats as st
 
         if hasattr(data, 'name'):
@@ -125,26 +127,27 @@ class Sample:
             data[data<self.quartile1-1.5*self.iqr],
             data[data>self.quartile3+1.5*self.iqr]])
 
-    # def _repr_html_(self):
-        # return html(self)
+        self.num_display_fmt = num_display_fmt
+
+    def _repr_html_(self):
+        return html(f'Sample ({self.name})', {self.name: self}, self.num_display_fmt)
 
 @dataclass
 class Study:
     """
-    Measurments and summary statistics for a set of samples from a process.
+    Measurements and summary statistics for a set of samples from a process.
 
     Construct this object using a dataframe of measurements, optionally providing
-    a list of columns to exclude from statistics (ie. columns that are not
-    measurements):
+    a list of columns to include:
     >>> df = pd.read_csv('process_measurements.csv')
-    >>> Study(df, ['RUNID', 'OPERATOR', 'BLOCK'])
+    >>> Study(df, ['Input1', 'Input2', 'Input3', 'OutputA', 'OutputB'])
 
     Fields
     ------
     name (str) -- The name of the process or experiment.
     data (pd.DataFrame) -- Measurements with KPIs in each column, and possibly
         other columns like run lables, operator IDs, etc.
-    exclude (list[str]) -- A list of column names to exclude from descriptive stats.
+    measurements (list[str]) -- A list of column names to include for descriptive stats.
     samples (dict[str, mqr.process.Sample]) -- Automatically constructed. Dict
         of `mqr.process.Sample` for each KPI in the dataframe.
     conf (float) -- Confidence level to use for confidence intervals.
@@ -186,12 +189,9 @@ class Study:
         return self.samples[index]
 
     def _repr_html_(self):
-        return html(self, self.num_display_fmt)
+        return html(self.name, self.samples, self.num_display_fmt)
 
-def html(d:Study, display_fmt):
-    conf = d.conf
-    fmt = display_fmt
-
+def html(name, samples, display_fmt):
     def join(s):
         return ''.join(s)
 
@@ -206,50 +206,28 @@ def html(d:Study, display_fmt):
     def fmt_g(value):
         return f'{value:{display_fmt}}'
 
-    def fmt_conf(value, interval):
-        return (
-            f'{value:{display_fmt}} '
-            f'<font color="gray">({interval[0]:{display_fmt}}, '
-            f'{interval[1]:{display_fmt}}) '
-            f'<sup>{conf*100:.0f}%</sup></font>')
-        # return f'{value:.{prec}g} [{values[0]:.{prec}g}, {values[1]:.{prec}g}]'
-
-
-          # <th scope="row">{np.floor(d.conf_quartile1[1]*100):.0f}% CI</th>
-          # <td>{d.conf_quartile1[0][0]:.{prec}g}</td>
-          # <td>{d.conf_quartile1[0][1]:.{prec}g}</td>
-
-
-    caption = 'Study' if d.name is None else f'Study - {d.name}'
+    caption = 'Study' if name is None else f'Study - {name}'
     
-    col_headers = [name for name in d.samples.keys()]
+    col_headers = [n for n in samples.keys()]
 
-    ad_stat = [a.ad_stat for a in d.samples.values()]
-    ad_pvalue = [a.ad_pvalue for a in d.samples.values()]
-    ks_stat = [a.ks_stat for a in d.samples.values()]
-    ks_pvalue = [a.ks_pvalue for a in d.samples.values()]
+    ad_stat = [a.ad_stat for a in samples.values()]
+    ad_pvalue = [a.ad_pvalue for a in samples.values()]
+    ks_stat = [a.ks_stat for a in samples.values()]
+    ks_pvalue = [a.ks_pvalue for a in samples.values()]
 
-    nobs = [a.nobs for a in d.samples.values()]
-    mean = [a.mean for a in d.samples.values()]
-    std = [a.std for a in d.samples.values()]
-    var = [a.var for a in d.samples.values()]
-    skewness = [a.skewness for a in d.samples.values()]
-    kurtosis = [a.kurtosis for a in d.samples.values()]
-    minimum = [a.minimum for a in d.samples.values()]
-    quartile1 = [a.quartile1 for a in d.samples.values()]
-    median = [a.median for a in d.samples.values()]
-    quartile3 = [a.quartile3 for a in d.samples.values()]
-    maximum = [a.maximum for a in d.samples.values()]
-    
-    # conf_level: float = np.nan
-    conf_mean = [a.conf_mean for a in d.samples.values()]
-    # conf_std: tuple = None
-    # conf_var: tuple = None
-    # conf_quartile1: tuple = None
-    # conf_median: tuple = None
-    # conf_quartile3: tuple = None
+    nobs = [a.nobs for a in samples.values()]
+    mean = [a.mean for a in samples.values()]
+    std = [a.std for a in samples.values()]
+    var = [a.var for a in samples.values()]
+    skewness = [a.skewness for a in samples.values()]
+    kurtosis = [a.kurtosis for a in samples.values()]
+    minimum = [a.minimum for a in samples.values()]
+    quartile1 = [a.quartile1 for a in samples.values()]
+    median = [a.median for a in samples.values()]
+    quartile3 = [a.quartile3 for a in samples.values()]
+    maximum = [a.maximum for a in samples.values()]
 
-    outliers = [len(a.outliers) for a in d.samples.values()]
+    outliers = [len(a.outliers) for a in samples.values()]
 
     html = f'''
     <table>
