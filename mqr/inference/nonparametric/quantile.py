@@ -6,6 +6,7 @@ from mqr.inference.confint import ConfidenceInterval
 from mqr.inference.hyptest import HypothesisTest
 
 import mqr.interop.inference as interop
+import mqr.utils
 
 import numpy as np
 import scipy
@@ -35,8 +36,9 @@ def confint_1sample(x, q=0.5, conf=0.95, bounded='both'):
     alt = interop.bounded(bounded, 'scipy', flip=True)
     res = scipy.stats.quantile_test(x, q=np.quantile(x, q), p=q, alternative=alt)
     ci = res.confidence_interval(conf)
+    percentile = mqr.utils.make_ordinal(100*q)
     return ConfidenceInterval(
-        name='quantile',
+        name=f'quantile ({percentile} percentile)',
         value=value,
         lower=ci.low,
         upper=ci.high,

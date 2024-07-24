@@ -17,7 +17,7 @@ def test_confint_1sample():
     bounded = 'below'
 
     res = mqr.inference.nonparametric.quantile.confint_1sample(x, q, conf, bounded)
-    assert res.name == 'quantile'
+    assert res.name == 'quantile (20th percentile)'
     assert isinstance(res.value, numbers.Number)
     assert isinstance(res.lower, numbers.Number)
     assert res.upper == np.inf
