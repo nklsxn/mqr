@@ -250,7 +250,7 @@ def test_1sample(count, n, meas=1.0, H0_rate=1.0, alternative='two-sided', metho
         pvalue=res.pvalue,)
 
 def test_2sample(count1, n1, count2, n2, meas1=1.0, meas2=1.0,
-                    H0_value=None, alternative='two-sided', method='wald', compare='diff'):
+                    H0_value=None, alternative='two-sided', method='score', compare='ratio'):
     """
     Hypothesis test for equality of rates.
 

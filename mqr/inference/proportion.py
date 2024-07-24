@@ -222,7 +222,7 @@ def test_1sample(count, nobs, H0_prop, alternative='two-sided', method='binom'):
         stat=stat,
         pvalue=pvalue,)
 
-def test_2sample(count1, nobs1, count2, nobs2, H0_diff, alternative='two-sided', method='agresti-caffo'):
+def test_2sample(count1, nobs1, count2, nobs2, H0_diff=0.0, alternative='two-sided', method='agresti-caffo'):
     """
     Hypothesis test for the difference between proportions of two samples.
 
