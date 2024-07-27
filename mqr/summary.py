@@ -130,7 +130,7 @@ class Sample:
         self.num_display_fmt = num_display_fmt
 
     def _repr_html_(self):
-        return html(f'Sample ({self.name})', {self.name: self}, self.num_display_fmt)
+        return html({self.name: self}, self.num_display_fmt)
 
 @dataclass
 class Study:
@@ -189,9 +189,10 @@ class Study:
         return self.samples[index]
 
     def _repr_html_(self):
-        return html(self.name, self.samples, self.num_display_fmt)
+        caption = f'Study - {self.name}'
+        return html(self.samples, self.num_display_fmt)
 
-def html(name, samples, display_fmt):
+def html(samples, display_fmt, caption=None):
     def join(s):
         return ''.join(s)
 
@@ -206,7 +207,7 @@ def html(name, samples, display_fmt):
     def fmt_g(value):
         return f'{value:{display_fmt}}'
 
-    caption = 'Study' if name is None else f'Study - {name}'
+    caption = '' if caption is None else caption
     
     col_headers = [n for n in samples.keys()]
 
