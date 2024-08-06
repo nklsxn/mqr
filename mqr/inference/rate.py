@@ -12,16 +12,148 @@ import numpy as np
 import scipy
 import statsmodels
 
-def size_1sample(ra, hyp_rate, alpha, beta, alternative='two-sided'):
+def power_1sample(ra, H0_rate, nobs, alpha, meas=1.0, alternative='two-sided', method='norm-approx'):
     """
-    Calculate sample size for test of rate of events.
+    Calculate power of a test of rate of events.
 
-    Null-hypothesis: `ra / hyp_rate == 1`.
+    Null-hypothesis: `ra / H0_rate == 1`.
 
     Arguments
     ---------
     ra (float) -- Alternative hypothesis rate, forming effect size.
-    hyp_rate (float) -- Null-hypothesis rate.
+    H0_rate (float) -- Null-hypothesis rate.
+    nobs (int) -- Number of observations.
+    alpha (float) -- Required significance.
+
+    Optional
+    --------
+    meas (float) -- Extent of one period in observation. (Default 1.)
+    alternative (float) -- Sense of alternative hypothesis. One of "two-sided",
+        "less" or "greater". (Default "two-sided".)
+    method (str) -- Test method. Only "norm-approx", the normal approximation to
+        the binomial distribution, is available.
+
+    Returns
+    -------
+    mqr.power.TestPower
+    """
+    if method == 'norm-approx':
+        dist = scipy.stats.norm()
+        var_a = ra / (nobs * meas)
+        var_0 = H0_rate / (nobs * meas)
+        den = np.sqrt(var_a)
+
+        if alternative == 'less':
+            z = dist.ppf(1-alpha)
+            num = z * np.sqrt(var_0) + ra - H0_rate
+            power = 1 - dist.cdf(num/den)
+        elif alternative == 'greater':
+            z = dist.ppf(1-alpha)
+            num = z * np.sqrt(var_0) + H0_rate - ra
+            power = 1 - dist.cdf(num/den)
+        elif alternative == 'two-sided':
+            z = dist.ppf(1-alpha/2)
+            num_1 = z * np.sqrt(var_0) + H0_rate - ra
+            num_2 = H0_rate - z * np.sqrt(var_0) - ra
+            power = 1 - (dist.cdf(num_1/den) - dist.cdf(num_2/den))
+        else:
+            raise ValueError(f'Invalid alternative "{alternative}". Use "two-sided" (default), "less", or "greater".')
+    else:
+        raise ValueError(f'method {method} not available')
+
+    return TestPower(
+        name='rate of events',
+        alpha=alpha,
+        beta=1-power,
+        effect=f'{ra:g} / {H0_rate:g} = {ra/H0_rate:g}',
+        alternative=alternative,
+        method=method,
+        sample_size=nobs)
+
+def power_2sample(r1, r2, nobs, alpha, H0_value=None, meas1=1.0, meas2=1.0,
+                  alternative='two-sided', method='score', compare='diff'):
+    """
+    Calculate power of a test of difference or ratio of two rates of events.
+
+    Null-hypothesis: `r1 - r2 == H0_value` (difference),
+                     `r1 / r2 == H0_value` (ratio).
+
+    Uses `statsmodels.stats.rates.power_poisson_diff_2indep`,
+    and `statsmodels.stats.rates.power_poisson_ratio_2indep` (statsmodels.org).
+
+    Arguments
+    ---------
+    r1 (float) -- First rate.
+    r2 (float) -- Second rate.
+    nobs (int) -- Number of observations.
+    alpha (float) -- Required significance.
+    beta (float) -- Required beta (1 - power).
+
+    Optional
+    --------
+    H0_value (float) -- Null-hypothesis rate. (Default 0 for 'diff', 1 for 'ratio'.)
+    alternative (float) -- Sense of alternative hypothesis. One of "two-sided",
+        "less" or "greater". (Default "two-sided".)
+    method (str) -- Test method (default "score"). See statsmodels documentation.
+
+    Returns
+    -------
+    mqr.power.TestPower
+    """
+    alt = interop.alternative(alternative, lib='statsmodels')
+    if compare == 'diff':
+        desc = 'difference between'
+        sample_stat_sym = '-'
+        sample_stat_value = r1 - r2
+        if H0_value is None:
+            H0_value = 0.0
+        power = statsmodels.stats.rates.power_poisson_diff_2indep(
+            rate1=r1,
+            rate2=r2,
+            nobs1=nobs,
+            nobs_ratio=1,
+            value=H0_value,
+            alpha=alpha,
+            alternative=alt,
+            method_var=method,
+            return_results=False)
+    elif compare == 'ratio':
+        desc = 'ratio of'
+        sample_stat_sym = '/'
+        sample_stat_value = r1 / r2
+        if H0_value is None:
+            H0_value = 1.0
+        power = statsmodels.stats.rates.power_poisson_ratio_2indep(
+            rate1=r1,
+            rate2=r2,
+            nobs1=nobs,
+            nobs_ratio=1,
+            value=H0_value,
+            alpha=alpha,
+            alternative=alt,
+            method_var=method,
+            return_results=False)
+    else:
+        raise ValueError(f'Invalid compare "{copmare}". Use "diff" (default), or "ratio".')
+    return TestPower(
+        name=f'{desc} rates of events',
+        alpha=alpha,
+        beta=1-power,
+        effect=f'{r1/meas1:g} {sample_stat_sym} {r2/meas2:g} = {sample_stat_value:g}',
+        alternative=alternative,
+        method=method,
+        sample_size=nobs)
+
+def size_1sample(ra, H0_rate, alpha, beta, meas=1.0, alternative='two-sided', method='norm-approx'):
+    """
+    Calculate sample size for test of rate of events.
+
+    Null-hypothesis: `ra / H0_rate == 1`.
+
+    Arguments
+    ---------
+    ra (float) -- Alternative hypothesis rate, forming effect size.
+    H0_rate (float) -- Null-hypothesis rate.
     alpha (float) -- Required significance.
     beta (float) -- Required beta (1 - power).
 
@@ -29,53 +161,61 @@ def size_1sample(ra, hyp_rate, alpha, beta, alternative='two-sided'):
     --------
     alternative (float) -- Sense of alternative hypothesis. One of "two-sided",
         "less" or "greater". (Default "two-sided".)
+    method (str) -- Test method (default "norm-approx"): "norm-approx", or "chi2".
 
     Returns
     -------
     mqr.power.TestPower
     """
-    n = 1
-    r = ra / hyp_rate
-    if alternative == 'less' or alternative == 'greater':
-        NP1 = 1 - beta
-        DP1 = alpha
-    elif alternative == 'two-sided':
-        NP1 = 1 - beta
-        DP1 = alpha / 2
+    if method == 'chi2':
+        n = 1
+        r = ra / H0_rate if ra > H0_rate else H0_rate / ra
+        if alternative == 'less' or alternative == 'greater':
+            NP1 = 1 - beta
+            DP1 = alpha
+        elif alternative == 'two-sided':
+            NP1 = 1 - beta
+            DP1 = alpha / 2
+        else:
+            raise ValueError(f'Invalid alternative "{alternative}". Use "two-sided" (default), "less", or "greater".')
+        def ratio(n):
+            num = scipy.stats.chi2.ppf(NP1, df=n)
+            den = scipy.stats.chi2.ppf(DP1, df=n)
+            return num / den - r
+        df_opt = scipy.optimize.fsolve(ratio, 1)[0]
+        num = scipy.stats.chi2.ppf(NP1, df=df_opt)
+        nobs_opt = num / 2.0 / np.maximum(ra, H0_rate)
+    elif method == 'norm-approx':
+        def beta_fn(n):
+            return power_1sample(
+                ra=ra,
+                H0_rate=H0_rate,
+                nobs=n,
+                alpha=alpha,
+                meas=meas,
+                alternative=alternative).beta - beta
+        nobs_opt = scipy.optimize.fsolve(beta_fn, 1)[0]
     else:
-        raise ValueError(f'Invalid alternative "{alternative}". Use "two-sided" (default), "less", or "greater".')
-
-    def ratio(n):
-        num = scipy.stats.chi2.ppf(NP1, df=n)
-        den = scipy.stats.chi2.ppf(DP1, df=n)
-        return num / den
-
-    while n < 10000:
-        if ratio(n) < r: 
-            break
-        n += 1
-    if n == 10000:
-        raise ValueError('iteration stopped at n = 10000, without sufficient power')
-
-    num = scipy.stats.chi2.ppf(NP1, df=n)
-    nobs = num / 2.0 / np.maximum(ra, hyp_rate)
+        raise ValueError(f'Invalid method "{method}"')
 
     return TestPower(
         name='rate of events',
         alpha=alpha,
         beta=beta,
-        effect=f'{ra:g} / {hyp_rate:g} = {r:g}',
+        effect=f'{ra:g} / {H0_rate:g} = {ra/H0_rate:g}',
         alternative=alternative,
-        method='chi2',
-        sample_size=nobs,)
+        method=method,
+        sample_size=nobs_opt,)
 
-def size_2sample(r1, r2, alpha, beta, effect=0.0, alternative='two-sided'):
+def size_2sample(r1, r2, alpha, beta, H0_value=None, alternative='two-sided', method='score', compare='diff'):
     """
     Calculate sample size for difference of two rates of events.
 
-    Null-hypothesis: `r1 - r2 == effect`.
+    Null-hypothesis: `r1 - r2 == H0_value` when `compare == 'diff'`,
+                     `r1 / r2 == H0_value` when `compare == 'ratio'`.
 
-    Uses `statsmodels.stats.rates.power_poisson_diff_2indep` (statsmodels.org).
+    Uses `statsmodels.stats.rates.power_poisson_diff_2indep`,
+    and `statsmodels.stats.rates.power_poisson_ratio_2indep` (statsmodels.org).
 
     Arguments
     ---------
@@ -86,35 +226,69 @@ def size_2sample(r1, r2, alpha, beta, effect=0.0, alternative='two-sided'):
 
     Optional
     --------
-    effect (float) -- Required effect size. (Default 0.0).
+    H0_value (float) -- Null-hypothesis rate. (Default 0 for `diff`, 1 for `ratio`.)
     alternative (float) -- Sense of alternative hypothesis. One of "two-sided",
         "less" or "greater". (Default "two-sided".)
+    method (str) -- Test method (default "score"):
+        "z",
+        otherwise, all other methods are passed to statsmodels.
+    compare (str) -- Form of the null-hypothesis. Either 'diff' (default) or 'ratio'.
 
     Returns
     -------
     mqr.power.TestPower
     """
-    alt = interop.alternative(alternative, lib='statsmodels')
-    def beta_fn(nobs):
-        power = statsmodels.stats.rates.power_poisson_diff_2indep(
-            rate1=r1,
-            rate2=r2,
-            nobs1=nobs,
-            nobs_ratio=1,
-            value=effect,
-            alpha=alpha,
-            alternative=alt,
-            return_results=False)
-        return 1 - power - beta
-    nobs_opt = scipy.optimize.fsolve(beta_fn, 0)[0]
+    if H0_value is None:
+        if compare == 'diff':
+            H0_value = 0.0
+        elif compare == 'ratio':
+            H0_value = 1.0
+
+    if method == 'z':
+        if compare != 'diff':
+            raise ValueError(f'comparison "{compare}" not available with `z` method')
+        if not np.isclose(H0_value, 0):
+            raise ValueError(f'H0_value "{H0_value}" must be 0 with `z` method')
+        if alternative != 'two-sided':
+            crit = alpha
+        else:
+            crit = alpha / 2
+        Zb = scipy.stats.norm().ppf(1-beta)
+        Za = -scipy.stats.norm().ppf(alpha)
+        num = Za * np.sqrt(r2) + Zb * np.sqrt(r1)
+        nobs_opt = 2 * num**2 / (r1 - r2)**2
+    else:
+        def beta_fn(nobs):
+            power = power_2sample(
+                r1,
+                r2,
+                nobs,
+                alpha,
+                H0_value=H0_value,
+                alternative=alternative,
+                method=method,
+                compare=compare)
+            return power.beta - beta
+        nobs_opt = scipy.optimize.fsolve(beta_fn, 2)[0]
+
+    if compare == 'diff':
+        desc = 'difference between'
+        sample_stat_sym = '-'
+        sample_stat_value = r1 - r2
+    elif compare == 'ratio':
+        desc = 'ratio of'
+        sample_stat_sym = '/'
+        sample_stat_value = r1 / r2
+    else:
+        raise ValueError(f'`compare` argument ({compare}) not recognised')
 
     return TestPower(
-        name='difference between rates of events',
+        name=f'{desc} rates of events',
         alpha=alpha,
         beta=beta,
-        effect=f'{r1:g} - {r2:g} = {effect:g}',
+        effect=f'{r1:g} {sample_stat_sym} {r2:g} = {sample_stat_value:g}',
         alternative=alternative,
-        method=None,
+        method=method,
         sample_size=nobs_opt)
 
 def confint_1sample(count, n, meas=1.0, conf=0.95, method='exact-c'):
@@ -225,7 +399,7 @@ def test_1sample(count, n, meas=1.0, H0_rate=1.0, alternative='two-sided', metho
     H0_rate (float) -- Null-hypothesis rate. (Default 1.)
     alternative (str) -- Sense of alternative hypothesis. One of "two-sided",
         "less" or "greater". (Default "two-sided".)
-    method (str) -- Test method (default "exact-c"). See statsmodels docs for more.
+    method (str) -- Test method (default "z"): "z", or "chi2".
 
     Returns
     -------
