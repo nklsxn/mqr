@@ -235,7 +235,7 @@ def test_1sample(x, H0_mean=0.0, alternative='two-sided', method='t'):
     H0_mean (float) -- Null-hypothesis mean. (Default 0.)
     alternative (str) -- Sense of alternative hypothesis. One of "two-sided",
         "less" or "greater". (Default "two-sided".)
-    method (str) -- Type of test (default "t":
+    method (str) -- Type of test (default "t"):
         "t" for student's t (`scipy.stats.ttest_1samp`, scipy.org),
         "z" for z-score (`statsmodels.stats.api.ztest`, statsmodels.org).
 
