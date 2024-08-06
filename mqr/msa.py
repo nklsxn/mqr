@@ -103,22 +103,12 @@ class GRR:
     names: NameMapping
     include_interaction: bool
     nsigma: int
-    # alpha: np.float64
 
     formula: str
     counts: tuple[int]
 
-    residuals: np.ndarray
-    anova_table: pd.DataFrame
-    adequacy_table: pd.DataFrame
-    grr_table: pd.DataFrame
-#     conf_int_table: pd.DataFrame
-
-    discrimination: np.float64
-
     model: statsmodels.regression.linear_model.OLS
     regression_result: statsmodels.regression.linear_model.RegressionResultsWrapper
-    _mean_squares: list[np.float64]
 
     def __init__(
         self,
@@ -126,6 +116,7 @@ class GRR:
         tolerance:float,
         names:NameMapping=None,
         include_interaction=True,
+        include_intercept=True,
         nsigma=6):
         """
         Construct GRR.
@@ -144,18 +135,14 @@ class GRR:
         self.data = data
         self.tolerance = tolerance
         self.include_interaction = include_interaction
+        self.include_intercept = include_intercept
         self.names = names if names is not None else NameMapping()
         self.nsigma = nsigma
-        # self.alpha = alpha
 
         self._configure_counts()
         self._configure_formula()
 
         self._fit_model(data)
-        self._set_squares()
-        self._make_grr_table()
-#         self._make_conf_int_table()
-        self._set_discrimination()
 
     def _configure_counts(self):
         cols = [self.names._p, self.names._o, self.names._r]
@@ -166,25 +153,148 @@ class GRR:
         name_p = self.names._p
         name_o = self.names._o
         combn = '*' if self.include_interaction else '+'
-        self.formula = f'{name_m} ~ C({name_p}) {combn} C({name_o})'
+        intercept = '+ 1' if self.include_intercept else '- 1'
+        self.formula = f'{name_m} ~ C({name_p}) {combn} C({name_o}) {intercept}'
 
     def _fit_model(self, data):
         self.model = statsmodels.formula.api.ols(self.formula, self.data)
         self.regression_result = self.model.fit()
-        self.residuals = self.regression_result.resid
-        self.adequacy_table = mqr.anova.adequacy(self.regression_result)
 
-        table = statsmodels.api.stats.anova_lm(self.regression_result)
-        table.loc['Total'] = table.sum(axis=0, skipna=False)
-        table.loc['Total', 'mean_sq'] = (
-            table.loc['Total', 'sum_sq']
-            / table.loc['Total', 'df'])
+    def _repr_html_(self):
+        return SummaryTable(self)._repr_html_()
 
-        self.anova_table = table
-        
-    def _make_grr_table(self):
-        p, o, n = self.counts
-        [MS_p, MS_o, MS_i, MS_e] = self._mean_squares
+class SummaryTable:
+    _grr: GRR
+
+    def __init__(self, grr: GRR):
+        self._grr = grr
+
+    def _repr_html_(self):
+        grr = self._grr
+        html = f'''
+            <table>
+            <thead>
+                <caption>Gauge Repeatability and Reliability Study</caption>
+            </thead>
+            <tbody>
+                <thead>
+                    <tr>
+                        <th scope='col'></th>
+                        <th scope='col'>Measurement</td>
+                        <th scope='col'>Part</td>
+                        <th scope='col'>Operator</td>
+                        <th scope='col'>Replicate</td>
+                    </tr>
+                </thead>
+                <tr>
+                    <th scope='row'>Variable</th>
+                    <td>{grr.names.measurement}</td>
+                    <td>{grr.names.part}</td>
+                    <td>{grr.names.operator}</td>
+                    <td>{grr.names.replicate}</td>
+                </tr>
+                <tr>
+                    <th scope='row'>Count</th>
+                    <td>{grr.data.shape[0]}</td>
+                    <td>{grr.counts[grr.names.part]}</td>
+                    <td>{grr.counts[grr.names.operator]}</td>
+                    <td>{grr.counts[grr.names.replicate]}</td>
+                </tr>
+                <thead><tr></tr></thead>
+                <tr>
+                    <th scope='row'>Tolerance</th>
+                    <td>{grr.tolerance}</td>
+                    <td colspan='3'></td>
+                </tr>
+                <tr>
+                    <th scope='row'>N<sub>&#x03C3;</sub></th>
+                    <td>{grr.nsigma}</td>
+                    <td colspan='3'></td>
+                </tr>
+                <thead><tr></tr></thead>
+                <tr>
+                    <th scope='row'>Formula</th>
+                    <td colspan='4'>{grr.formula}</td>
+                </tr>
+            </tbody>
+            </table>
+            '''
+        return html
+
+class VarianceTable:
+    grr: NameMapping
+    anova_table: pd.DataFrame
+    table: pd.DataFrame
+    discrimination: np.float64
+
+    @staticmethod
+    def _table_index():
+        return [
+            'Gauge RR',
+            'Repeatability',
+            'Reproducibility',
+            'Operator',
+            'Operator*Part',
+            'Part-to-Part',
+            'Total']
+
+    @staticmethod
+    def _table_columns(nsigma):
+        return [
+            'VarComp',
+            '% Contribution',
+            'StdDev',
+            f'StudyVar ({nsigma}*SD)',
+            '% StudyVar',
+            '% Tolerance']
+
+    @staticmethod
+    def _table_styles():
+        return [
+            {
+                'selector': '.row_heading',
+                'props': [
+                    ('text-align', 'left'),
+                ]
+            },
+            {
+                'selector': 'th.row1,th.row2',
+                'props': [
+                    ('padding-left', '1.5em'),
+                ]
+            },
+            {
+                'selector': 'th.row3,th.row4',
+                'props': [
+                    ('padding-left', '3em'),
+                ]
+            }
+        ]
+
+    def __init__(self, grr: GRR):
+        self.grr = grr
+        self.anova_table = mqr.anova.summary(grr.regression_result)
+        self._set_squares()
+        self._calculate_table(grr)
+        self._set_discrimination()
+
+    def _set_squares(self):
+        name_p = self.grr.names._p
+        name_o = self.grr.names._o
+
+        MS_p = self.anova_table.loc[f'C({name_p})', 'mean_sq']
+        MS_o = self.anova_table.loc[f'C({name_o})', 'mean_sq']
+        if self.grr.include_interaction:
+            MS_i = self.anova_table.loc[f'C({name_p}):C({name_o})', 'mean_sq']
+        else:
+            MS_i = 0.0
+        MS_e = self.anova_table.loc['Residual', 'mean_sq']
+
+        self.mean_squares = [MS_p, MS_o, MS_i, MS_e]
+
+    def _calculate_table(self, grr):
+        p, o, n = grr.counts
+        [MS_p, MS_o, MS_i, MS_e] = self.mean_squares
         MS_tot = MS_p + MS_o + MS_i + MS_e
 
         # Introduction to Statistical Quality Control - Montgomery, Douglas C. - 6ed, 2009
@@ -194,8 +304,8 @@ class GRR:
         var_i = np.maximum(0, (MS_i - MS_e) / n)
 
         table = pd.DataFrame(
-            index=GRR._grr_index(),
-            columns=GRR._grr_columns(self.nsigma),
+            index=self._table_index(),
+            columns=self._table_columns(grr.nsigma),
             dtype=np.float64)
         table.iloc[:, 0] = [
             var_o + var_i + var,         # GRR
@@ -208,15 +318,28 @@ class GRR:
         ]
         table.iloc[:, 1] = 100 * table.iloc[:, 0] / table.iloc[-1, 0]
         table.iloc[:, 2] = np.sqrt(table.iloc[:, 0])
-        table.iloc[:, 3] = self.nsigma * table.iloc[:, 2]
+        table.iloc[:, 3] = grr.nsigma * table.iloc[:, 2]
         table.iloc[:, 4] = 100 * table.iloc[:, 3] / table.iloc[-1, 3]
-        table.iloc[:, 5] = 100 * table.iloc[:, 3] / (2 * self.tolerance)
+        table.iloc[:, 5] = 100 * table.iloc[:, 3] / grr.tolerance
 
-        if not self.include_interaction:
+        if not grr.include_interaction:
             table.drop(index=['Operator*Part'], inplace=True)
 
-        self.grr_table = table
+        self.table = table
 
+    def _set_discrimination(self):
+        var_meas = self.table.loc['Gauge RR', 'VarComp']
+        var_total = self.table.loc['Total', 'VarComp']
+        self.discrimination = np.sqrt(2 * var_total / var_meas - 1)
+
+    def _repr_html_(self):
+        html = '<div style="display:flex; flex-direction:column; align-items:flex-start;">'
+        html += self.table.style.set_table_styles(self._table_styles())._repr_html_()
+        html += f'<div><b>Discrimination:</b> {self.discrimination:.5g}</div>'
+        html += '</div>'
+        return html
+
+# class ConfTable:
 #     def _make_conf_int_table(self):
 #         p, o, n = self.counts
 #         [MS_p, MS_o, MS_i, MS_e] = self._mean_squares
@@ -245,46 +368,6 @@ class GRR:
 #             columns=GRR._conf_columns(self.alpha))
 #         self.conf_int_table = table
 
-    def _set_squares(self):
-        name_p = self.names._p
-        name_o = self.names._o
-
-        MS_p = self.anova_table.loc[f'C({name_p})', 'mean_sq']
-        MS_o = self.anova_table.loc[f'C({name_o})', 'mean_sq']
-        if self.include_interaction:
-            MS_i = self.anova_table.loc[f'C({name_p}):C({name_o})', 'mean_sq']
-        else:
-            MS_i = 0.0
-        MS_e = self.anova_table.loc['Residual', 'mean_sq']
-
-        self._mean_squares = [MS_p, MS_o, MS_i, MS_e]
-
-    def _set_discrimination(self):
-        var_meas = self.grr_table.loc['Gauge RR', 'VarComp']
-        var_total = self.grr_table.loc['Total', 'VarComp']
-        self.discrimination = np.sqrt(2 * var_total / var_meas - 1)
-
-    @staticmethod
-    def _grr_index():
-        return [
-            'Gauge RR',
-            'Repeatability',
-            'Reproducibility',
-            'Operator',
-            'Operator*Part',
-            'Part-to-Part',
-            'Total']
-
-    @staticmethod
-    def _grr_columns(nsigma):
-        return [
-            'VarComp',
-            '% Contribution',
-            'StdDev',
-            f'StudyVar ({nsigma}*SD)',
-            '% StudyVar',
-            '% Tolerance']
-
     # @staticmethod
     # def _conf_index():
     #     return [
@@ -303,174 +386,76 @@ class GRR:
     #         f'{100*(1-alpha/2):.3g}%]'
     #     ]
 
-    @staticmethod
-    def _anova_table_styles():
-        return [
-            {
-                'selector': '.row_heading',
-                'props': [
-                    ('text-align', 'left'),
-                ]
-            },
-        ]
 
-    @staticmethod
-    def _grr_table_styles():
-        return [
-            {
-                'selector': '.row_heading',
-                'props': [
-                    ('text-align', 'left'),
-                ]
-            },
-            {
-                'selector': 'th.row1,th.row2',
-                'props': [
-                    ('padding-left', '1.5em'),
-                ]
-            },
-            {
-                'selector': 'th.row3,th.row4',
-                'props': [
-                    ('padding-left', '3em'),
-                ]
-            }
-        ]
+# def _conf_int(p, o, n, MS_P, MS_O, MS_PO, MS_E, alpha=0.05):
+#     # Burdick, Richard K., Connie M. Borror, and Douglas C. Montgomery. "A review of methods for measurement systems capability analysis." Journal of Quality Technology 35.4 (2003): 342-354.
 
-    def _repr_html_(self):
-
-        return (
-            _summary_html(self)
-            + self.anova_table.style.set_table_styles(GRR._anova_table_styles())._repr_html_()
-            + self.adequacy_table._repr_html_()
-            + self.grr_table.style.set_table_styles(GRR._grr_table_styles())._repr_html_()
-        )
-
-def _summary_html(grr: GRR):
-    html = f'''
-        <table>
-        <thead>
-            <caption>Gauge Repeatability and Reliability Study</caption>
-        </thead>
-        <tbody>
-            <thead>
-                <tr>
-                    <th scope='col'></th>
-                    <th scope='col'>Measurement</td>
-                    <th scope='col'>Part</td>
-                    <th scope='col'>Operator</td>
-                    <th scope='col'>Replicate</td>
-                </tr>
-            </thead>
-            <tr>
-                <th scope='row'>Variable</th>
-                <td>{grr.names.measurement}</td>
-                <td>{grr.names.part}</td>
-                <td>{grr.names.operator}</td>
-                <td>{grr.names.replicate}</td>
-            </tr>
-            <tr>
-                <th scope='row'>Count</th>
-                <td>{grr.data.shape[0]}</td>
-                <td>{grr.counts[grr.names.part]}</td>
-                <td>{grr.counts[grr.names.operator]}</td>
-                <td>{grr.counts[grr.names.replicate]}</td>
-            </tr>
-            <thead><tr></tr></thead>
-            <tr>
-                <th scope='row'>Tolerance</th>
-                <td>{grr.tolerance}</td>
-                <td colspan='3'></td>
-            </tr>
-            <tr>
-                <th scope='row'>N<sub>&#x03C3;</sub></th>
-                <td>{grr.nsigma}</td>
-                <td colspan='3'></td>
-            </tr>
-            <tr>
-                <th scope='row'>Discrimination</th>
-                <td>{grr.discrimination:.4g}</td>
-                <td colspan='3'></td>
-            </tr>
-            <thead><tr></tr></thead>
-            <tr>
-                <th scope='row'>Formula</th>
-                <td colspan='4'>{grr.formula}</td>
-            </tr>
-        </tbody>
-        </table>
-        '''
-    return html
-
-def _conf_int_intermediate_vals(p, o, n, MS_P, MS_O, MS_PO, MS_E, alpha=0.05):
-    # Burdick, Richard K., Connie M. Borror, and Douglas C. Montgomery. "A review of methods for measurement systems capability analysis." Journal of Quality Technology 35.4 (2003): 342-354.
-    # But doesn't match "Introduction to Statistical Quality Control", Montgomery... need to look a bit closer at this.
-
-    # Distributions
-    F_p = st.chi2(p-1)
-    F_o = st.chi2(o-1)
-    F_i = st.chi2((p-1)*(o-1))
-    F_e = st.chi2(p*o*(n-1))
-    F_po = st.f(p-1, o-1)
-    F_pi = st.f(p-1, (p-1)*(o-1))
-
-    # Intermediate quantities
-    G_1 = 1 - 1 / F_p.ppf(1-alpha/2)
-    G_2 = 1 - 1 / F_o.ppf(1-alpha/2)
-    G_3 = 1 - 1 / F_i.ppf(1-alpha/2)
-    G_4 = 1 - 1 / F_e.ppf(1-alpha/2)
-
-    H_1 = 1 / F_p.ppf(alpha/2) - 1
-    H_2 = 1 / F_o.ppf(alpha/2) - 1
-    H_3 = 1 / F_i.ppf(alpha/2) - 1
-    H_4 = 1 / F_e.ppf(alpha/2) - 1
-
-    G_13 = ((F_pi.ppf(1-alpha/2)-1)**2 - G_1**2 * F_pi.ppf(1-alpha/2)**2 - H_3**2) / F_pi.ppf(1-alpha/2)
-    H_13 = ((1-F_pi.ppf(alpha/2))**2 - H_1**2 * F_pi.ppf(alpha/2)**2 - G_3**2) / F_pi.ppf(alpha/2)
-
-    V_LP = G_1**2 * MS_P**2 + H_3**2 * MS_PO**2 + G_13 * MS_P
-    V_UP = H_1**2 * MS_P**2 + G_3**2 * MS_PO**2 + H_13 * MS_P**2 * MS_PO
-
-    V_LM = G_2**2 * MS_O**2 + G_3**2 * (p-1)**2 * MS_PO**2 + G_4**2 * p**2 * (n-1)**2 * MS_E**2
-    V_UM = H_2**2 * MS_O**2 + H_3**2 * (p-1)**2 * MS_PO**2 + H_4**2 * p**2 * (n-1)**2 * MS_E**2
-
-    V_LT = G_1**2 * p**2 * MS_P**2 + G_2**2 * o**2 * MS_O**2 + G_3**2 * (p*o - p - o)**2 * MS_PO**2 + G_4**2 * (p*o)**2 * (n-1)**2 * MS_E**2
-    V_UT = H_1**2 * p**2 * MS_P**2 + H_2**2 * o**2 * MS_O**2 + H_3**2 * (p*o - p - o)**2 * MS_PO**2 + H_4**2 * (p*o)**2 * (n-1)**2 * MS_E**2
-
-    L_star_num = MS_P - F_pi.ppf(1-alpha/2) * MS_PO
-    L_star_den = p * (n-1) * F_p.ppf(1-alpha/2) * MS_E + F_po.ppf(1-alpha/2) * MS_O + (p-1) * F_p.ppf(1-alpha/2) * MS_PO
-    L_star = L_star_num / L_star_den
-
-    U_star_num = MS_P - F_pi.ppf(alpha/2) * MS_PO
-    U_star_den = p * (n-1) * F_p.ppf(alpha/2) * MS_E + F_po.ppf(alpha/2) * MS_O + (p-1) * F_p.ppf(alpha/2) * MS_PO
-    U_star = U_star_num / U_star_den
-
-    return V_LP, V_UP, V_LM, V_UM, V_LT, V_UT, L_star, U_star
-
-def _conf_int(p, o, n, MS_P, MS_O, MS_PO, MS_E, alpha=0.05):
-    # Burdick, Richard K., Connie M. Borror, and Douglas C. Montgomery. "A review of methods for measurement systems capability analysis." Journal of Quality Technology 35.4 (2003): 342-354.
-
-    V_LP, V_UP, V_LM, V_UM, V_LT, V_UT, L_star, U_star = _conf_int_intermediate_vals(p, o, n, MS_P, MS_O, MS_PO, MS_E, alpha)
+#     V_LP, V_UP, V_LM, V_UM, V_LT, V_UT, L_star, U_star = _conf_int_intermediate_vals(p, o, n, MS_P, MS_O, MS_PO, MS_E, alpha)
     
-    var_p_lower = -np.sqrt(V_LP) / (o * n)
-    var_p_upper = np.sqrt(V_UP) / (o * n)
+#     var_p_lower = -np.sqrt(V_LP) / (o * n)
+#     var_p_upper = np.sqrt(V_UP) / (o * n)
 
-    var_grr_lower = -np.sqrt(V_LM) / (p * n)
-    var_grr_upper = np.sqrt(V_UM) / (p * n)
+#     var_grr_lower = -np.sqrt(V_LM) / (p * n)
+#     var_grr_upper = np.sqrt(V_UM) / (p * n)
 
-    var_tot_lower = -np.sqrt(V_LT) / (p * o * n)
-    var_tot_upper = np.sqrt(V_UT) / (p * o * n)
+#     var_tot_lower = -np.sqrt(V_LT) / (p * o * n)
+#     var_tot_upper = np.sqrt(V_UT) / (p * o * n)
 
-    rho_p_lower = L_p = p * L_star / (p * L_star + o)
-    rho_p_upper = U_p = p * U_star / (p * U_star + o)
+#     rho_p_lower = L_p = p * L_star / (p * L_star + o)
+#     rho_p_upper = U_p = p * U_star / (p * U_star + o)
 
-    rho_m_lower = 1 - U_p
-    rho_m_upper = 1 - L_p
+#     rho_m_lower = 1 - U_p
+#     rho_m_upper = 1 - L_p
 
-    return [
-        (var_p_lower, var_p_upper),
-        (var_grr_lower, var_grr_upper),
-        (var_tot_lower, var_tot_upper),
-        (rho_p_lower, rho_p_upper),
-        (rho_m_lower, rho_m_upper),
-    ]
+#     return [
+#         (var_p_lower, var_p_upper),
+#         (var_grr_lower, var_grr_upper),
+#         (var_tot_lower, var_tot_upper),
+#         (rho_p_lower, rho_p_upper),
+#         (rho_m_lower, rho_m_upper),
+#     ]
+
+# def _conf_int_intermediate_vals(p, o, n, MS_P, MS_O, MS_PO, MS_E, alpha=0.05):
+#     # Burdick, Richard K., Connie M. Borror, and Douglas C. Montgomery. "A review of methods for measurement systems capability analysis." Journal of Quality Technology 35.4 (2003): 342-354.
+#     # But doesn't match "Introduction to Statistical Quality Control", Montgomery... need to look a bit closer at this.
+
+#     # Distributions
+#     F_p = st.chi2(p-1)
+#     F_o = st.chi2(o-1)
+#     F_i = st.chi2((p-1)*(o-1))
+#     F_e = st.chi2(p*o*(n-1))
+#     F_po = st.f(p-1, o-1)
+#     F_pi = st.f(p-1, (p-1)*(o-1))
+
+#     # Intermediate quantities
+#     G_1 = 1 - 1 / F_p.ppf(1-alpha/2)
+#     G_2 = 1 - 1 / F_o.ppf(1-alpha/2)
+#     G_3 = 1 - 1 / F_i.ppf(1-alpha/2)
+#     G_4 = 1 - 1 / F_e.ppf(1-alpha/2)
+
+#     H_1 = 1 / F_p.ppf(alpha/2) - 1
+#     H_2 = 1 / F_o.ppf(alpha/2) - 1
+#     H_3 = 1 / F_i.ppf(alpha/2) - 1
+#     H_4 = 1 / F_e.ppf(alpha/2) - 1
+
+#     G_13 = ((F_pi.ppf(1-alpha/2)-1)**2 - G_1**2 * F_pi.ppf(1-alpha/2)**2 - H_3**2) / F_pi.ppf(1-alpha/2)
+#     H_13 = ((1-F_pi.ppf(alpha/2))**2 - H_1**2 * F_pi.ppf(alpha/2)**2 - G_3**2) / F_pi.ppf(alpha/2)
+
+#     V_LP = G_1**2 * MS_P**2 + H_3**2 * MS_PO**2 + G_13 * MS_P
+#     V_UP = H_1**2 * MS_P**2 + G_3**2 * MS_PO**2 + H_13 * MS_P**2 * MS_PO
+
+#     V_LM = G_2**2 * MS_O**2 + G_3**2 * (p-1)**2 * MS_PO**2 + G_4**2 * p**2 * (n-1)**2 * MS_E**2
+#     V_UM = H_2**2 * MS_O**2 + H_3**2 * (p-1)**2 * MS_PO**2 + H_4**2 * p**2 * (n-1)**2 * MS_E**2
+
+#     V_LT = G_1**2 * p**2 * MS_P**2 + G_2**2 * o**2 * MS_O**2 + G_3**2 * (p*o - p - o)**2 * MS_PO**2 + G_4**2 * (p*o)**2 * (n-1)**2 * MS_E**2
+#     V_UT = H_1**2 * p**2 * MS_P**2 + H_2**2 * o**2 * MS_O**2 + H_3**2 * (p*o - p - o)**2 * MS_PO**2 + H_4**2 * (p*o)**2 * (n-1)**2 * MS_E**2
+
+#     L_star_num = MS_P - F_pi.ppf(1-alpha/2) * MS_PO
+#     L_star_den = p * (n-1) * F_p.ppf(1-alpha/2) * MS_E + F_po.ppf(1-alpha/2) * MS_O + (p-1) * F_p.ppf(1-alpha/2) * MS_PO
+#     L_star = L_star_num / L_star_den
+
+#     U_star_num = MS_P - F_pi.ppf(alpha/2) * MS_PO
+#     U_star_den = p * (n-1) * F_p.ppf(alpha/2) * MS_E + F_po.ppf(alpha/2) * MS_O + (p-1) * F_p.ppf(alpha/2) * MS_PO
+#     U_star = U_star_num / U_star_den
+
+#     return V_LP, V_UP, V_LM, V_UM, V_LT, V_UT, L_star, U_star

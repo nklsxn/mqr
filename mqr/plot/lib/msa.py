@@ -7,13 +7,13 @@ import seaborn as sns
 
 import mqr
 
-def bar_var_pct(grr, ax, sources=None):
+def bar_var_pct(grr_table, ax, sources=None):
     """
     Bar graph of percent contributions from `sources` in a GRR study.
 
     Arguments
     ---------
-    grr (mqr.msa.GRR) -- Results from a GRR study.
+    grr_table (mqr.msa.VarianceTable) -- Results from a GRR study.
     ax (matplotlib.axes.Axes) -- Axes for the plot.
 
     Optional
@@ -27,7 +27,7 @@ def bar_var_pct(grr, ax, sources=None):
         indices = sources
     columns = ['% Contribution', '% StudyVar', '% Tolerance']
 
-    pct_data = grr.grr_table.loc[indices, columns]
+    pct_data = grr_table.table.loc[indices, columns]
     pct_data.plot(kind='bar', rot=0, ax=ax)
     ax.legend(
         [c for c in columns],
@@ -37,6 +37,9 @@ def bar_var_pct(grr, ax, sources=None):
         loc='center left',
         borderaxespad=0.0)
 
+    for label in ax.get_xticklabels():
+        label.set_rotation(15)
+        label.set_ha('right')
     ax.set_ylabel('Percentage (%)')
     ax.set_title('Components of Variation')
     ax.grid()
@@ -198,8 +201,9 @@ def grr(grr, axs, sources=None):
     """
     axs = axs.flatten()
     assert len(axs) == 6, 'GRR Tableau requires 6 subplot axes.'
+    grr_table = mqr.msa.VarianceTable(grr)
 
-    bar_var_pct(grr, sources=sources, ax=axs[0])
+    bar_var_pct(grr_table, sources=sources, ax=axs[0])
     box_measurement_by_part(grr, ax=axs[1])
     xbar_operator(grr, ax=axs[2])
     box_measurement_by_operator(grr, ax=axs[3])
