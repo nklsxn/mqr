@@ -7,7 +7,7 @@ from mqr.inference.hyptest import HypothesisTest
 import scipy
 import statsmodels
 
-def test_1sample(x, method='runs'):
+def test_1sample(x, method='runs', cutoff='median'):
     """
     Hypothesis test on randomness of distribution.
 
@@ -23,6 +23,7 @@ def test_1sample(x, method='runs'):
     Optional
     --------
     method (str) -- Type of test. Only the default "runs" test is implemented.
+    cutoff (str) -- The cutoff to group large and small values.
 
     Returns
     -------
@@ -31,7 +32,7 @@ def test_1sample(x, method='runs'):
     import mqr
 
     if method == 'runs':
-        stat, pvalue = statsmodels.sandbox.stats.runs.runstest_1samp(x, cutoff='median', correction=True)
+        stat, pvalue = statsmodels.sandbox.stats.runs.runstest_1samp(x, cutoff=cutoff, correction=True)
     else:
         raise ValueError(f'method {method} is not available')
 
