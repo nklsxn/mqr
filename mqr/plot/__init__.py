@@ -19,6 +19,7 @@ from mqr.plot.lib.ishikawa import ishikawa
 from mqr.plot.lib.summary import summary
 from mqr.plot.lib.util import grouped_df
 
+import mqr.plot.lib.anova as anova
 import mqr.plot.lib.control as control
 import mqr.plot.lib.correlation as correlation
 import mqr.plot.lib.msa as msa
