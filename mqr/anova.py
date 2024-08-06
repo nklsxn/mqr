@@ -19,22 +19,45 @@ import warnings
 ## Tools
 ################################################################################
 
+def summary(result, typ=2):
+    '''
+    The ANOVA table for a regeression.
+
+    Arguments
+    ---------
+    result -- Result of calling `fit` on a statsmodels model.
+
+    Optional
+    --------
+    typ (int or str) -- The ANOVA analysis type. Passed to
+        `statsmodels.api.stats.anova_lm(..., typ=typ)`.
+
+    Returns
+    -------
+    (pd.DataFrame) -- The ANOVA (type 2) table for the regression
+    '''
+    table = sm.stats.anova_lm(result, typ=typ)
+    table['mean_sq'] = table['sum_sq'] / table['df']
+    table = table[['sum_sq', 'df', 'mean_sq', 'F', 'PR(>F)']]
+    table.loc['Total'] = table.sum(axis=0, skipna=False)
+    return table
+
 def coeffs(result, conf=0.95):
     """
     The coefficients from regression and their confidence intervals.
 
     Arguments
     ---------
-    result -- The result of calling `fit` on a statsmodels model.
+    result -- Result of calling `fit` on a statsmodels model.
 
     Optional
     --------
-    conf (float) -- The confidence level used to form an interval (decimal).
+    conf (float) -- Confidence level used to form an interval (decimal).
         (Default 0.95.)
 
     Returns
     -------
-    pd.DataFrame -- Coefficients indexed by name from the model.
+    (pd.DataFrame) -- Coefficients indexed by name from the model.
     """
 
     alpha = 1 - conf
