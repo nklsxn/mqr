@@ -112,6 +112,30 @@ def res_v_fit(result, ax, tr=None):
     ax.set_xlabel('fitted value')
     ax.set_ylabel('residual')
 
+def res_v_factor(factor, result, ax, factor_name=None, tr=None):
+    """
+    Plot a factor versus fit.
+
+    Arguments
+    ---------
+    factor -- Values of a factor (levels) from data.
+    result -- Result of fitting a `statsmodels` model.
+    ax (matplotlib.axes.Axes) -- Axes for plot.
+
+    Optional
+    --------
+    factor_name (str) -- Name of the factor to be printed as the x-axis label.
+    tr (str) -- Transformation to apply to the residuals. One of "studentised",
+        "studentised_internal", "studentised_external", "PRESS". Default `None`.
+    """
+    if factor_name is None:
+        factor_name = 'factor'
+    resid = _tr_residuals(result, tr)
+    ax.plot(factor, resid, linewidth=0, marker='.')
+    ax.grid(axis='y')
+    ax.set_xlabel(factor_name)
+    ax.set_ylabel('residual')
+
 def residuals(result, axs, tr=None, influence_stat=None):
     """
     Plot a probability plot of residuals, histogram of residuals, residuals
