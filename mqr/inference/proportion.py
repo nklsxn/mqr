@@ -12,16 +12,131 @@ import numpy as np
 import scipy
 import statsmodels
 
-def size_1sample(p0, pa, alpha, beta, alternative='two-sided'):
+def power_1sample(pa, H0_prop, nobs, alpha=0.05, alternative='two-sided', method='norm-approx'):
     """
-    Calculate sample size for test of proportion.
+    Calculate power of a test of proportion in a sample.
 
-    Uses `statsmodels.stats.proportion.power_proportions_2indep` (statsmodels.org).
+    Null-hypothesis: `pa - H0_prop == 0`.
 
     Arguments
     ---------
+    pa (float) -- Alternative hypothesis proportion, forming effect size.
+    H0_prop (float) -- Null-hypothesis proportion.
+    nobs (int) -- Number of observations.
+    alpha (float) -- Required significance.
+
+    Optional
+    --------
+    alternative (float) -- Sense of alternative hypothesis. One of "two-sided",
+        "less" or "greater". (Default "two-sided".)
+    method (str) -- Test method. Only "norm-approx", the normal approximation to
+        the binomial distribution is implemented.
+
+    Returns
+    -------
+    mqr.power.TestPower
+    """
+    if method == 'norm-approx':
+        diff = H0_prop - pa
+        mu = np.sqrt(H0_prop * (1 - H0_prop) / nobs)
+        sigma = np.sqrt(pa * (1 - pa) / nobs)
+        dist = scipy.stats.norm()
+
+        if alternative == 'less':
+            z = dist.ppf(1 - alpha)
+            power = dist.cdf((diff - z * mu) / sigma)
+        elif alternative == 'greater':
+            z = dist.ppf(1 - alpha)
+            power = 1 - dist.cdf((diff + z * mu) / sigma)
+        elif alternative == 'two-sided':
+            z = dist.ppf(1 - alpha/2)
+            power = 1 - dist.cdf((diff + z * mu) / sigma) + dist.cdf((diff - z * mu) / sigma)
+        else:
+            raise ValueError(f'Invalid alternative {alternative}. Use one of "less", "greater" or "two-sided".')
+    else:
+        raise ValueError(f'Invalid method {method}. Use one of "less", "greater" or "two-sided".')
+
+    return TestPower(
+        name='proportion',
+        alpha=alpha,
+        beta=1-power,
+        effect=f'{pa:g} - {H0_prop:g} = {pa-H0_prop:g}',
+        alternative=alternative,
+        method=method,
+        sample_size=nobs)
+
+def power_2sample(p1, p2, nobs, alpha=0.05, alternative='two-sided', method='norm-approx'):
+    """
+    Calculate power of a test of difference of two proportions in two samples.
+
+    Null-hypothesis: `p1 - p2 == 0`.
+
+    Arguments
+    ---------
+    p1 (float) -- First proportion.
+    p2 (float) -- Second proportion.
+    nobs (int) -- Number of observations.
+    alpha (float) -- Required significance.
+
+    Optional
+    --------
+    alternative (float) -- Sense of alternative hypothesis. One of "two-sided",
+        "less" or "greater". (Default "two-sided".)
+    method (str) -- Test method. Only "norm-approx", the normal approximation to
+        the binomial distribution, is implemented.
+
+    Returns
+    -------
+    mqr.power.TestPower
+    """
+    if method == 'norm-approx':
+        diff = p2 - p1
+        pavg = (p1 + p2) / 2
+        pavg_scale = np.sqrt(2 * pavg * (1 - pavg) / nobs)
+        p_scale = np.sqrt(p1 * (1 - p1) / nobs + p2 * (1 - p2) / nobs)
+        dist = scipy.stats.norm()
+
+        if alternative == 'less':
+            z = dist.ppf(1 - alpha)
+            num = diff - z * pavg_scale
+            den = p_scale
+            power = dist.cdf(num / den)
+        elif alternative == 'greater':
+            z = dist.ppf(1 - alpha)
+            num = diff + z * pavg_scale
+            den = p_scale
+            power = 1 - dist.cdf(num / den)
+        elif alternative == 'two-sided':
+            z = dist.ppf(1 - alpha/2)
+            num1 = diff + z * pavg_scale
+            num2 = diff - z * pavg_scale
+            den = p_scale
+            power = 1 - dist.cdf(num1 / den) + dist.cdf(num2 / den)
+        else:
+
+            raise ValueError(f'Invalid alternative {alternative}. Use one of "less", "greater" or "two-sided".')
+    else:
+        raise ValueError(f'Invalid method {method}. Use one of "less", "greater" or "two-sided".')
+
+    return TestPower(
+        name='difference between proportions',
+        alpha=alpha,
+        beta=1-power,
+        effect=f'{p1:g} - {p2:g} = {p1-p2:g}',
+        alternative=alternative,
+        method=method,
+        sample_size=nobs)
+
+def size_1sample(pa, H0_prop, alpha, beta, alternative='two-sided', method='norm-approx'):
+    """
+    Calculate sample size for test of proportion.
+
+    Null-hypothesis: `pa - H0_prop == 0`.
+
+    Arguments
+    ---------
+    pa (float) -- Alternative proportiond, forming the effect size with `p0`.
     p0 (float) -- Null proportion.
-    pa (float) -- Alternative proportion, forming the effect size with `p0`.
     alpha (float) -- Required significance.
     beta (float) -- Required beta (1 - power).
 
@@ -29,39 +144,55 @@ def size_1sample(p0, pa, alpha, beta, alternative='two-sided'):
     --------
     alternative (float) -- Sense of alternative hypothesis. One of "two-sided",
         "less" or "greater". (Default "two-sided".)
+    method (str) -- One of
+        'norm-approx' normal approximation to the binomial distribution,
+        'invsin-approx' inverse-sine approximation to the binomial distribution.
 
     Returns
     -------
     mqr.power.TestPower
     """
-    alt = interop.alternative(alternative, lib='statsmodels')
-    def power_fn(nobs):
-        power = statsmodels.stats.proportion.power_proportions_2indep(
-            diff=p0-pa,
-            prop2=pa,
-            nobs1=nobs,
-            ratio=1,
-            alpha=alpha,
-            value=0,
-            alternative=alt,
-            return_results=False)
-        return 1 - power - beta
-    nobs_opt = scipy.optimize.fsolve(power_fn, 0)[0]
+    if method == 'norm-approx':
+        def power_fn(nobs):
+            return power_1sample(
+                pa=pa,
+                H0_prop=H0_prop,
+                nobs=nobs,
+                alpha=alpha,
+                alternative=alternative,
+                method=method).beta - beta
+        nobs_opt = scipy.optimize.fsolve(power_fn, 1)[0]
+    elif method == 'invsin-approx':
+        if alternative == 'less' or alternative == 'greater':
+            crit = alpha
+        elif alternative == 'two-sided':
+            crit = alpha / 2
+        else:
+            raise ValueError(f'Alternative {alternative} not valid. Use one of "less", "greater" or "two-sided".')
+        dist = scipy.stats.norm()
+
+        Zb = dist.ppf(1-beta)
+        Za = -dist.ppf(crit)
+        num = Za + Zb
+        denom = np.arcsin(np.sqrt(pa)) - np.arcsin(np.sqrt(H0_prop))
+        nobs_opt = num**2 / denom**2 / 4
+    else:
+        raise ValueError(f'Method {method} not supported.')
 
     return TestPower(
         name='proportion',
         alpha=alpha,
         beta=beta,
-        effect=f'{p0:g} - {pa:g} = {p0-pa:g}',
+        effect=f'{pa:g} - {H0_prop:g} = {pa-H0_prop:g}',
         alternative=alternative,
-        method='z',
+        method=method,
         sample_size=nobs_opt)
 
-def size_2sample(p1, p2, alpha, beta, alternative='two-sided'):
+def size_2sample(p1, p2, alpha, beta, alternative='two-sided', method='norm-approx'):
     """
     Calculate sample size to test equality of two proportions.
 
-    Equivalent to `mqr.inference.proportion.size_1sample(p1, p2, ...)`.
+    Null-hypothesis: `p1 - p2 == 0`.
 
     Arguments
     ---------
@@ -74,14 +205,49 @@ def size_2sample(p1, p2, alpha, beta, alternative='two-sided'):
     --------
     alternative (float) -- Sense of alternative hypothesis. One of "two-sided",
         "less" or "greater". (Default "two-sided".)
+    method (str) -- Test method. One of
+        'norm-approx': the normal approximation to the binomial distribution,
+        'z': a z-score method.
 
     Returns
     -------
     mqr.power.TestPower
     """
-    res = size_1sample(p1, p2, alpha, beta, alternative=alternative)
-    res.name = 'difference between proportions'
-    return res
+    if method == 'norm-approx':
+        def power_fn(nobs):
+            return power_2sample(
+                p1=p1,
+                p2=p2,
+                nobs=nobs,
+                alpha=alpha,
+                alternative=alternative,
+                method=method).beta - beta
+        nobs_opt = scipy.optimize.fsolve(power_fn, 1)[0]
+    elif method == 'invsin-approx':
+        if alternative == 'less' or alternative == 'greater':
+            crit = alpha
+        elif alternative == 'two-sided':
+            crit = alpha / 2
+        else:
+            raise ValueError(f'Alternative {alternative} not valid. Use one of "less", "greater" or "two-sided".')
+        dist = scipy.stats.norm()
+
+        Zb = dist.ppf(1-beta)
+        Za = -dist.ppf(crit)
+        num = Za + Zb
+        denom = np.arcsin(np.sqrt(p1)) - np.arcsin(np.sqrt(p2))
+        nobs_opt = 2 * num**2 / denom**2 / 4
+    else:
+        raise ValueError(f'Method {method} not supported.')
+
+    return TestPower(
+        name='proportion',
+        alpha=alpha,
+        beta=beta,
+        effect=f'{p1:g} - {p2:g} = {p1-p2:g}',
+        alternative=alternative,
+        method=method,
+        sample_size=nobs_opt)
 
 def confint_1sample(count, nobs, conf=0.95, method='beta'):
     """
