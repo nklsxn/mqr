@@ -17,7 +17,7 @@ def test_size_1sample():
     assert res.effect == effect
     assert res.alternative == alternative
     assert res.method == 'chi2'
-    assert res.sample_size == 105
+    assert np.ceil(res.sample_size) == 105
 
     alternative = 'greater'
     res = mqr.inference.variance.size_1sample(effect, alpha, beta, alternative)
@@ -27,7 +27,7 @@ def test_size_1sample():
     assert res.effect == effect
     assert res.alternative == alternative
     assert res.method == 'chi2'
-    assert res.sample_size == 82
+    assert np.ceil(res.sample_size) == 82
 
     effect = 0.8
     alternative = 'less'
@@ -38,7 +38,7 @@ def test_size_1sample():
     assert res.effect == effect
     assert res.alternative == alternative
     assert res.method == 'chi2'
-    assert res.sample_size == 266
+    assert np.ceil(res.sample_size) == 266
 
 def test_size_2sample():
     alpha = 0.10
@@ -53,7 +53,7 @@ def test_size_2sample():
     assert res.effect == var_ratio
     assert res.alternative == alternative
     assert res.method == 'f'
-    assert res.sample_size == 211
+    assert np.ceil(res.sample_size) == 211
 
     alternative = 'greater'
     res = mqr.inference.variance.size_2sample(var_ratio, alpha, beta, alternative)
@@ -63,7 +63,7 @@ def test_size_2sample():
     assert res.effect == var_ratio
     assert res.alternative == alternative
     assert res.method == 'f'
-    assert res.sample_size == 162
+    assert np.ceil(res.sample_size) == 162
 
     var_ratio = 0.8
     alternative = 'less'
@@ -74,7 +74,7 @@ def test_size_2sample():
     assert res.effect == var_ratio
     assert res.alternative == alternative
     assert res.method == 'f'
-    assert res.sample_size == 530
+    assert np.ceil(res.sample_size) == 530
 
 def test_confint_1sample():
     x = np.array([0, 1, 2])

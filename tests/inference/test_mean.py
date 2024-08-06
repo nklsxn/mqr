@@ -135,10 +135,10 @@ def test_test_2sample():
     assert isinstance(res.stat, numbers.Number)
     assert isinstance(res.pvalue, numbers.Number)
 
-    res = mqr.inference.mean.test_2sample(x, y, H0_diff, pooled, alternative, 't')
+    res = mqr.inference.mean.test_2sample(x, y, H0_diff, pooled, alternative, 'z')
     assert res.description == 'difference between means (independent)'
     assert res.alternative == alternative
-    assert res.method == 't'
+    assert res.method == 'z'
     assert res.sample_stat == 'mean(x) - mean(y)'
     assert res.sample_stat_target == H0_diff
     assert res.sample_stat_value == np.mean(x) - np.mean(y)

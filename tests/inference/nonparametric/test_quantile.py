@@ -39,3 +39,14 @@ def test_test_1sample():
     assert res.sample_stat_value == np.quantile(x, q)
     assert isinstance(res.stat, numbers.Number)
     assert isinstance(res.pvalue, numbers.Number)
+
+    H0_quant = None
+    res = mqr.inference.nonparametric.quantile.test_1sample(x, H0_quant, q, alternative)
+    assert res.description == 'quantile'
+    assert res.alternative == alternative
+    assert res.method == 'binom'
+    assert res.sample_stat == 'quantile(x, 0.2)'
+    assert res.sample_stat_target == np.quantile(x, q)
+    assert res.sample_stat_value == np.quantile(x, q)
+    assert isinstance(res.stat, numbers.Number)
+    assert isinstance(res.pvalue, numbers.Number)
