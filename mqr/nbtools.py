@@ -45,11 +45,14 @@ def grab_figure(figure, suppress=True):
         Gcf.destroy_fig(figure)
     return HTML(f'<img src="{image_data:s}" />')
 
-def hstack(*args, margin=5):
+def hstack(*args, margin='5px 10px 5px 10px',
+        justify_content='stretch', justify_items='center',
+        align_content='start', align_items='start'):
     '''
     Horizontally stack the html, markdown or string representation of `args`.
 
     The `args` will be stacked in order from left to right, and converted like this:
+    * if the arg has the attribute `__repr__`, then its output is used pre-formatted,
     * if the arg has the attribute `_repr_html_`, then its output is used,
     * if the arg is a string, then it is treated as markdown and converted to HTML,
     * otherwise, the arg's default string conversion is used.
@@ -58,22 +61,38 @@ def hstack(*args, margin=5):
     ---------
     args -- Elements to stack horizontally.
 
+    Optional
+    --------
+    margin (float) -- Set in the style attribute of a div wrapping elements in
+        this stack (excluding lines, which have a fixed 5px margin). Default
+        "5px 10px 5px 10px" (top right bottom left).
+    justify_content, justify_items, align_content, align_items (str) -- Set in
+        the style attribute of the flexbox containing this stack.
+
     Returns
     -------
     (IPython.display.HTML) -- the stacked elements which can be directly
         displayed in jupyter.
     '''
-    raw_html = '<div style="display:flex; flex-direction:row; align-items:stretch;">'
+    jc = f'justify-content:{justify_content};'
+    ji = f'justify-items:{justify_items};'
+    ac = f'align-content:{align_content};'
+    ai = f'align-items:{align_items};'
+
+    raw_html = f'<div style="display:flex;flex-direction:row;{jc}{ji}{ac}{ai}">'
     for elem in args:
         raw_html += _to_html(elem, margin)
     raw_html += '</div>'
     return HTML(raw_html)
 
-def vstack(*args, margin=5):
+def vstack(*args, margin='5px 10px 5px 10px',
+        justify_content='start', justify_items='start',
+        align_content='start', align_items='start'):
     '''
     Vertically stack the html, markdown or string representation of `args`.
 
     The `args` will be stacked in order from top to bottom, and converted like this:
+    * if the arg has the attribute `__repr__`, then its output is used pre-formatted,
     * if the arg has the attribute `_repr_html_`, then its output is used,
     * if the arg is a string, then it is treated as markdown and converted to HTML,
     * otherwise, the arg's default string conversion is used.
@@ -82,12 +101,25 @@ def vstack(*args, margin=5):
     ---------
     args -- Elements to stack vertically.
 
+    Optional
+    --------
+    margin (float) -- Set in the style attribute of a div wrapping elements in
+        this stack (excluding lines, which have a fixed 5px margin). Default
+        "5px 10px 5px 10px" (top right bottom left).
+    justify_content, justify_items, align_content, align_items (str) -- Set in
+        the style attribute of the flexbox containing this stack.
+
     Returns
     -------
     (IPython.display.HTML) -- the stacked elements which can be directly
         displayed in jupyter.
     '''
-    raw_html = '<div style="display:flex; flex-direction:column; align-items:stretch;">'
+    jc = f'justify-content:{justify_content};'
+    ji = f'justify-items:{justify_items};'
+    ac = f'align-content:{align_content};'
+    ai = f'align-items:{align_items};'
+
+    raw_html = f'<div style="display:flex;flex-direction:column;{jc}{ji}{ac}{ai}">'
     for elem in args:
         raw_html += _to_html(elem, margin)
     raw_html += '</div>'
@@ -95,16 +127,19 @@ def vstack(*args, margin=5):
 
 def _to_html(arg, margin):
     def div(elem):
-        return f'<div style="margin:{margin}px;">' + elem + '</div>'
+        return f'<div style="margin:{margin};">' + elem + '</div>'
 
-    if hasattr(arg, '_repr_html_'):
-        return div(arg._repr_html_())
-    elif isinstance(arg, Line):
+    if isinstance(arg, Line):
         if arg is Line.HORIZONTAL:
-            return f'<div style="border-top:solid 1px #AAAAAA; margin:{margin/2}px;"></div>'
+            return f'<div style="border-top:solid 1px #AAAAAA;margin:5px;align-self:stretch;"></div>'
         elif arg is Line.VERTICAL:
-            return f'<div style="border-left:solid 1px #AAAAAA; margin:{margin/2}px;"></div>'
+            return f'<div style="border-left:solid 1px #AAAAAA;margin:5px;align-self:stretch;"></div>'
     elif type(arg) is str:
         return div(markdown.markdown(arg, extensions=['tables']))
+    elif hasattr(arg, '_repr_html_'):
+        return div(arg._repr_html_())
+    elif hasattr(arg, '__repr__'):
+        raw = '<pre>' + repr(arg) + '</pre>'
+        return div(raw)
     else:
         return div(str(arg))
