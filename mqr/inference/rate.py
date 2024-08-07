@@ -324,6 +324,7 @@ def confint_1sample(count, n, meas=1.0, conf=0.95, method='exact-c'):
 
     return ConfidenceInterval(
         name='rate of events',
+        method=method,
         value=value,
         lower=lower,
         upper=upper,
@@ -375,6 +376,7 @@ def confint_2sample(count1, n1, count2, n2, meas1=1.0, meas2=1.0,
 
     return ConfidenceInterval(
         name='difference between rates of events',
+        method=method,
         value=value,
         lower=lower,
         upper=upper,

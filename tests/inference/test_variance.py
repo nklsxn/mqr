@@ -82,6 +82,7 @@ def test_confint_1sample():
 
     res = mqr.inference.variance.confint_1sample(x, conf)
     assert res.name == 'variance'
+    assert res.method == 'chi2'
     assert res.value == np.var(x, ddof=1)
     assert res.lower == pytest.approx(0.3338, 1e-4)
     assert res.upper == pytest.approx(19.4957, 1e-4)
@@ -94,6 +95,7 @@ def test_confint_2sample():
 
     res = mqr.inference.variance.confint_2sample(x, y, conf)
     assert res.name == 'ratio of variances'
+    assert res.method == 'f'
     assert res.value == np.var(x, ddof=1) / np.var(y, ddof=1)
     assert res.lower == pytest.approx(0.0132, abs=1e-4)
     assert res.upper == pytest.approx(4.75)

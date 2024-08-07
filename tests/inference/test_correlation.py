@@ -17,6 +17,7 @@ def test_confint():
     bounded = 'both'
     res = mqr.inference.correlation.confint(x, y, conf, bounded)
     assert res.name == 'correlation'
+    assert res.method == 'fisher-z'
     assert res.value == pytest.approx(0.9036961141150641)
     assert res.lower == pytest.approx(-0.151652753)
     assert res.upper == pytest.approx(0.996236807)
@@ -25,6 +26,7 @@ def test_confint():
     bounded = 'above'
     res = mqr.inference.correlation.confint(x, y, conf, bounded)
     assert res.name == 'correlation'
+    assert res.method == 'fisher-z'
     assert res.value == pytest.approx(0.9036961141150641)
     assert res.lower == -1.0
     assert res.upper == pytest.approx(0.9922332)
@@ -33,6 +35,7 @@ def test_confint():
     bounded = 'below'
     res = mqr.inference.correlation.confint(x, y, conf, bounded)
     assert res.name == 'correlation'
+    assert res.method == 'fisher-z'
     assert res.value == pytest.approx(0.9036961141150641)
     assert res.lower == pytest.approx(0.2074167)
     assert res.upper == 1.0

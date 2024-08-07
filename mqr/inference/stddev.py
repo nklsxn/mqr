@@ -92,6 +92,7 @@ def confint_1sample(x, conf=0.95):
     var = variance.confint_1sample(x, conf)
     return ConfidenceInterval(
         name="standard deviation",
+        method='chi2',
         value=np.sqrt(var.value),
         lower=np.sqrt(var.lower),
         upper=np.sqrt(var.upper),
@@ -118,6 +119,7 @@ def confint_2sample(x, y, conf=0.95):
     var = variance.confint_2sample(x, y, conf)
     return ConfidenceInterval(
         name="ratio of standard deviations",
+        method='f',
         value=np.sqrt(var.value),
         lower=np.sqrt(var.lower),
         upper=np.sqrt(var.upper),

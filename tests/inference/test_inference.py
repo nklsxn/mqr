@@ -34,6 +34,7 @@ def test_bounded():
 def test_confint_result():
     conf = mqr.inference.confint.ConfidenceInterval(
         name='',
+        method='',
         value=np.nan,
         lower=-1.234,
         upper=1.234,

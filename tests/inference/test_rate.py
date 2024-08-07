@@ -263,6 +263,7 @@ def test_confint_1sample():
 
     res = mqr.inference.rate.confint_1sample(count, n, meas, conf)
     assert res.name == 'rate of events'
+    assert res.method == 'exact-c'
     assert res.value == count / n / meas
     assert res.conf == conf
     assert isinstance(res.lower, numbers.Number)
@@ -279,6 +280,7 @@ def test_confint_2sample():
 
     res = mqr.inference.rate.confint_2sample(count1, n1, count2, n2, meas1, meas2, conf)
     assert res.name == 'difference between rates of events'
+    assert res.method == 'wald'
     assert res.value == count1 / n1 / meas1 - count2 / n2 / meas2
     assert isinstance(res.lower, numbers.Number)
     assert isinstance(res.upper, numbers.Number)

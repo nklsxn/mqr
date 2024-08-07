@@ -216,6 +216,7 @@ def confint_1sample(x, conf=0.95):
     upper = (nobs - 1) * s2 / scipy.stats.chi2.ppf(alpha / 2, dof)
     return ConfidenceInterval(
         name='variance',
+        method='chi2',
         value=s2,
         lower=lower,
         upper=upper,
@@ -250,6 +251,7 @@ def confint_2sample(x, y, conf=0.95):
     lower = s2x / s2y * scipy.stats.f.ppf(alpha / 2, dofy, dofx)
     return ConfidenceInterval(
         name='ratio of variances',
+        method='f',
         value=s2x/s2y,
         lower=lower,
         upper=upper,

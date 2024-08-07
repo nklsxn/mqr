@@ -124,7 +124,7 @@ def size_paired(effect, alpha, beta, alternative='two-sided'):
         method='t',
         sample_size=nobs)
 
-def confint_1sample(x, conf=0.95, bounded='both'):
+def confint_1sample(x, conf=0.95, bounded='both', method='t'):
     """
     Confidence interval for mean.
 
@@ -132,13 +132,16 @@ def confint_1sample(x, conf=0.95, bounded='both'):
 
     Arguments
     ---------
-    x (array[float]) -- Calcaulate interval for mean of this sample.
+    x (array[float]) -- Calculate interval for mean of this sample.
 
     Optional
     --------
     conf (float) -- Confidence level that determines the width of the interval.
         (Default 0.95.)
     bounded (str) -- Which sides of the interval to close. (Default True.)
+    method (str) -- Type of test (default "t"):
+        "t" for student's t (`statsmodels...tconfint_mean', scipy.org),
+        "z" for z-score (`statsmodels...zconfint_mean`, statsmodels.org).
 
     Returns
     -------
@@ -147,15 +150,22 @@ def confint_1sample(x, conf=0.95, bounded='both'):
     value = np.mean(x)
     alt = interop.bounded(bounded, 'statsmodels')
     alpha = 1 - conf
-    lower, upper = statsmodels.stats.api.DescrStatsW(x).tconfint_mean(alpha, alt)
+    if method == 't':
+        lower, upper = statsmodels.stats.api.DescrStatsW(x).tconfint_mean(alpha, alt)
+    elif method == 'z':
+        lower, upper = statsmodels.stats.api.DescrStatsW(x).zconfint_mean(alpha, alt)
+    else:
+        raise ValueError(f'method {method} is not implemented')
+
     return ConfidenceInterval(
         name='mean',
+        method=method,
         value=value,
         lower=lower,
         upper=upper,
         conf=conf)
 
-def confint_2sample(x, y, conf=0.95, pooled=True, bounded='both'):
+def confint_2sample(x, y, conf=0.95, pooled=True, bounded='both', method='t'):
     """
     Confidence interval for difference of two unpaired means.
 
@@ -163,7 +173,7 @@ def confint_2sample(x, y, conf=0.95, pooled=True, bounded='both'):
 
     Arguments
     ---------
-    x, y (array[float]) -- Calcaulate interval for difference between means of these samples.
+    x, y (array[float]) -- Calculate interval for difference between means of these samples.
 
     Optional
     --------
@@ -172,6 +182,9 @@ def confint_2sample(x, y, conf=0.95, pooled=True, bounded='both'):
     pooled (bool) -- When `True`, the samples have the same variance,
         `False` otherwise. (Default True.)
     bounded (str) -- Which sides of the interval to close. (Default "both".)
+    method (str) -- Type of test (default "t"):
+        "t" for student's t (`statsmodels...tconfint_diff', scipy.org),
+        "z" for z-score (`statsmodels...zconfint_diff`, statsmodels.org).
 
     Returns
     -------
@@ -184,18 +197,28 @@ def confint_2sample(x, y, conf=0.95, pooled=True, bounded='both'):
     xs = statsmodels.stats.api.DescrStatsW(x)
     ys = statsmodels.stats.api.DescrStatsW(y)
     comp = statsmodels.stats.api.CompareMeans(xs, ys)
-    lower, upper = comp.tconfint_diff(
-        alpha=alpha,
-        usevar=usevar,
-        alternative=alt)
+
+    if method == 't':
+        lower, upper = comp.tconfint_diff(
+            alpha=alpha,
+            usevar=usevar,
+            alternative=alt)
+    elif method == 'z':
+        lower, upper = comp.zconfint_diff(
+            alpha=alpha,
+            usevar=usevar,
+            alternative=alt)
+    else:
+        raise ValueError(f'meethod {method} is not implemented')
     return ConfidenceInterval(
         name='difference between means (independent)',
+        method=method,
         value=value,
         lower=lower,
         upper=upper,
         conf=conf)
 
-def confint_paired(x, y, conf=0.95, bounded='both'):
+def confint_paired(x, y, conf=0.95, bounded='both', method='t'):
     """
     Confidence interval for difference of two paired means.
 
@@ -203,20 +226,23 @@ def confint_paired(x, y, conf=0.95, bounded='both'):
 
     Arguments
     ---------
-    x, y (array[float]) -- Calcaulate interval for difference between means of these samples.
+    x, y (array[float]) -- Calculate interval for difference between means of these samples.
 
     Optional
     --------
     conf (float) -- Confidence level that determines the width of the interval.
         (Default 0.95.)
     bounded (str) -- Which sides of the interval to close. (Default "both".)
+    method (str) -- Type of test (default "t"):
+        "t" for student's t (`scipy.stats.ttest_1samp`, scipy.org),
+        "z" for z-score (`statsmodels.stats.api.ztest`, statsmodels.org).
 
     Returns
     -------
     mqr.confint.ConfidenceInterval
     """
     delta = x - y
-    ci = confint_1sample(delta, conf, bounded)
+    ci = confint_1sample(delta, conf, bounded, method)
     ci.name = 'difference between means (paired)'
     return ci
 

@@ -284,6 +284,7 @@ def confint_1sample(count, nobs, conf=0.95, method='beta'):
 
     return ConfidenceInterval(
         name='proportion',
+        method=method,
         value=value,
         lower=lower,
         upper=upper,
@@ -323,6 +324,7 @@ def confint_2sample(count1, nobs1, count2, nobs2, conf=0.95, method='newcomb'):
         method=method)
     return ConfidenceInterval(
         name='difference between proportions',
+        method=method,
         value=value,
         lower=lower,
         upper=upper,

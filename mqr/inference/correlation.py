@@ -67,6 +67,7 @@ def confint(x, y, conf=0.95, bounded='both', method='fisher-z'):
 
     return ConfidenceInterval(
         name='correlation',
+        method=method,
         value=r,
         lower=lower,
         upper=upper,

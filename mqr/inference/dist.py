@@ -34,6 +34,13 @@ def test_1sample(x, test='ad-norm'):
         method = 'Anderson-Darling'
         target = 'normal'
         statistic, pvalue = normal_ad(x)
+    elif test == 'ks-norm':
+        from statsmodels.stats.diagnostic import kstest_normal
+        description = 'non-normality'
+        alternative = 'two-sided'
+        method = 'Kolmogorov-Smirnov'
+        target = 'normal'
+        statistic, pvalue = kstest_normal(x, dist='norm')
     else:
         raise NotImplementedError(f'test {test} is not implemented')
 

@@ -233,6 +233,7 @@ def test_confint_1sample():
 
     res = mqr.inference.proportion.confint_1sample(count, nobs, conf)
     assert res.name == 'proportion'
+    assert res.method == 'beta'
     assert res.value == count / nobs
     assert isinstance(res.lower, numbers.Number)
     assert isinstance(res.upper, numbers.Number)
@@ -247,6 +248,7 @@ def test_confint_2sample():
 
     res = mqr.inference.proportion.confint_2sample(count1, nobs1, count2, nobs2, conf)
     assert res.name == 'difference between proportions'
+    assert res.method == 'newcomb'
     assert res.value == count1 / nobs1 - count2 / nobs2
     assert isinstance(res.lower, numbers.Number)
     assert isinstance(res.upper, numbers.Number)

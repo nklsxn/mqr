@@ -39,6 +39,7 @@ def confint_1sample(x, q=0.5, conf=0.95, bounded='both'):
     percentile = mqr.utils.make_ordinal(100*q)
     return ConfidenceInterval(
         name=f'quantile ({percentile} percentile)',
+        method='binom',
         value=value,
         lower=ci.low,
         upper=ci.high,

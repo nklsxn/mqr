@@ -82,6 +82,7 @@ def test_confint_1sample():
 
     res = mqr.inference.stddev.confint_1sample(x, conf)
     assert res.name == 'standard deviation'
+    assert res.method == 'chi2'
     assert res.value == np.std(x, ddof=1)
     assert res.lower == pytest.approx(np.sqrt(0.3338), 1e-4)
     assert res.upper == pytest.approx(np.sqrt(19.4957), 1e-4)
@@ -94,6 +95,7 @@ def test_confint_2sample():
 
     res = mqr.inference.stddev.confint_2sample(x, y, conf)
     assert res.name == 'ratio of standard deviations'
+    assert res.method == 'f'
     assert res.value == np.std(x, ddof=1) / np.std(y, ddof=1)
     assert res.lower == pytest.approx(np.sqrt(0.01316), abs=1e-4)
     assert res.upper == pytest.approx(np.sqrt(4.75))

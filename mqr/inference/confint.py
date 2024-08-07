@@ -17,6 +17,7 @@ class ConfidenceInterval:
     Attributes
     ----------
     name (str) -- Statistic on which the confidence interval was calculated.
+    method (str) -- Statistical method for determining the interval
     value (float) -- Value of the statistic.
     lower (float) -- Lower limit of the interval.
     upper (float) -- Upper limit of the interval.
@@ -32,6 +33,7 @@ class ConfidenceInterval:
     """
 
     name: str
+    method: str
     value: np.float64
     lower: np.float64
     upper: np.float64
@@ -102,6 +104,9 @@ class ConfidenceInterval:
             </tr>
         </thead>
         <tbody>
+            <tr>
+                <th scope='row'>method</th><td colspan=2 style='text-align:left'>{self.method}</td>
+            </tr>
             <tr>
                 <th scope='col' style='text-align: left;'>value</th>
                 <th scope='col' style='text-align: left;'>[{left_alpha}</th>
