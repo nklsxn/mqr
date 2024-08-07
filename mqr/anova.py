@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 import scipy
 import scipy.stats as st
 import seaborn as sns
+import statsmodels
 import statsmodels.api as sm
 
 import warnings
@@ -59,12 +60,17 @@ def coeffs(result, conf=0.95):
     -------
     (pd.DataFrame) -- Coefficients indexed by name from the model.
     """
-
+    from statsmodels.stats.outliers_influence import variance_inflation_factor
     alpha = 1 - conf
     values = pd.concat(
         [result.params, result.conf_int(alpha=alpha)],
         axis=1)
     values.columns = ['Coeff', f'[{alpha/2*100:g}%', f'{(1-alpha/2)*100:g}%]']
+    values['PR(>F)'] = result.pvalues
+    values['VIF'] = np.nan
+    exog = result.model.exog
+    for i in np.arange(exog.shape[1]):
+        values.iloc[i, -1] = variance_inflation_factor(exog, i)
     return values
 
 def groups(df: pd.DataFrame, *, value: str, factor: str, conf=0.95):
