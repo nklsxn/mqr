@@ -1,3 +1,6 @@
+import importlib.metadata
+__version__ = importlib.metadata.version('mqr-quality')
+
 import mqr.anova
 import mqr.constants
 import mqr.control
