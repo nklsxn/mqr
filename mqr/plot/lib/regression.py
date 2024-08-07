@@ -164,7 +164,7 @@ def residuals(result, axs, tr=None, influence_stat=None):
         resid,
         dist=st.norm,
         fit=True)
-    gen.qqplot(line='s', ax=axs[0])
+    gen.qqplot(line='r', ax=axs[0])
     residual_histogram(result, tr=tr, ax=axs[1])
     res_v_obs(result, tr=tr, influence_stat=influence_stat, ax=axs[2])
     res_v_fit(result, tr=tr, ax=axs[3])
