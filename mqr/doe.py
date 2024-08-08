@@ -358,7 +358,7 @@ class Design:
             blocks=blocks)
 
     @staticmethod
-    def from_ccdesign(names, block=1, alpha='orthogonal', face='circumscribed'):
+    def from_ccdesign(names, block=1, center=(0, 0), alpha='orthogonal', face='circumscribed'):
         """
         Construct a design from `pyDOE3.ccdesign(...)`.
 
@@ -378,7 +378,7 @@ class Design:
         Design -- The new design.
         """
         n = len(names)
-        levels = pyDOE3.ccdesign(n, center=(0, 0), alpha=alpha, face=face) #[2**n:]
+        levels = pyDOE3.ccdesign(n, center=center, alpha=alpha, face=face)
         m = levels.shape[0]
         runs = np.arange(m) + 1
         pttypes = np.apply_along_axis(Design._pttype, 1, levels)
