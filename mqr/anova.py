@@ -39,7 +39,7 @@ def summary(result, typ=2):
     '''
     table = sm.stats.anova_lm(result, typ=typ)
     table['mean_sq'] = table['sum_sq'] / table['df']
-    table = table[['sum_sq', 'df', 'mean_sq', 'F', 'PR(>F)']]
+    table = table[['df', 'sum_sq', 'mean_sq', 'F', 'PR(>F)']]
     table.loc['Total'] = table.sum(axis=0, skipna=False)
     return table
 
