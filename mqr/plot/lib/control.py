@@ -2,6 +2,8 @@
 Plots for statistical process control.
 """
 
+import mqr
+
 import numpy as np
 import scipy.stats as st
 
@@ -24,7 +26,7 @@ def xbar_chart(samples, ax, x_limits=None):
     """
 
     if x_limits is None:
-        (x_lcl, x_cl, x_ucl) = x_control_limits(samples)
+        (x_lcl, x_cl, x_ucl) = mqr.control.x_control_limits(samples)
     else:
         (x_lcl, x_cl, x_ucl) = x_limits
     x_bar = np.mean(samples, axis=1)
@@ -56,7 +58,7 @@ def r_chart(samples, ax, r_limits=None):
     """
     
     if r_limits is None:
-        (r_lcl, r_cl, r_ucl) = r_control_limits(samples)
+        (r_lcl, r_cl, r_ucl) = mqr.control.r_control_limits(samples)
     else:
         (r_lcl, r_cl, r_ucl) = r_limits
     r_bar = np.max(samples, axis=1) - np.min(samples, axis=1)
