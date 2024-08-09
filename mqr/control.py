@@ -115,7 +115,7 @@ def x_control_limits(samples, x_mean=None, r_mean=None, std_hist=None):
         r_bar = np.max(samples, axis=1) - np.min(samples, axis=1)
         r_mean = np.mean(r_bar)
     elif std_hist is not None:
-        r_mean = std_hist * d2[m]
+        r_mean = std_hist * C.D2[n]
 
     x_ucl = xbar_ucl(x_mean, r_mean, n)
     x_cl = x_mean 
@@ -157,7 +157,7 @@ def r_control_limits(samples, r_mean=None, std_hist=None):
         r_bar = np.max(samples, axis=1) - np.min(samples, axis=1)
         r_mean = np.mean(r_bar)
     elif std_hist is not None:
-        r_mean = std_hist * d2[m]
+        r_mean = std_hist * C.D2[n]
 
     r_ucl = rbar_ucl(r_mean, n)
     r_cl  = r_mean
