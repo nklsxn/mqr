@@ -77,28 +77,69 @@ def test_size_2sample():
     assert np.ceil(res.sample_size) == 530
 
 def test_confint_1sample():
-    x = np.array([0, 1, 2])
-    conf = 0.90
+    x = np.array([ 98.89,  98.75,  97.61, 100.38,  99.56,
+                  103.12,  97.73, 102.39, 96.74, 100.06])
+    s2 = np.var(x, ddof=1)
+    conf = 0.95
 
-    res = mqr.inference.variance.confint_1sample(x, conf)
+    bounded = 'both'
+    res = mqr.inference.variance.confint_1sample(x, conf, bounded=bounded)
     assert res.name == 'variance'
     assert res.method == 'chi2'
-    assert res.value == np.var(x, ddof=1)
-    assert res.lower == pytest.approx(0.3338, 1e-4)
-    assert res.upper == pytest.approx(19.4957, 1e-4)
+    assert res.value == s2
+    assert res.lower == pytest.approx(1.9871, 1e-4)
+    assert res.upper == pytest.approx(13.9980, 1e-4)
+    assert res.conf == conf
+
+    bounded = 'below'
+    res = mqr.inference.variance.confint_1sample(x, conf, bounded=bounded)
+    assert res.name == 'variance'
+    assert res.method == 'chi2'
+    assert res.value == s2
+    assert res.lower == pytest.approx(2.2342, 1e-4)
+    assert res.upper == np.inf
+    assert res.conf == conf
+
+    bounded = 'above'
+    res = mqr.inference.variance.confint_1sample(x, conf, bounded=bounded)
+    assert res.name == 'variance'
+    assert res.method == 'chi2'
+    assert res.value == s2
+    assert res.lower == -np.inf
+    assert res.upper == pytest.approx(11.3680, 1e-4)
     assert res.conf == conf
 
 def test_confint_2sample():
     x = np.array([0, 1, 2])
     y = np.array([0, 2, 4])
+    ratio = np.var(x, ddof=1) / np.var(y, ddof=1)
     conf = 0.90
 
-    res = mqr.inference.variance.confint_2sample(x, y, conf)
+    bounded = 'both'
+    res = mqr.inference.variance.confint_2sample(x, y, conf, bounded=bounded)
     assert res.name == 'ratio of variances'
     assert res.method == 'f'
-    assert res.value == np.var(x, ddof=1) / np.var(y, ddof=1)
+    assert res.value == ratio
     assert res.lower == pytest.approx(0.0132, abs=1e-4)
     assert res.upper == pytest.approx(4.75)
+    assert res.conf == conf
+
+    bounded = 'below'
+    res = mqr.inference.variance.confint_2sample(x, y, conf, bounded=bounded)
+    assert res.name == 'ratio of variances'
+    assert res.method == 'f'
+    assert res.value == ratio
+    assert res.lower == pytest.approx(0.0278, abs=1e-4)
+    assert res.upper == np.inf
+    assert res.conf == conf
+
+    bounded = 'above'
+    res = mqr.inference.variance.confint_2sample(x, y, conf, bounded=bounded)
+    assert res.name == 'ratio of variances'
+    assert res.method == 'f'
+    assert res.value == ratio
+    assert res.lower == -np.inf
+    assert res.upper == pytest.approx(2.25)
     assert res.conf == conf
 
 def test_test_1sample():

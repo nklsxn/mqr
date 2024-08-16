@@ -191,7 +191,7 @@ def size_2sample(var_ratio, alpha, beta, alternative='two-sided'):
         method='f',
         sample_size=nobs)
 
-def confint_1sample(x, conf=0.95):
+def confint_1sample(x, conf=0.95, bounded='both', method='chi2'):
     """
     Confidence interval for the variance of a sample.
 
@@ -208,21 +208,35 @@ def confint_1sample(x, conf=0.95):
     -------
     mqr.confint.ConfidenceInterval
     """
-    alpha = 1 - conf
-    nobs = len(x)
-    s2 = np.var(x, ddof=1)
-    dof = nobs - 1
-    lower = (nobs - 1) * s2 / scipy.stats.chi2.ppf(1 - alpha / 2, dof)
-    upper = (nobs - 1) * s2 / scipy.stats.chi2.ppf(alpha / 2, dof)
+    if method == 'chi2':
+        alpha = 1 - conf
+        nobs = len(x)
+        dof = nobs - 1
+        s2 = np.var(x, ddof=1)
+        dist = scipy.stats.chi2(dof)
+        if bounded == 'both':
+            lower = dof * s2 / dist.ppf(1 - alpha / 2)
+            upper = dof * s2 / dist.ppf(alpha / 2)
+        elif bounded == 'below':
+            lower = dof * s2 / dist.ppf(1 - alpha)
+            upper = np.inf
+        elif bounded == 'above':
+            lower = -np.inf
+            upper = dof * s2 / dist.ppf(alpha)
+        else:
+            raise ValueError(f'invalid bound "{bounded}"')
+    else:
+        raise ValueError(f'method "{method}" not supported')
+
     return ConfidenceInterval(
         name='variance',
-        method='chi2',
+        method=method,
         value=s2,
         lower=lower,
         upper=upper,
         conf=conf)
 
-def confint_2sample(x, y, conf=0.95):
+def confint_2sample(x, y, conf=0.95, bounded='both', method='f'):
     """
     Confidence interval for the ratio of variances of two samples.
 
@@ -241,18 +255,33 @@ def confint_2sample(x, y, conf=0.95):
     mqr.confint.ConfidenceInterval
     """
     alpha = 1 - conf
+    s2x = np.var(x, ddof=1)
+    s2y = np.var(y, ddof=1)
     nobsx = len(x)
     nobsy = len(y)
     dofx = nobsx - 1
     dofy = nobsy - 1
-    s2x = np.var(x, ddof=1)
-    s2y = np.var(y, ddof=1)
-    upper = s2x / s2y * scipy.stats.f.ppf(1 - alpha / 2, dofy, dofx)
-    lower = s2x / s2y * scipy.stats.f.ppf(alpha / 2, dofy, dofx)
+    ratio = s2x / s2y
+    dist = scipy.stats.f(dofy, dofx)
+    if method == 'f':
+        if bounded == 'both':
+            upper = ratio * dist.ppf(1 - alpha / 2)
+            lower = ratio * dist.ppf(alpha / 2)
+        elif bounded == 'below':
+            lower = ratio * dist.ppf(alpha)
+            upper = np.inf
+        elif bounded == 'above':
+            lower = -np.inf
+            upper = ratio * dist.ppf(1 - alpha)
+        else:
+            raise ValueError(f'invalid bound "{bounded}"')
+    else:
+        raise ValueError(f'method "{method}" not supported')
+
     return ConfidenceInterval(
         name='ratio of variances',
-        method='f',
-        value=s2x/s2y,
+        method=method,
+        value=ratio,
         lower=lower,
         upper=upper,
         conf=conf)
