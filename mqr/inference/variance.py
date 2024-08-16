@@ -319,7 +319,7 @@ def test_1sample(x, H0_var, alternative='two-sided'):
     elif alternative == 'two-sided':
         pvalue = 2.0 * np.minimum(dist.cdf(q), 1-dist.cdf(q))
     else:
-        assert False, f'Invalid alternative "{alternative}". Use "two-sided" (default), "less", or "greater".'
+        raise ValueError(f'Invalid alternative "{alternative}". Use "two-sided" (default), "less", or "greater".')
 
     x_name = x.name if hasattr(x, 'name') else 'x'
     return HypothesisTest(
