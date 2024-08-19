@@ -378,8 +378,9 @@ def confint_2sample(count1, nobs1, count2, nobs2, conf=0.95, bounded='both', met
                 method=method)
         else:
             msg = (
-                f'method "{method}" supports only an interval (bounded both sides). See statsmodels docs. '
-                'Use method "agresti-caffo" for one-sided confidence bounds.')
+                f'Method "{method}" is passed to statsmodels which does not implement '
+                'one-sided bounds. Use method "agresti-caffo" or "newcomb-cc" '
+                'for one-sided confidence bounds.')
             raise AttributeError(msg)
 
     value = count1 / nobs1 - count2 / nobs2
