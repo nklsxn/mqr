@@ -167,7 +167,7 @@ def size_1sample(pa, H0_prop, alpha, beta, alternative='two-sided', method='norm
                 alternative=alternative,
                 method=method).beta - beta
         nobs_opt = scipy.optimize.fsolve(power_fn, 1)[0]
-    elif method == 'arcsin':
+    elif (method == 'arcsin') or (method == 'invsin-approx'):
         if alternative == 'less' or alternative == 'greater':
             crit = alpha
         elif alternative == 'two-sided':
@@ -228,7 +228,7 @@ def size_2sample(p1, p2, alpha, beta, alternative='two-sided', method='norm-appr
                 alternative=alternative,
                 method=method).beta - beta
         nobs_opt = scipy.optimize.fsolve(power_fn, 1)[0]
-    elif method == 'arcsin':
+    elif (method == 'arcsin') or (method == 'invsin-approx'):
         if alternative == 'less' or alternative == 'greater':
             crit = alpha
         elif alternative == 'two-sided':
