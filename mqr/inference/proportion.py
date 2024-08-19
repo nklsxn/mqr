@@ -2,15 +2,20 @@
 Confidence intervals and hypothesis tests (parametric) for proportions.
 """
 
+import mqr.inference.lib.proportion as proportion
+
 from mqr.inference.confint import ConfidenceInterval
 from mqr.inference.hyptest import HypothesisTest
 from mqr.inference.power import TestPower
 
 import mqr.interop.inference as interop
+from mqr.utils import clip_where
 
 import numpy as np
 import scipy
 import statsmodels
+
+import warnings
 
 def power_1sample(pa, H0_prop, nobs, alpha=0.05, alternative='two-sided', method='norm-approx'):
     """
@@ -249,11 +254,14 @@ def size_2sample(p1, p2, alpha, beta, alternative='two-sided', method='norm-appr
         method=method,
         sample_size=nobs_opt)
 
-def confint_1sample(count, nobs, conf=0.95, method='beta'):
+def confint_1sample(count, nobs, conf=0.95, bounded='both', method='agresti-coull'):
     """
     Confidence interval for proportion `count / nobs`.
 
-    Calls `statsmodels.stats.proportion.proportion_confint` (statsmodels.org).
+    Following Brown, Cai and DasGupta (2001), use the "wilson-cc" or "jeffreys"
+    method for small sample size, and use the "agresti-coull" or "jeffreys" for
+    larger sample sizes. The authors recommend n = 40 as the boundary between
+    small and large.
 
     Arguments
     ---------
@@ -263,25 +271,48 @@ def confint_1sample(count, nobs, conf=0.95, method='beta'):
     Optional
     --------
     conf (float) -- Confidence level that determines the width of the interval.
-    method (str) -- Statistical test to use (default "beta"). One of:
-        "normal",
-        "agresti_coull",
-        "beta" (default),
-        "wilson",
-        "binom_test".
+    bounded (str) -- Which sides of the interval to close. One of "both",
+        "below" or "above". (Default "both".)
+    method (str) -- Statistical test to use. One of:
+        "agresti-coull (default)" the Agresti-Coull interval,
+        "beta" (`statsmodels.stats.proportion.proportion_confint(..., method="beta", ...)`),
+        "jeffreys" the Jeffreys interval (a Bayesian method),
+        "wilson-cc" the Wilson score interval with continuity correction.
 
     Returns
     -------
     mqr.confint.ConfidenceInterval
+
+    References
+    ----------
+    [1] Brown, L. D. Cai, T. T. and DasGupta, A. (2001).
+        "Interval estimation for a binomial proportion".
+        Statistical Science, 16(2), 101-133.
+    [2] Park, H., & Leemis, L. M. (2019).
+        Ensemble confidence intervals for binomial proportions.
+        Statistics in Medicine, 38(18), 3460-3475.
     """
     alpha = 1 - conf
-    (lower, upper) = statsmodels.stats.proportion.proportion_confint(
-        count=count,
-        nobs=nobs,
-        alpha=alpha,
-        method=method)
-    value = count / nobs
 
+    if method == 'beta':
+        if bounded == 'both':
+            (lower, upper) = statsmodels.stats.proportion.proportion_confint(
+                count=count,
+                nobs=nobs,
+                alpha=alpha,
+                method=method)
+        else:
+            raise AttributeError(f'method "{method}" supports only an interval (bounded both sides)')
+    elif method == 'agresti-coull':
+        lower, upper = proportion.confint_1sample_agresti_coull(count, nobs, conf, bounded)
+    elif method == 'jeffreys':
+        lower, upper = proportion.confint_1sample_jeffreys(count, nobs, conf, bounded)
+    elif method == 'wilson-cc':
+        lower, upper = proportion.confint_1sample_wilson_cc(count, nobs, conf, bounded)
+    else:
+        raise ValueError(f'method "{method}" not supported')
+
+    value = count / nobs
     return ConfidenceInterval(
         name='proportion',
         method=method,
@@ -290,12 +321,13 @@ def confint_1sample(count, nobs, conf=0.95, method='beta'):
         upper=upper,
         conf=conf)
 
-def confint_2sample(count1, nobs1, count2, nobs2, conf=0.95, method='newcomb'):
+def confint_2sample(count1, nobs1, count2, nobs2, conf=0.95, bounded='both', method='newcomb-cc'):
     """
     Confidence interval for difference between proportions
     `count1 / nobs1 - count2 / nobs2`.
 
-    Calls `statsmodels.stats.proportion.confint_proportions_2indep` (statsmodels.org).
+    Calls `statsmodels.stats.proportion.confint_proportions_2indep` when method
+    is neither 'agresti-caffo' nor 'newcomb-cc'.
 
     Arguments
     ---------
@@ -308,20 +340,48 @@ def confint_2sample(count1, nobs1, count2, nobs2, conf=0.95, method='newcomb'):
     --------
     conf (float) -- Confidence level that determines the width of the interval.
         (Default 0.95.)
-    method (str) -- Statistical test to use (default "wald"). See statsmodels
-        docs for others.
+    bounded (str) -- Which sides of the interval to close. One of "both",
+        "below" or "above". (Default "both".)
+    method (str) -- Statistical test to use (default "agresti-caffo"). One of:
+        "agresti-caffo" (aka "adj-wald") an adjusted normal approximation.
+            See reference [2].
+        "newcomb-cc" Newcomb's score method with continuity correction,
+        (others) passed to `statsmodels.stats.proportion.confint_proportions_2indep`
+            for comparison of the difference.
 
     Returns
     -------
     mqr.confint.ConfidenceInterval
+
+    References
+    ----------
+    [1] NIST.
+        Engineering Statistics Handbook.
+        https://www.itl.nist.gov/div898/handbook/prc/section3/prc33.htm
+    [2] Agresti, A., & Caffo, B. (2000).
+        Simple and effective confidence intervals for proportions and differences
+        of proportions result from adding two successes and two failures.
+        The American Statistician, 54(4), 280-288.
     """
+    if (method == 'agresti-caffo') or (method == 'adj-wald'):
+        lower, upper = proportion.confint_2sample_agresti_caffo(count1, nobs1, count2, nobs2, conf, bounded)
+    elif method == 'newcomb-cc':
+        lower, upper = proportion.confint_2sample_newcomb_cc(count1, nobs1, count2, nobs2, conf, bounded)
+    else:
+        if bounded == 'both':
+            lower, upper = statsmodels.stats.proportion.confint_proportions_2indep(
+                count1, nobs1,
+                count2, nobs2,
+                alpha=1-conf,
+                compare='diff',
+                method=method)
+        else:
+            msg = (
+                f'method "{method}" supports only an interval (bounded both sides). See statsmodels docs. '
+                'Use method "agresti-caffo" for one-sided confidence bounds.')
+            raise AttributeError(msg)
+
     value = count1 / nobs1 - count2 / nobs2
-    lower, upper = statsmodels.stats.proportion.confint_proportions_2indep(
-        count1, nobs1,
-        count2, nobs2,
-        alpha=1-conf,
-        compare='diff',
-        method=method)
     return ConfidenceInterval(
         name='difference between proportions',
         method=method,

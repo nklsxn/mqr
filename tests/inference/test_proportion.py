@@ -230,14 +230,51 @@ def test_confint_1sample():
     count = 5
     nobs = 10
     conf = 0.90
+    method = 'beta'
 
-    res = mqr.inference.proportion.confint_1sample(count, nobs, conf)
+    res = mqr.inference.proportion.confint_1sample(count, nobs, conf, method=method)
     assert res.name == 'proportion'
     assert res.method == 'beta'
     assert res.value == count / nobs
     assert isinstance(res.lower, numbers.Number)
     assert isinstance(res.upper, numbers.Number)
     assert res.conf == conf
+
+    count = np.array([0, 20, 40])
+    nobs = 40
+
+    bounded = 'both'
+    lowers, uppers = list(mqr.inference.proportion.confint_1sample(count, nobs, bounded=bounded, method='agresti-coull'))
+    assert lowers == pytest.approx(np.array([0.        , 0.35199527, 0.89560378]))
+    assert uppers == pytest.approx(np.array([0.10439622, 0.64800473, 1.        ]))
+    lowers, uppers = list(mqr.inference.proportion.confint_1sample(count, nobs, bounded=bounded, method='jeffreys'))
+    assert lowers == pytest.approx(np.array([0.        , 0.3496035 , 0.93950202]))
+    assert uppers == pytest.approx(np.array([0.06049798, 0.6503965 , 1.        ]))
+    lowers, uppers = list(mqr.inference.proportion.confint_1sample(count, nobs, bounded=bounded, method='wilson-cc'))
+    assert lowers == pytest.approx(np.array([0.        , 0.34063274, 0.89087533]))
+    assert uppers == pytest.approx(np.array([0.10912467, 0.65936726, 1.        ]))
+
+    bounded = 'below'
+    lower, upper = mqr.inference.proportion.confint_1sample(count, nobs, bounded=bounded, method='agresti-coull')
+    assert lower == pytest.approx(np.array([0.        , 0.37414945, 0.92424085]))
+    assert upper == pytest.approx(np.array([1., 1., 1.]))
+    lower, upper = mqr.inference.proportion.confint_1sample(count, nobs, bounded=bounded, method='jeffreys')
+    assert lower == pytest.approx(np.array([0.        , 0.37290554, 0.95340272]))
+    assert upper == pytest.approx(np.array([1., 1., 1.]))
+    lower, upper = mqr.inference.proportion.confint_1sample(count, nobs, bounded=bounded, method='wilson-cc')
+    assert lower == pytest.approx(np.array([0.        , 0.36247821, 0.91495118]))
+    assert upper == pytest.approx(np.array([1., 1., 1.]))
+
+    bounded = 'above'
+    lower, upper = mqr.inference.proportion.confint_1sample(count, nobs, bounded=bounded, method='agresti-coull')
+    assert lower == pytest.approx(np.array([0., 0., 0.]))
+    assert upper == pytest.approx(np.array([0.07575915, 0.62585055, 1.        ]))
+    lower, upper = mqr.inference.proportion.confint_1sample(count, nobs, bounded=bounded, method='jeffreys')
+    assert lower == pytest.approx(np.array([0., 0., 0.]))
+    assert upper == pytest.approx(np.array([0.04659728, 0.62709446, 1.        ]))
+    lower, upper = mqr.inference.proportion.confint_1sample(count, nobs, bounded=bounded, method='wilson-cc')
+    assert lower == pytest.approx(np.array([0., 0., 0.]))
+    assert upper == pytest.approx(np.array([0.08504882, 0.63752179, 1.        ]))
 
 def test_confint_2sample():
     count1 = 5
@@ -246,13 +283,43 @@ def test_confint_2sample():
     nobs2 = 30
     conf = 0.90
 
-    res = mqr.inference.proportion.confint_2sample(count1, nobs1, count2, nobs2, conf)
+    res = mqr.inference.proportion.confint_2sample(count1, nobs1, count2, nobs2, conf, method='newcomb')
     assert res.name == 'difference between proportions'
     assert res.method == 'newcomb'
     assert res.value == count1 / nobs1 - count2 / nobs2
     assert isinstance(res.lower, numbers.Number)
     assert isinstance(res.upper, numbers.Number)
     assert res.conf == conf
+
+    conf = 0.95
+    count1 = np.array([0, 30, 55, 60])
+    nobs1 = 60
+    count2 = np.array([0, 20, 30, 40])
+    nobs2 = 40
+
+    bounded = 'both'
+    lower, upper = mqr.inference.proportion.confint_2sample(count1, nobs1, count2, nobs2, bounded=bounded, method='agresti-caffo')
+    assert lower == pytest.approx(np.array([-0.06343951, -0.19584581,  0.0131549 , -0.04807853]))
+    assert upper == pytest.approx(np.array([0.04807853, 0.19584581, 0.31710624, 0.06343951]))
+    lower, upper = mqr.inference.proportion.confint_2sample(count1, nobs1, count2, nobs2, bounded=bounded, method='newcomb-cc')
+    assert lower == pytest.approx(np.array([-0.10912467, -0.20595924,  0.00715208, -0.07496504]))
+    assert upper == pytest.approx(np.array([0.07496504, 0.20595924, 0.33993579, 0.10912467]))
+
+    bounded = 'below'
+    lower, upper = mqr.inference.proportion.confint_2sample(count1, nobs1, count2, nobs2, bounded=bounded, method='agresti-caffo')
+    assert lower == pytest.approx(np.array([-0.05447494, -0.16435898,  0.03758857, -0.03911395]))
+    assert upper == pytest.approx(np.array([np.inf, np.inf, np.inf, np.inf]))
+    lower, upper = mqr.inference.proportion.confint_2sample(count1, nobs1, count2, nobs2, bounded=bounded, method='newcomb-cc')
+    assert lower == pytest.approx(np.array([-0.08504882, -0.17724485,  0.02995461, -0.05794766]))
+    assert upper == pytest.approx(np.array([np.inf, np.inf, np.inf, np.inf]))
+
+    bounded = 'above'
+    lower, upper = mqr.inference.proportion.confint_2sample(count1, nobs1, count2, nobs2, bounded=bounded, method='agresti-caffo')
+    assert lower == pytest.approx(np.array([-np.inf, -np.inf, -np.inf, -np.inf]))
+    assert upper == pytest.approx(np.array([0.03911395, 0.16435898, 0.29267257, 0.05447494]))
+    lower, upper = mqr.inference.proportion.confint_2sample(count1, nobs1, count2, nobs2, bounded=bounded, method='newcomb-cc')
+    assert lower == pytest.approx(np.array([-np.inf, -np.inf, -np.inf, -np.inf]))
+    assert upper == pytest.approx(np.array([0.05794766, 0.17724485, 0.31391672, 0.08504882]))
 
 def test_test_1sample():
     count = 5
