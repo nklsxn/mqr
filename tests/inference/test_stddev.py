@@ -80,7 +80,8 @@ def test_confint_1sample():
     x = np.array([0, 1, 2])
     conf = 0.90
 
-    res = mqr.inference.stddev.confint_1sample(x, conf)
+    bounded = 'both'
+    res = mqr.inference.stddev.confint_1sample(x, conf, bounded=bounded)
     assert res.name == 'standard deviation'
     assert res.method == 'chi2'
     assert res.value == np.std(x, ddof=1)
@@ -88,17 +89,54 @@ def test_confint_1sample():
     assert res.upper == pytest.approx(np.sqrt(19.4957), 1e-4)
     assert res.conf == conf
 
+    bounded = 'below'
+    res = mqr.inference.stddev.confint_1sample(x, conf, bounded=bounded)
+    assert res.name == 'standard deviation'
+    assert res.method == 'chi2'
+    assert res.value == np.std(x, ddof=1)
+    assert res.lower == pytest.approx(np.sqrt(0.4343), 1e-4)
+    assert res.upper == np.inf
+    assert res.conf == conf
+
+    bounded = 'above'
+    res = mqr.inference.stddev.confint_1sample(x, conf, bounded=bounded)
+    assert res.name == 'standard deviation'
+    assert res.method == 'chi2'
+    assert res.value == np.std(x, ddof=1)
+    assert res.lower == 0.0
+    assert res.upper == pytest.approx(np.sqrt(9.4912), 1e-4)
+    assert res.conf == conf
+
 def test_confint_2sample():
     x = np.array([0, 1, 2])
     y = np.array([0, 2, 4])
     conf = 0.90
 
-    res = mqr.inference.stddev.confint_2sample(x, y, conf)
+    bounded = 'both'
+    res = mqr.inference.stddev.confint_2sample(x, y, conf, bounded=bounded)
     assert res.name == 'ratio of standard deviations'
     assert res.method == 'f'
     assert res.value == np.std(x, ddof=1) / np.std(y, ddof=1)
     assert res.lower == pytest.approx(np.sqrt(0.01316), abs=1e-4)
     assert res.upper == pytest.approx(np.sqrt(4.75))
+    assert res.conf == conf
+
+    bounded = 'below'
+    res = mqr.inference.stddev.confint_2sample(x, y, conf, bounded=bounded)
+    assert res.name == 'ratio of standard deviations'
+    assert res.method == 'f'
+    assert res.value == np.std(x, ddof=1) / np.std(y, ddof=1)
+    assert res.lower == pytest.approx(np.sqrt(0.02778), abs=1e-4)
+    assert res.upper == np.inf
+    assert res.conf == conf
+
+    bounded = 'above'
+    res = mqr.inference.stddev.confint_2sample(x, y, conf, bounded=bounded)
+    assert res.name == 'ratio of standard deviations'
+    assert res.method == 'f'
+    assert res.value == np.std(x, ddof=1) / np.std(y, ddof=1)
+    assert res.lower == 0.0
+    assert res.upper == pytest.approx(np.sqrt(2.25))
     assert res.conf == conf
 
 def test_test_1sample():

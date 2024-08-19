@@ -72,7 +72,7 @@ def size_2sample(std_ratio, alpha, beta, alternative='two-sided'):
         method=var.method,
         sample_size=var.sample_size)
 
-def confint_1sample(x, conf=0.95):
+def confint_1sample(x, conf=0.95, bounded='both', method='chi2'):
     """
     Confidence interval for the standard deviation of a sample.
 
@@ -89,16 +89,16 @@ def confint_1sample(x, conf=0.95):
     -------
     mqr.confint.ConfidenceInterval
     """
-    var = variance.confint_1sample(x, conf)
+    var = variance.confint_1sample(x, conf, bounded=bounded, method=method)
     return ConfidenceInterval(
         name="standard deviation",
-        method='chi2',
+        method=method,
         value=np.sqrt(var.value),
         lower=np.sqrt(var.lower),
         upper=np.sqrt(var.upper),
         conf=conf)
 
-def confint_2sample(x, y, conf=0.95):
+def confint_2sample(x, y, conf=0.95, bounded='both', method='f'):
     """
     Confidence interval for the ratio of standard deviations of two samples.
 
@@ -116,13 +116,15 @@ def confint_2sample(x, y, conf=0.95):
     -------
     mqr.confint.ConfidenceInterval
     """
-    var = variance.confint_2sample(x, y, conf)
+    var = variance.confint_2sample(x, y, conf, bounded=bounded, method=method)
+    lower = 0.0 if bounded == 'above' else np.sqrt(var.lower)
+    upper = np.inf if bounded == 'below' else np.sqrt(var.upper)
     return ConfidenceInterval(
         name="ratio of standard deviations",
-        method='f',
+        method=method,
         value=np.sqrt(var.value),
-        lower=np.sqrt(var.lower),
-        upper=np.sqrt(var.upper),
+        lower=lower,
+        upper=upper,
         conf=conf)
 
 def test_1sample(x, H0_std, alternative='two-sided'):
