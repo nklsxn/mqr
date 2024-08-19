@@ -124,7 +124,7 @@ def test_size_1sample():
 
     pa = 0.5
     alternative = 'two-sided'
-    method = 'invsin-approx'
+    method = 'arcsin'
     res = mqr.inference.proportion.size_1sample(pa, p0, alpha, beta, alternative, method)
     assert res.name == 'proportion'
     assert res.alpha == 0.05
@@ -195,7 +195,7 @@ def test_size_2sample():
 
     p1 = 0.5
     alternative = 'two-sided'
-    method = 'invsin-approx'
+    method = 'arcsin'
     res = mqr.inference.proportion.size_2sample(p1, p2, alpha, beta, alternative, method)
     assert res.name == 'proportion'
     assert res.alpha == 0.05

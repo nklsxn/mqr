@@ -146,7 +146,7 @@ def size_1sample(pa, H0_prop, alpha, beta, alternative='two-sided', method='norm
         "less" or "greater". (Default "two-sided".)
     method (str) -- One of
         'norm-approx' normal approximation to the binomial distribution,
-        'invsin-approx' inverse-sine approximation to the binomial distribution.
+        'arcsin' inverse-sine approximation to the binomial distribution.
 
     Returns
     -------
@@ -162,7 +162,7 @@ def size_1sample(pa, H0_prop, alpha, beta, alternative='two-sided', method='norm
                 alternative=alternative,
                 method=method).beta - beta
         nobs_opt = scipy.optimize.fsolve(power_fn, 1)[0]
-    elif method == 'invsin-approx':
+    elif method == 'arcsin':
         if alternative == 'less' or alternative == 'greater':
             crit = alpha
         elif alternative == 'two-sided':
@@ -207,7 +207,7 @@ def size_2sample(p1, p2, alpha, beta, alternative='two-sided', method='norm-appr
         "less" or "greater". (Default "two-sided".)
     method (str) -- Test method. One of
         'norm-approx': the normal approximation to the binomial distribution,
-        'z': a z-score method.
+        'arcsin': the arcsin method.
 
     Returns
     -------
@@ -223,7 +223,7 @@ def size_2sample(p1, p2, alpha, beta, alternative='two-sided', method='norm-appr
                 alternative=alternative,
                 method=method).beta - beta
         nobs_opt = scipy.optimize.fsolve(power_fn, 1)[0]
-    elif method == 'invsin-approx':
+    elif method == 'arcsin':
         if alternative == 'less' or alternative == 'greater':
             crit = alpha
         elif alternative == 'two-sided':
