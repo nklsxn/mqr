@@ -203,6 +203,10 @@ def confint_1sample(x, conf=0.95, bounded='both', method='chi2'):
     --------
     conf (float) -- Confidence level that determines the width of the interval.
         (Default 0.95.)
+    bounded (str) -- Which sides of the interval to close. One of "both",
+        "below" or "above". (Default "both".)
+    method (str) -- Type of test (only "chi2"):
+        "chi2" for an exact interval based on the chi-squared distribution.
 
     Returns
     -------
@@ -215,13 +219,12 @@ def confint_1sample(x, conf=0.95, bounded='both', method='chi2'):
         s2 = np.var(x, ddof=1)
         dist = scipy.stats.chi2(dof)
         if bounded == 'both':
-            lower = dof * s2 / dist.ppf(1 - alpha / 2)
-            upper = dof * s2 / dist.ppf(alpha / 2)
+            lower, upper = dof * s2 / dist.ppf([1 - alpha / 2, alpha / 2])
         elif bounded == 'below':
             lower = dof * s2 / dist.ppf(1 - alpha)
             upper = np.inf
         elif bounded == 'above':
-            lower = -np.inf
+            lower = 0.0
             upper = dof * s2 / dist.ppf(alpha)
         else:
             raise ValueError(f'invalid bound "{bounded}"')
@@ -249,6 +252,10 @@ def confint_2sample(x, y, conf=0.95, bounded='both', method='f'):
     --------
     conf (float) -- Confidence level that determines the width of the interval.
         (Default 0.95.)
+    bounded (str) -- Which sides of the interval to close. One of "both",
+        "below" or "above". (Default "both".)
+    method (str) -- Type of test (only "f"):
+        "f" for an exact interval based on the F distribution.
 
     Returns
     -------
@@ -265,8 +272,7 @@ def confint_2sample(x, y, conf=0.95, bounded='both', method='f'):
     dist = scipy.stats.f(dofy, dofx)
     if method == 'f':
         if bounded == 'both':
-            upper = ratio * dist.ppf(1 - alpha / 2)
-            lower = ratio * dist.ppf(alpha / 2)
+            lower, upper = ratio * dist.ppf([alpha / 2, 1 - alpha / 2])
         elif bounded == 'below':
             lower = ratio * dist.ppf(alpha)
             upper = np.inf

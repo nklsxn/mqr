@@ -105,7 +105,7 @@ def test_confint_1sample():
     assert res.name == 'variance'
     assert res.method == 'chi2'
     assert res.value == s2
-    assert res.lower == -np.inf
+    assert res.lower == 0.0
     assert res.upper == pytest.approx(11.3680, 1e-4)
     assert res.conf == conf
 
