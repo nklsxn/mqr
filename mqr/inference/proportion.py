@@ -275,9 +275,9 @@ def confint_1sample(count, nobs, conf=0.95, bounded='both', method='agresti-coul
         "below" or "above". (Default "both".)
     method (str) -- Statistical test to use. One of:
         "agresti-coull (default)" the Agresti-Coull interval,
-        "beta" (`statsmodels.stats.proportion.proportion_confint(..., method="beta", ...)`),
         "jeffreys" the Jeffreys interval (a Bayesian method),
-        "wilson-cc" the Wilson score interval with continuity correction.
+        "wilson-cc" the Wilson score interval with continuity correction,
+        (others) everything else is passed to `statsmodels.stats.proportion.proportion_confint`.
 
     Returns
     -------
@@ -294,7 +294,13 @@ def confint_1sample(count, nobs, conf=0.95, bounded='both', method='agresti-coul
     """
     alpha = 1 - conf
 
-    if method == 'beta':
+    if method == 'agresti-coull':
+        lower, upper = proportion.confint_1sample_agresti_coull(count, nobs, conf, bounded)
+    elif method == 'jeffreys':
+        lower, upper = proportion.confint_1sample_jeffreys(count, nobs, conf, bounded)
+    elif method == 'wilson-cc':
+        lower, upper = proportion.confint_1sample_wilson_cc(count, nobs, conf, bounded)
+    else:
         if bounded == 'both':
             (lower, upper) = statsmodels.stats.proportion.proportion_confint(
                 count=count,
@@ -302,16 +308,11 @@ def confint_1sample(count, nobs, conf=0.95, bounded='both', method='agresti-coul
                 alpha=alpha,
                 method=method)
         else:
-            raise AttributeError(f'method "{method}" supports only an interval (bounded both sides)')
-    elif method == 'agresti-coull':
-        lower, upper = proportion.confint_1sample_agresti_coull(count, nobs, conf, bounded)
-    elif method == 'jeffreys':
-        lower, upper = proportion.confint_1sample_jeffreys(count, nobs, conf, bounded)
-    elif method == 'wilson-cc':
-        lower, upper = proportion.confint_1sample_wilson_cc(count, nobs, conf, bounded)
-    else:
-        raise ValueError(f'method "{method}" not supported')
-
+            msg = (
+                f'Method "{method}" is passed to statsmodels which does not implement '
+                'one-sided bounds. Use method "agresti-coull", "jeffreys" or '
+                '"wilson-cc" for one-sided confidence bounds.')
+            raise AttributeError(msg)
     value = count / nobs
     return ConfidenceInterval(
         name='proportion',
