@@ -9,10 +9,11 @@ import statsmodels
 
 def test_1sample(x, method='runs', cutoff='median'):
     """
-    Hypothesis test on randomness of distribution.
+    Hypothesis test on randomness characteristics of a sample.
 
-    Null-hypothesis: observations in `x` are independent and identically
-    distributed.
+    Null-hypotheses:
+        method "runs" -- observations in `x` are independent and identically distributed.
+        method "adf" -- observations in `x` are non-stationary (time series has a unit root).
 
     Calls `statsmodels.sandbox.stats.runs.runstest_1samp` (statsmodels.org).
 
@@ -22,7 +23,11 @@ def test_1sample(x, method='runs', cutoff='median'):
 
     Optional
     --------
-    method (str) -- Type of test. Only the default "runs" test is implemented.
+    method (str) -- Type of test (default "runs"). One of:
+        "runs" the runs test for independent and identical distribution,
+        "adf" the Augmented Dickey-Fuller test for unit root (stationarity).
+            This test is used when x is a time-series. Note the sense: a small
+            p-value indicates a stationary processes.
     cutoff (str) -- The cutoff to group large and small values.
 
     Returns
@@ -32,16 +37,24 @@ def test_1sample(x, method='runs', cutoff='median'):
     import mqr
 
     if method == 'runs':
+        description = 'randomness'
+        sample_stat_target = 'iid'
         stat, pvalue = statsmodels.sandbox.stats.runs.runstest_1samp(x, cutoff=cutoff, correction=True)
+    elif method == 'adf':
+        description = 'randomness'
+        sample_stat_target = 'non-stationary'
+        res = statsmodels.tsa.stattools.adfuller(x, )
+        stat = res[0]
+        pvalue = res[1]
     else:
         raise ValueError(f'method {method} is not available')
 
     return HypothesisTest(
-        description='randomness',
+        description=description,
         alternative='two-sided',
         method=method,
         sample_stat='dist(x)',
-        sample_stat_target='iid',
+        sample_stat_target=sample_stat_target,
         sample_stat_value=None,
         stat=stat,
         pvalue=pvalue,)
