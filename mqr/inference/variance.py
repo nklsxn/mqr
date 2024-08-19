@@ -261,16 +261,16 @@ def confint_2sample(x, y, conf=0.95, bounded='both', method='f'):
     -------
     mqr.confint.ConfidenceInterval
     """
-    alpha = 1 - conf
-    s2x = np.var(x, ddof=1)
-    s2y = np.var(y, ddof=1)
-    nobsx = len(x)
-    nobsy = len(y)
-    dofx = nobsx - 1
-    dofy = nobsy - 1
-    ratio = s2x / s2y
-    dist = scipy.stats.f(dofy, dofx)
     if method == 'f':
+        alpha = 1 - conf
+        s2x = np.var(x, ddof=1)
+        s2y = np.var(y, ddof=1)
+        nobsx = len(x)
+        nobsy = len(y)
+        dofx = nobsx - 1
+        dofy = nobsy - 1
+        ratio = s2x / s2y
+        dist = scipy.stats.f(dofy, dofx)
         if bounded == 'both':
             lower, upper = ratio * dist.ppf([alpha / 2, 1 - alpha / 2])
         elif bounded == 'below':
