@@ -138,7 +138,8 @@ def confint_1sample(x, conf=0.95, bounded='both', method='t'):
     --------
     conf (float) -- Confidence level that determines the width of the interval.
         (Default 0.95.)
-    bounded (str) -- Which sides of the interval to close. (Default True.)
+    bounded (str) -- Which sides of the interval to close. One of "both",
+        "below" or "above". (Default "both".)
     method (str) -- Type of test (default "t"):
         "t" for student's t (`statsmodels...tconfint_mean', scipy.org),
         "z" for z-score (`statsmodels...zconfint_mean`, statsmodels.org).
@@ -181,7 +182,8 @@ def confint_2sample(x, y, conf=0.95, pooled=True, bounded='both', method='t'):
         (Default 0.95.)
     pooled (bool) -- When `True`, the samples have the same variance,
         `False` otherwise. (Default True.)
-    bounded (str) -- Which sides of the interval to close. (Default "both".)
+    bounded (str) -- Which sides of the interval to close. One of "both",
+        "below" or "above". (Default "both".)
     method (str) -- Type of test (default "t"):
         "t" for student's t (`statsmodels...tconfint_diff', scipy.org),
         "z" for z-score (`statsmodels...zconfint_diff`, statsmodels.org).
