@@ -7,6 +7,7 @@ Construction and presentation of gauge repeatability and reproducibility study.
 from dataclasses import dataclass, field
 import numpy as np
 import pandas as pd
+from patsy import ModelDesc
 import statsmodels
 
 import mqr
@@ -154,7 +155,8 @@ class GRR:
         name_o = self.names._o
         combn = '*' if self.include_interaction else '+'
         intercept = '+ 1' if self.include_intercept else '- 1'
-        self.formula = f'{name_m} ~ C({name_p}) {combn} C({name_o}) {intercept}'
+        formula = f'{name_m} ~ C({name_p}) {combn} C({name_o}) {intercept}'
+        self.formula = ModelDesc.from_formula(formula).describe()
 
     def _fit_model(self, data):
         self.model = statsmodels.formula.api.ols(self.formula, self.data)
