@@ -41,7 +41,7 @@ def test_1sample(x, method='runs', cutoff='median'):
         sample_stat_target = 'iid'
         stat, pvalue = statsmodels.sandbox.stats.runs.runstest_1samp(x, cutoff=cutoff, correction=True)
     elif method == 'adf':
-        description = 'randomness'
+        description = 'stationarity'
         sample_stat_target = 'non-stationary'
         res = statsmodels.tsa.stattools.adfuller(x, )
         stat = res[0]
