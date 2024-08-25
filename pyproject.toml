@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mqr-quality"
-version = "0.4.3"
+version = "0.4.4"
 authors = [
     { name="Nikolas Crossan" },
     { name="Kevin Otto" },
