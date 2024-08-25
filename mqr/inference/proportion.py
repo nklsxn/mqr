@@ -15,8 +15,6 @@ import numpy as np
 import scipy
 import statsmodels
 
-import warnings
-
 def power_1sample(pa, H0_prop, nobs, alpha=0.05, alternative='two-sided', method='norm-approx'):
     """
     Calculate power of a test of proportion in a sample.

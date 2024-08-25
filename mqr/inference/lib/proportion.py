@@ -3,6 +3,8 @@ from mqr.utils import clip_where
 import numpy as np
 import scipy
 
+import warnings
+
 def confint_1sample_agresti_coull(count, nobs, conf, bounded):
     """
     Confidence interval for proportion `count / nobs`.
