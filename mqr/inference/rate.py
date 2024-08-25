@@ -2,6 +2,8 @@
 Confidence intervals and hypothesis tests (parametric) for rates of events.
 """
 
+import mqr.inference.lib.rate as rate
+
 from mqr.inference.confint import ConfidenceInterval
 from mqr.inference.hyptest import HypothesisTest
 from mqr.inference.power import TestPower
@@ -11,6 +13,8 @@ import mqr.interop.inference as interop
 import numpy as np
 import scipy
 import statsmodels
+
+import warnings
 
 def power_1sample(ra, H0_rate, nobs, alpha, meas=1.0, alternative='two-sided', method='norm-approx'):
     """
@@ -291,7 +295,7 @@ def size_2sample(r1, r2, alpha, beta, H0_value=None, alternative='two-sided', me
         method=method,
         sample_size=nobs_opt)
 
-def confint_1sample(count, n, meas=1.0, conf=0.95, method='exact-c'):
+def confint_1sample(count, n, meas=1.0, conf=0.95, bounded='both', method='wald-cc'):
     """
     Confidence interval for rate `count / n / meas`.
 
@@ -307,21 +311,54 @@ def confint_1sample(count, n, meas=1.0, conf=0.95, method='exact-c'):
     meas (float) -- Extent of one period of observation. (Default 1.0.)
     conf (float) -- Confidence level that determines the width of the interval.
         (Default 0.95.)
-    method (str) -- Test method (default "exact-c"). See docs for
-        `statsmodels.stats.rates.confint_poisson`.
+    method (str) -- Test method (default "wald-cc"). One of
+        "chi2" the Chi2 interval, see [2], rationale in [1],
+        "exact" the exact method, searches for rates that match the given values
+            at the desired confidence level, see method 9 in [4], recommended
+            for small `count`,
+        "wald-cc" Modified wald method see [1], recommended for small `count`,
+        (other) everything else is passed to `statsmodels.stats.rates.confint_poisson`,
+            which supports only an interval, not one-sided bounds.
 
     Returns
     -------
     mqr.confint.ConfidenceInterval
+
+    References
+    ----------
+    [1] Patil, V. V., & Kulkarni, H. V. (2012).
+        Comparison of confidence intervals for the Poisson mean: some new aspects.
+        REVSTAT-Statistical Journal, 10(2), 211-22.
+    [2] Garwood, F. (1936).
+        Fiducial limits for the Poisson distribution.
+        Biometrika, 28(3/4), 437-442.
+    [3] Schwertman, N. C., & Martinez, R. (1994).
+        Approximate confidence intervals for the difference in two Poisson parameters.
+        Journal of statistical computation and simulation, 50(3-4), 235-247.
+    [4] Barker, L. (2002).
+        A comparison of nine confidence intervals for a Poisson parameter when
+        the expected number of events is ≤ 5.
+        The American Statistician, 56(2), 85-89.
     """
     value = count / n / meas
     alpha = 1 - conf
-    (lower, upper) = statsmodels.stats.rates.confint_poisson(
-        count=count,
-        exposure=n*meas,
-        method=method,
-        alpha=alpha)
-
+    if method == 'chi2':
+        if count <= 4:
+            msg = (
+                'This method is recommended when `count > 4`. '
+                'Consider using method "exact" or "wald-cc". See [1].')
+            warnings.warn(msg)
+        (lower, upper) = rate.confint_1sample_chi2(count, n, meas, conf, bounded)
+    elif method == 'exact':
+        (lower, upper) = rate.confint_1sample_exact(count, n, meas, conf, bounded)
+    elif method == 'wald-cc':
+        (lower, upper) = rate.confint_1sample_wald_cc(count, n, meas, conf, bounded)
+    else:
+        (lower, upper) = statsmodels.stats.rates.confint_poisson(
+            count=count,
+            exposure=n*meas,
+            method=method,
+            alpha=alpha)
     return ConfidenceInterval(
         name='rate of events',
         method=method,

@@ -260,14 +260,53 @@ def test_confint_1sample():
     n = 20
     meas = 2.0
     conf = 0.90
+    bounded = 'both'
 
-    res = mqr.inference.rate.confint_1sample(count, n, meas, conf)
+    res = mqr.inference.rate.confint_1sample(count, n, meas, conf, bounded)
     assert res.name == 'rate of events'
-    assert res.method == 'exact-c'
+    assert res.method == 'wald-cc'
     assert res.value == count / n / meas
     assert res.conf == conf
     assert isinstance(res.lower, numbers.Number)
     assert isinstance(res.upper, numbers.Number)
+
+    count = 10
+    n = 10
+    meas = 2.0
+    conf = 0.95
+
+    bounded = 'both'
+    method = 'chi2'
+    res = mqr.inference.rate.confint_1sample(count, n, meas, conf, bounded, method)
+    assert list(res) == pytest.approx([0.2398, 0.9195], abs=1e-4)
+    method = 'exact'
+    res = mqr.inference.rate.confint_1sample(count, n, meas, conf, bounded, method)
+    assert list(res) == pytest.approx([0.2746, 0.9195], abs=1e-4)
+    method = 'wald-cc'
+    res = mqr.inference.rate.confint_1sample(count, n, meas, conf, bounded, method)
+    assert list(res) == pytest.approx([0.1729, 0.8426], abs=1e-4)
+
+    bounded = 'below'
+    method = 'chi2'
+    res = mqr.inference.rate.confint_1sample(count, n, meas, conf, bounded, method)
+    assert list(res) == pytest.approx([0.2713, np.inf], abs=1e-4)
+    method = 'exact'
+    res = mqr.inference.rate.confint_1sample(count, n, meas, conf, bounded, method)
+    assert list(res) == pytest.approx([0.3085, np.inf], abs=1e-4)
+    method = 'wald-cc'
+    res = mqr.inference.rate.confint_1sample(count, n, meas, conf, bounded, method)
+    assert list(res) == pytest.approx([0.2215, np.inf], abs=1e-4)
+
+    bounded = 'above'
+    method = 'chi2'
+    res = mqr.inference.rate.confint_1sample(count, n, meas, conf, bounded, method)
+    assert list(res) == pytest.approx([0.0, 0.8481], abs=1e-4)
+    method = 'exact'
+    res = mqr.inference.rate.confint_1sample(count, n, meas, conf, bounded, method)
+    assert list(res) == pytest.approx([0.0, 0.8481], abs=1e-4)
+    method = 'wald-cc'
+    res = mqr.inference.rate.confint_1sample(count, n, meas, conf, bounded, method)
+    assert list(res) == pytest.approx([0.0, 0.7915], abs=1e-4)
 
 def test_confint_2sample():
     count1 = 5
