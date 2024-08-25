@@ -26,7 +26,7 @@ def _tr_residuals(result, tr=None):
         raise RuntimeError(f'transform not recognised: {tr}')
     return transformed
 
-def residual_histogram(result, ax, tr=None):
+def residual_histogram(result, ax, tr=None, show_density=True):
     """
     Plot histogram of residuals from result of calling `fit()` on statsmodels
     model.
@@ -41,15 +41,22 @@ def residual_histogram(result, ax, tr=None):
     tr (str) -- Transformation to apply to the residuals. One of "studentised",
         "studentised_internal", "studentised_external", "PRESS". Default `None`.
     """
-    ax0l = ax
-    ax0r = ax.twinx()
     resid = _tr_residuals(result, tr)
-    xs = np.linspace(-3*np.std(resid), 3*np.std(resid), 200)
-    ys = st.norm(np.mean(resid), np.std(resid, ddof=1)).pdf(xs)
-    ax0r.plot(xs, ys, linewidth=1.0, color='k')
-    sns.histplot(resid, stat='density', ax=ax0l, color='C0')
+    sns.histplot(resid, stat='count', ax=ax, color='C0')
+    if show_density:
+        res = result.resid
+        mean = np.mean(res)
+        std = np.std(res, ddof=1)
+        dist = st.norm(mean, std)
+        lower, upper = mean + 3 * np.array([-std, std])
+        xs = np.linspace(lower, upper, 200)
+        ys = dist.pdf(xs)
+        N = len(resid)
+        edges = np.histogram_bin_edges(resid, bins='auto')
+        binwidth = edges[1] - edges[0]
+        ax.plot(xs, ys * N * binwidth, color='k', linewidth=1.0)
     ax.set_xlabel('residual')
-    ax.set_ylabel('density')
+    ax.set_ylabel('frequency')
 
 def res_v_obs(result, ax, tr=None, influence_stat=None):
     """
