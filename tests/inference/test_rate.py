@@ -261,10 +261,11 @@ def test_confint_1sample():
     meas = 2.0
     conf = 0.90
     bounded = 'both'
+    method = 'score'
 
-    res = mqr.inference.rate.confint_1sample(count, n, meas, conf, bounded)
+    res = mqr.inference.rate.confint_1sample(count, n, meas, conf, bounded, method=method)
     assert res.name == 'rate of events'
-    assert res.method == 'wald-cc'
+    assert res.method == 'score'
     assert res.value == count / n / meas
     assert res.conf == conf
     assert isinstance(res.lower, numbers.Number)
@@ -316,10 +317,11 @@ def test_confint_2sample():
     n2 = 18
     meas2 = 3
     conf = 0.90
+    method = 'score'
 
-    res = mqr.inference.rate.confint_2sample(count1, n1, count2, n2, meas1, meas2, conf)
+    res = mqr.inference.rate.confint_2sample(count1, n1, count2, n2, meas1, meas2, conf, method='score')
     assert res.name == 'difference between rates of events'
-    assert res.method == 'wald'
+    assert res.method == 'score'
     assert res.value == count1 / n1 / meas1 - count2 / n2 / meas2
     assert isinstance(res.lower, numbers.Number)
     assert isinstance(res.upper, numbers.Number)
