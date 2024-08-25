@@ -365,7 +365,8 @@ def confint_1sample(count, n, meas=1.0, conf=0.95, bounded='both', method='wald-
         value=value,
         lower=lower,
         upper=upper,
-        conf=conf)
+        conf=conf,
+        bounded=bounded)
 
 def confint_2sample(count1, n1, count2, n2, meas1=1.0, meas2=1.0,
                     conf=0.95, bounded='both', method='wald'):
@@ -443,7 +444,8 @@ def confint_2sample(count1, n1, count2, n2, meas1=1.0, meas2=1.0,
         value=value,
         lower=lower,
         upper=upper,
-        conf=conf)
+        conf=conf,
+        bounded=bounded)
 
 def test_1sample(count, n, meas=1.0, H0_rate=1.0, alternative='two-sided', method='exact-c'):
     """

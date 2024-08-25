@@ -71,7 +71,8 @@ def confint(x, y, conf=0.95, bounded='both', method='fisher-z'):
         value=r,
         lower=lower,
         upper=upper,
-        conf=conf)
+        conf=conf,
+        bounded=bounded)
 
 def test(x, y, H0_corr=0.0, alternative='two-sided'):
     """

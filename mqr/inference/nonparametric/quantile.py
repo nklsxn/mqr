@@ -43,7 +43,8 @@ def confint_1sample(x, q=0.5, conf=0.95, bounded='both'):
         value=value,
         lower=ci.low,
         upper=ci.high,
-        conf=conf)
+        conf=conf,
+        bounded=bounded)
 
 def test_1sample(x, H0_quant=None, q=0.5, alternative='two-sided'):
     """

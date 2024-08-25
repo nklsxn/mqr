@@ -237,7 +237,8 @@ def confint_1sample(x, conf=0.95, bounded='both', method='chi2'):
         value=s2,
         lower=lower,
         upper=upper,
-        conf=conf)
+        conf=conf,
+        bounded=bounded)
 
 def confint_2sample(x, y, conf=0.95, bounded='both', method='f'):
     """
@@ -290,7 +291,8 @@ def confint_2sample(x, y, conf=0.95, bounded='both', method='f'):
         value=ratio,
         lower=lower,
         upper=upper,
-        conf=conf)
+        conf=conf,
+        bounded=bounded)
 
 def test_1sample(x, H0_var, alternative='two-sided'):
     """

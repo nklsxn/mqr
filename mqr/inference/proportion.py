@@ -318,7 +318,8 @@ def confint_1sample(count, nobs, conf=0.95, bounded='both', method='agresti-coul
         value=value,
         lower=lower,
         upper=upper,
-        conf=conf)
+        conf=conf,
+        bounded=bounded)
 
 def confint_2sample(count1, nobs1, count2, nobs2, conf=0.95, bounded='both', method='newcomb-cc'):
     """
@@ -388,7 +389,8 @@ def confint_2sample(count1, nobs1, count2, nobs2, conf=0.95, bounded='both', met
         value=value,
         lower=lower,
         upper=upper,
-        conf=conf)
+        conf=conf,
+        bounded=bounded)
 
 def test_1sample(count, nobs, H0_prop, alternative='two-sided', method='binom'):
     """

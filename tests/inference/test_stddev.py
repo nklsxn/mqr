@@ -88,6 +88,7 @@ def test_confint_1sample():
     assert res.lower == pytest.approx(np.sqrt(0.3338), 1e-4)
     assert res.upper == pytest.approx(np.sqrt(19.4957), 1e-4)
     assert res.conf == conf
+    assert res.bounded == bounded
 
     bounded = 'below'
     res = mqr.inference.stddev.confint_1sample(x, conf, bounded=bounded)
@@ -97,6 +98,7 @@ def test_confint_1sample():
     assert res.lower == pytest.approx(np.sqrt(0.4343), 1e-4)
     assert res.upper == np.inf
     assert res.conf == conf
+    assert res.bounded == bounded
 
     bounded = 'above'
     res = mqr.inference.stddev.confint_1sample(x, conf, bounded=bounded)
@@ -106,6 +108,7 @@ def test_confint_1sample():
     assert res.lower == 0.0
     assert res.upper == pytest.approx(np.sqrt(9.4912), 1e-4)
     assert res.conf == conf
+    assert res.bounded == bounded
 
 def test_confint_2sample():
     x = np.array([0, 1, 2])
@@ -120,6 +123,7 @@ def test_confint_2sample():
     assert res.lower == pytest.approx(np.sqrt(0.01316), abs=1e-4)
     assert res.upper == pytest.approx(np.sqrt(4.75))
     assert res.conf == conf
+    assert res.bounded == bounded
 
     bounded = 'below'
     res = mqr.inference.stddev.confint_2sample(x, y, conf, bounded=bounded)
@@ -129,6 +133,7 @@ def test_confint_2sample():
     assert res.lower == pytest.approx(np.sqrt(0.02778), abs=1e-4)
     assert res.upper == np.inf
     assert res.conf == conf
+    assert res.bounded == bounded
 
     bounded = 'above'
     res = mqr.inference.stddev.confint_2sample(x, y, conf, bounded=bounded)
@@ -138,6 +143,7 @@ def test_confint_2sample():
     assert res.lower == 0.0
     assert res.upper == pytest.approx(np.sqrt(2.25))
     assert res.conf == conf
+    assert res.bounded == bounded
 
 def test_test_1sample():
     x = np.array([0, 1, 2])

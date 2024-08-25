@@ -96,7 +96,8 @@ def confint_1sample(x, conf=0.95, bounded='both', method='chi2'):
         value=np.sqrt(var.value),
         lower=np.sqrt(var.lower),
         upper=np.sqrt(var.upper),
-        conf=conf)
+        conf=conf,
+        bounded=bounded)
 
 def confint_2sample(x, y, conf=0.95, bounded='both', method='f'):
     """
@@ -125,7 +126,8 @@ def confint_2sample(x, y, conf=0.95, bounded='both', method='f'):
         value=np.sqrt(var.value),
         lower=lower,
         upper=upper,
-        conf=conf)
+        conf=conf,
+        bounded=bounded)
 
 def test_1sample(x, H0_std, alternative='two-sided'):
     """

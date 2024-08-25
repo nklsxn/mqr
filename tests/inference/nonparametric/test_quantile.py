@@ -23,6 +23,7 @@ def test_confint_1sample():
     assert isinstance(res.lower, numbers.Number)
     assert res.upper == np.inf
     assert res.conf == conf
+    assert res.bounded == bounded
 
 def test_test_1sample():
     x = np.array([0.36522057, 0.37377119, 0.86150726, 0.96718967, 0.47966424,

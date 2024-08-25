@@ -164,7 +164,8 @@ def confint_1sample(x, conf=0.95, bounded='both', method='t'):
         value=value,
         lower=lower,
         upper=upper,
-        conf=conf)
+        conf=conf,
+        bounded=bounded)
 
 def confint_2sample(x, y, conf=0.95, pooled=True, bounded='both', method='t'):
     """
@@ -218,7 +219,8 @@ def confint_2sample(x, y, conf=0.95, pooled=True, bounded='both', method='t'):
         value=value,
         lower=lower,
         upper=upper,
-        conf=conf)
+        conf=conf,
+        bounded=bounded)
 
 def confint_paired(x, y, conf=0.95, bounded='both', method='t'):
     """

@@ -38,7 +38,8 @@ def test_confint_result():
         value=np.nan,
         lower=-1.234,
         upper=1.234,
-        conf=np.nan)
+        conf=np.nan,
+        bounded='both')
 
     (lower, upper) = conf
     assert lower == -1.234

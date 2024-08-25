@@ -268,6 +268,7 @@ def test_confint_1sample():
     assert res.method == 'score'
     assert res.value == count / n / meas
     assert res.conf == conf
+    assert res.bounded == bounded
     assert isinstance(res.lower, numbers.Number)
     assert isinstance(res.upper, numbers.Number)
 
@@ -317,6 +318,7 @@ def test_confint_2sample():
     n2 = 18
     meas2 = 3
     conf = 0.90
+    bounded = 'both'
     method = 'score'
 
     res = mqr.inference.rate.confint_2sample(count1, n1, count2, n2, meas1, meas2, conf, method='score')
@@ -326,6 +328,7 @@ def test_confint_2sample():
     assert isinstance(res.lower, numbers.Number)
     assert isinstance(res.upper, numbers.Number)
     assert res.conf == conf
+    assert res.bounded == bounded
 
     count1, n1, meas1 = 1234, 20, 2
     count2, n2, meas2 = 2345, 20, 1

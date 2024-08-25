@@ -2,6 +2,8 @@
 Result type and presentation of confidence intervals.
 """
 
+from mqr.inference.lib.util import bounded_error_msg
+
 from dataclasses import dataclass
 import numpy as np
 import scipy.stats as st
@@ -38,6 +40,7 @@ class ConfidenceInterval:
     lower: np.float64
     upper: np.float64
     conf: np.float64
+    bounded: str
 
     def __iter__(self):
         return iter((self.lower, self.upper))
@@ -58,17 +61,17 @@ class ConfidenceInterval:
             pad_edge=False,
             collapse_padding=True)
         alpha = 1 - self.conf
-        if np.isfinite(self.lower) and np.isfinite(self.upper):
+        if self.bounded == 'both':
             left_alpha = f'{alpha*100/2:g}%'
             right_alpha = f'{(1-alpha/2)*100:g}%'
-        elif not np.isfinite(self.lower):
+        elif self.bounded == 'above':
             left_alpha = ''
             right_alpha = f'{(1-alpha)*100:g}%'
-        elif not np.isfinite(self.upper):
+        elif self.bounded == 'below':
             left_alpha = f'{alpha*100:g}%'
             right_alpha = ''
         else:
-            raise AttributeError('neither `lower` nor `upper` limit is defined')
+            raise ValueError(bounded_error_msg(self.bounded))
         table.add_column('value', justify='left')
         table.add_column(f'[{left_alpha}', justify='left', header_style=Style(bold=False))
         table.add_column(f'{right_alpha}]', justify='right', header_style=Style(bold=False))
@@ -81,17 +84,17 @@ class ConfidenceInterval:
 
     def _html(self):
         alpha = 1 - self.conf
-        if np.isfinite(self.lower) and np.isfinite(self.upper):
+        if self.bounded == 'both':
             left_alpha = f'{alpha*100/2:g}%'
             right_alpha = f'{(1-alpha/2)*100:g}%'
-        elif not np.isfinite(self.lower):
+        elif self.bounded == 'above':
             left_alpha = ''
             right_alpha = f'{(1-alpha)*100:g}%'
-        elif not np.isfinite(self.upper):
+        elif self.bounded == 'below':
             left_alpha = f'{alpha*100:g}%'
             right_alpha = ''
         else:
-            raise AttributeError('neither `lower` nor `upper` limit is defined')
+            raise ValueError(bounded_error_msg(bounded))
 
         return f'''
         <table>

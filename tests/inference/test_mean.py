@@ -64,6 +64,7 @@ def test_confint_1sample():
     assert res.name == 'mean'
     assert res.method == method
     assert res.conf == conf
+    assert res.bounded == bounded
     assert res.value == np.mean(x)
     assert isinstance(res.lower, numbers.Number)
     assert isinstance(res.upper, numbers.Number)
@@ -73,6 +74,7 @@ def test_confint_1sample():
     assert res.name == 'mean'
     assert res.method == method
     assert res.conf == conf
+    assert res.bounded == bounded
     assert res.value == np.mean(x)
     assert isinstance(res.lower, numbers.Number)
     assert isinstance(res.upper, numbers.Number)
@@ -82,22 +84,24 @@ def test_confint_2sample():
     y = np.array([1.9, 2.1])
     conf = 0.90
     pooled = True
-    alternative = 'both'
+    bounded = 'both'
 
     method = 't'
-    res = mqr.inference.mean.confint_2sample(x, y, conf, pooled, alternative, method)
+    res = mqr.inference.mean.confint_2sample(x, y, conf, pooled, bounded, method)
     assert res.name == 'difference between means (independent)'
     assert res.method == method
     assert conf == conf
+    assert res.bounded == bounded
     assert res.value == np.mean(x) - np.mean(y)
     assert isinstance(res.lower, numbers.Number)
     assert isinstance(res.upper, numbers.Number)
 
     method = 'z'
-    res = mqr.inference.mean.confint_2sample(x, y, conf, pooled, alternative, method)
+    res = mqr.inference.mean.confint_2sample(x, y, conf, pooled, bounded, method)
     assert res.name == 'difference between means (independent)'
     assert res.method == method
     assert conf == conf
+    assert res.bounded == bounded
     assert res.value == np.mean(x) - np.mean(y)
     assert isinstance(res.lower, numbers.Number)
     assert isinstance(res.upper, numbers.Number)
@@ -106,22 +110,24 @@ def test_confint_paired():
     x = np.array([0.9, 1.1])
     y = np.array([1.9, 2.1])
     conf = 0.90
-    alternative = 'both'
+    bounded = 'both'
 
     method = 't'
-    res = mqr.inference.mean.confint_paired(x, y, conf, alternative, method)
+    res = mqr.inference.mean.confint_paired(x, y, conf, bounded, method)
     assert res.name == 'difference between means (paired)'
     assert res.method == method
     assert conf == conf
+    assert res.bounded == bounded
     assert res.value == np.mean(x) - np.mean(y)
     assert isinstance(res.lower, numbers.Number)
     assert isinstance(res.upper, numbers.Number)
 
     method = 'z'
-    res = mqr.inference.mean.confint_paired(x, y, conf, alternative, method)
+    res = mqr.inference.mean.confint_paired(x, y, conf, bounded, method)
     assert res.name == 'difference between means (paired)'
     assert res.method == method
     assert conf == conf
+    assert res.bounded == bounded
     assert res.value == np.mean(x) - np.mean(y)
     assert isinstance(res.lower, numbers.Number)
     assert isinstance(res.upper, numbers.Number)
