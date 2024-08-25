@@ -166,3 +166,31 @@ def confint_2sample_wald(count1, n1, count2, n2, meas1, meas2, conf, bounded):
     else:
         raise ValueError(bounded_error_msg(bounded))
     return lower, upper
+
+def confint_2sample_wald_moment(count1, n1, count2, n2, meas1, meas2, conf, bounded):
+    alpha = 1 - conf
+    if bounded == 'both':
+        z = scipy.stats.norm().ppf(1 - alpha / 2)
+    elif (bounded == 'below') or (bounded == 'above'):
+        z = scipy.stats.norm().ppf(1 - alpha)
+    else:
+        raise ValueError(bounded_error_msg(bounded))
+    r1 = count1 / n1 / meas1
+    r2 = count2 / n2 / meas2
+    mu_adj = z**2 / 2 * (1 / n1 / meas1 - 1 / n2 / meas2)
+    var_adj = z**2 / 4 * (1 / n1 / meas1 - 1 / n2 / meas2)**2
+    mu = r1 - r2 + mu_adj
+    var = r1 / n1 / meas1 + r2 / n2 / meas2 + var_adj
+    # dist = scipy.stats.norm(mu + mu_adj, sigma + sigma_adj)
+    if bounded == 'both':
+        lower = mu - z * np.sqrt(var)
+        upper = mu + z * np.sqrt(var)
+    elif bounded == 'below':
+        lower = mu - z * np.sqrt(var)
+        upper = np.clip(lower, np.inf, np.inf)
+    elif bounded == 'above':
+        upper = mu + np.sqrt(var)
+        lower = np.clip(upper, -np.inf, -np.inf)
+    else:
+        raise ValueError(bounded_error_msg(bounded))
+    return lower, upper

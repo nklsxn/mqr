@@ -325,6 +325,34 @@ def test_confint_2sample():
     assert isinstance(res.upper, numbers.Number)
     assert res.conf == conf
 
+    count1, n1, meas1 = 1234, 20, 2
+    count2, n2, meas2 = 2345, 20, 1
+    conf = 0.95
+
+    bounded = 'both'
+    method = 'wald'
+    res = mqr.inference.rate.confint_2sample(count1, n1, count2, n2, meas1, meas2, conf, bounded=bounded, method=method)
+    assert list(res) == pytest.approx([-91.4481, -81.3519], abs=1e-4)
+    method = 'wald-moment'
+    res = mqr.inference.rate.confint_2sample(count1, n1, count2, n2, meas1, meas2, conf, bounded=bounded, method=method)
+    assert list(res) == pytest.approx([-91.4963, -81.3997], abs=1e-4)
+
+    bounded = 'below'
+    method = 'wald'
+    res = mqr.inference.rate.confint_2sample(count1, n1, count2, n2, meas1, meas2, conf, bounded=bounded, method=method)
+    assert list(res) == pytest.approx([-90.6365, np.inf], abs=1e-4)
+    method = 'wald-moment'
+    res = mqr.inference.rate.confint_2sample(count1, n1, count2, n2, meas1, meas2, conf, bounded=bounded, method=method)
+    assert list(res) == pytest.approx([-90.6705, np.inf], abs=1e-4)
+
+    bounded = 'above'
+    method = 'wald'
+    res = mqr.inference.rate.confint_2sample(count1, n1, count2, n2, meas1, meas2, conf, bounded=bounded, method=method)
+    assert list(res) == pytest.approx([-np.inf, -82.1635], abs=1e-4)
+    method = 'wald-moment'
+    res = mqr.inference.rate.confint_2sample(count1, n1, count2, n2, meas1, meas2, conf, bounded=bounded, method=method)
+    assert list(res) == pytest.approx([-np.inf, -83.8581], abs=1e-4)
+
 def test_test_1sample():
     count = 20
     n = 30

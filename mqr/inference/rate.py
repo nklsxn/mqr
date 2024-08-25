@@ -368,7 +368,7 @@ def confint_1sample(count, n, meas=1.0, conf=0.95, bounded='both', method='wald-
         conf=conf)
 
 def confint_2sample(count1, n1, count2, n2, meas1=1.0, meas2=1.0,
-                    conf=0.95, method='wald', compare='diff'):
+                    conf=0.95, bounded='both', method='wald'):
     """
     Confidence interval for:
     - difference of rates `count1 / n1 / meas1 - count2 / n2 / meas2`,
@@ -377,6 +377,7 @@ def confint_2sample(count1, n1, count2, n2, meas1=1.0, meas2=1.0,
         if `compare` is "ratio".
 
     Calls `statsmodels.stats.rates.confint_poisson_2indep` (statsmodels.org).
+    To compare ratios, call statsmodels directly.
 
     Arguments
     ---------
@@ -391,26 +392,51 @@ def confint_2sample(count1, n1, count2, n2, meas1=1.0, meas2=1.0,
     meas2 (float) -- Extent of one period in second observation. (Default 1.)
     conf (float) -- Confidence level that determines the width of the interval.
         (Default 0.95.)
-    method (str) -- Test method, default "wald". See statsmodels docs for more.
-        (Default "wald".)
-    compare (str) -- Null-hypothesis: either "diff" or "ratio". (Default "diff".)
+    method (str) -- Test method, default "wald". One of
+        "wald" Wald's normal approximation, see [1],
+        "wald-moment" a modification to the moment estimates in Wald, use for
+            small/zero counts, different areas (`n1`, `n2`), see [1],
+        (other) everything else is passed to `statsmodels.stats.rates.confint_poisson_2indep`,
+            which supports only two-sided intervals.
 
     Returns
     -------
     mqr.confint.ConfidenceInterval
+
+    References
+    ----------
+    [1] Krishnamoorthy, K., & Lee, M. (2013).
+        New approximate confidence intervals for the difference between
+        two Poisson means and comparison.
+        Journal of Statistical Computation and Simulation, 83(12), 2232-2243.
     """
+    if method == 'wald':
+        (lower, upper) = rate.confint_2sample_wald(
+            count1, n1, count2, n2,
+            meas1, meas2,
+            conf, bounded)
+    elif method == 'wald-moment':
+        (lower, upper) = rate.confint_2sample_wald_moment(
+            count1, n1, count2, n2,
+            meas1, meas2,
+            conf, bounded)
+    else:
+        if bounded != 'both':
+            msg = (f'Method "{method}" is passed to statsmodels, '
+                'which supports only two-sided confidence intervals. Use '
+                '`bounded=both`.')
+            raise ValueError(msg)
+        alpha = 1 - conf
+        (lower, upper) = statsmodels.stats.rates.confint_poisson_2indep(
+            count1=count1,
+            exposure1=n1*meas1,
+            count2=count2,
+            exposure2=n2*meas2,
+            method=method,
+            compare='diff',
+            alpha=alpha)
+
     value = count1 / n1 / meas1 - count2 / n2 / meas2
-    alpha = 1 - conf
-
-    (lower, upper) = statsmodels.stats.rates.confint_poisson_2indep(
-        count1=count1,
-        exposure1=n1*meas1,
-        count2=count2,
-        exposure2=n2*meas2,
-        method=method,
-        compare=compare,
-        alpha=alpha)
-
     return ConfidenceInterval(
         name='difference between rates of events',
         method=method,
