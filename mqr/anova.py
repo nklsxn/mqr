@@ -14,6 +14,8 @@ import seaborn as sns
 import statsmodels
 import statsmodels.api as sm
 
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+
 import warnings
 
 ################################################################################
@@ -60,17 +62,18 @@ def coeffs(result, conf=0.95):
     -------
     (pd.DataFrame) -- Coefficients indexed by name from the model.
     """
-    from statsmodels.stats.outliers_influence import variance_inflation_factor
     alpha = 1 - conf
     values = pd.concat(
         [result.params, result.conf_int(alpha=alpha)],
         axis=1)
     values.columns = ['Coeff', f'[{alpha/2*100:g}%', f'{(1-alpha/2)*100:g}%]']
-    values['PR(>F)'] = result.pvalues
-    values['VIF'] = np.nan
+    values['t'] = result.tvalues
+    values['PR(>|t|)'] = result.pvalues
     exog = result.model.exog
-    for i in np.arange(exog.shape[1]):
-        values.iloc[i, -1] = variance_inflation_factor(exog, i)
+    if exog.shape[1] > 1:
+        values['VIF'] = np.nan
+        for i in np.arange(exog.shape[1]):
+            values.iloc[i, -1] = variance_inflation_factor(exog, i)
     return values
 
 def groups(df: pd.DataFrame, *, value: str, factor: str, conf=0.95):
@@ -155,9 +158,9 @@ def adequacy(result):
         'S': np.sqrt(result.mse_resid),
         'R-sq': result.rsquared,
         'R-sq (adj)': result.rsquared_adj,
+        'F': result.fvalue,
+        'PR(>F)': result.f_pvalue,
         'N': int(result.nobs),
-        'JB': result.diagn['jb'],
-        'p (JB)': result.diagn['jbpv']
     }
     return pd.DataFrame(
         data,
