@@ -76,7 +76,7 @@ def coeffs(result, conf=0.95):
             values.iloc[i, -1] = variance_inflation_factor(exog, i)
     return values
 
-def groups(df: pd.DataFrame, *, value: str, factor: str, conf=0.95):
+def groups(result, *, value: str, factor: str, conf=0.95):
     """
     The `value` column from a dataframe averaged over `factor`, and annotated
     with confidence intervals per level.
@@ -99,15 +99,13 @@ def groups(df: pd.DataFrame, *, value: str, factor: str, conf=0.95):
 
     from mqr import inference
     alpha = 1 - conf
+    df = result.model.data.frame
     groupby = df.groupby(factor)[value]
-    def ci(x):
-        c = inference.mean.confint_1sample(x, conf)
-        return pd.DataFrame({'lower': [c.lower], 'upper': [c.upper]})
-    groups = pd.concat([
-            groupby.agg(['count', 'mean', 'std']),
-            groupby.apply(ci).droplevel(1)],
-        axis=1)
-    groups.columns = ['count', 'mean', 'std', f'[{alpha/2*100:g}%', f'{(1-alpha/2)*100:g}%]']
+    cols = ['count', 'mean', 'std']
+    groups = groupby.agg(cols)
+    groups.columns = cols
+    cis = _groups_ci(result, value, factor, conf)
+    groups.loc[:, [f'[{alpha/2*100:g}%', f'{(1-alpha/2)*100:g}%]']] = cis
     groups = groups.reindex(df.loc[:, factor].unique())
     return groups
 
@@ -165,3 +163,25 @@ def adequacy(result):
     return pd.DataFrame(
         data,
         index=[''])
+
+################################################################################
+## Confidence intervals
+################################################################################
+
+def _groups_ci(result, value, factor, conf):
+    alpha = 1 - conf
+    df = result.model.data.frame
+
+    nobs = len(df)
+    level_names = df.loc[:, factor].unique()
+    n_levels = len(level_names)
+    std = np.sqrt(result.mse_resid)
+    groups = df.groupby(factor)[value]
+
+    ci = np.zeros([n_levels, 2])
+    for i, level in enumerate(level_names):
+        nobs_level = groups.count().loc[level]
+        dist = st.t(nobs - n_levels)
+        t = dist.ppf(1 - alpha / 2) * std / np.sqrt(nobs_level)
+        ci[i, :] = groups.mean().loc[level] + np.array([-t, t])
+    return ci
