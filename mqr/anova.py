@@ -173,15 +173,15 @@ def _groups_ci(result, value, factor, conf):
     df = result.model.data.frame
 
     nobs = len(df)
+    se_dist = st.t(result.df_resid)
     level_names = df.loc[:, factor].unique()
     n_levels = len(level_names)
-    std = np.sqrt(result.mse_resid)
+    se = np.sqrt(result.mse_resid)
     groups = df.groupby(factor)[value]
 
     ci = np.zeros([n_levels, 2])
     for i, level in enumerate(level_names):
         nobs_level = groups.count().loc[level]
-        dist = st.t(nobs - n_levels)
-        t = dist.ppf(1 - alpha / 2) * std / np.sqrt(nobs_level)
+        t = se_dist.ppf(1 - alpha / 2) * se / np.sqrt(nobs_level)
         ci[i, :] = groups.mean().loc[level] + np.array([-t, t])
     return ci
