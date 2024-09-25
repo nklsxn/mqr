@@ -250,6 +250,7 @@ class VarianceTable:
     grr: NameMapping
     anova_table: pd.DataFrame
     table: pd.DataFrame
+    num_distinct_cats: np.float64
     discrimination: np.float64
 
     @staticmethod
@@ -301,6 +302,7 @@ class VarianceTable:
         self.anova_table = mqr.anova.summary(grr.regression_result)
         self._calculate_table(grr)
         self._set_discrimination()
+        self._set_num_distinct_cats()
 
     def _calculate_table(self, grr):
         var_p, var_o, var_i, var = self.grr.variance_components
@@ -334,10 +336,15 @@ class VarianceTable:
         var_total = self.table.loc['Total', 'VarComp']
         self.discrimination = np.sqrt(2 * var_total / var_meas - 1)
 
+    def _set_num_distinct_cats(self):
+        var_p, var_o, var_i, var = self.grr.variance_components
+        self.num_distinct_cats = np.sqrt(2 * var_p / (var_o + var_i + var))
+
     def _repr_html_(self):
+        n_cats = int(np.floor(self.num_distinct_cats))
         html = '<div style="display:flex; flex-direction:column; align-items:flex-start;">'
         html += self.table.style.set_table_styles(self._table_styles())._repr_html_()
-        html += f'<div><b>Discrimination:</b> {self.discrimination:.5g}</div>'
+        html += f'<div><b>Number of distinct categories:</b> {n_cats:d}</div>'
         html += '</div>'
         return html
 
