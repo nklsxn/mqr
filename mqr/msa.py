@@ -9,6 +9,7 @@ import numpy as np
 import pandas as pd
 from patsy import ModelDesc
 import statsmodels
+from statsmodels.formula.api import mixedlm
 
 import mqr
 
@@ -144,6 +145,7 @@ class GRR:
         self._configure_formula()
 
         self._fit_model(data)
+        self._fit_varcomp()
 
     def _configure_counts(self):
         cols = [self.names._p, self.names._o, self.names._r]
@@ -161,6 +163,27 @@ class GRR:
     def _fit_model(self, data):
         self.model = statsmodels.formula.api.ols(self.formula, self.data)
         self.regression_result = self.model.fit()
+
+    def _fit_varcomp(self):
+        name_m = self.names._m
+        name_p = self.names._p
+        name_o = self.names._o
+        vc = {
+            'Error': '1',
+            'Operator': f'0 + C({name_o})',
+            'Part': f'0 + C({name_p})',
+        }
+        if self.include_interaction:
+            vc['Interaction'] = f'0 + C({name_p}):C({name_o})'
+        groups = np.ones(self.data.shape[0])
+        mod = mixedlm(f'{name_m} ~ 1', self.data, re_formula='0', vc_formula=vc, groups=groups)
+        vcomp = mod.fit().vcomp
+        if self.include_interaction:
+            var, var_i, var_o, var_p = vcomp
+            self.variance_components = var_p, var_o, var_i, var
+        else:
+            var, var_o, var_p = vcomp
+            self.variance_components = var_p, var_o, 0.0, var
 
     def _repr_html_(self):
         return SummaryTable(self)._repr_html_()
@@ -276,34 +299,11 @@ class VarianceTable:
     def __init__(self, grr: GRR):
         self.grr = grr
         self.anova_table = mqr.anova.summary(grr.regression_result)
-        self._set_squares()
         self._calculate_table(grr)
         self._set_discrimination()
 
-    def _set_squares(self):
-        name_p = self.grr.names._p
-        name_o = self.grr.names._o
-
-        MS_p = self.anova_table.loc[f'C({name_p})', 'mean_sq']
-        MS_o = self.anova_table.loc[f'C({name_o})', 'mean_sq']
-        if self.grr.include_interaction:
-            MS_i = self.anova_table.loc[f'C({name_p}):C({name_o})', 'mean_sq']
-        else:
-            MS_i = 0.0
-        MS_e = self.anova_table.loc['Residual', 'mean_sq']
-
-        self.mean_squares = [MS_p, MS_o, MS_i, MS_e]
-
     def _calculate_table(self, grr):
-        p, o, n = grr.counts
-        [MS_p, MS_o, MS_i, MS_e] = self.mean_squares
-        MS_tot = MS_p + MS_o + MS_i + MS_e
-
-        # Introduction to Statistical Quality Control - Montgomery, Douglas C. - 6ed, 2009
-        var = MS_e
-        var_p = np.maximum(0, (MS_p - MS_i) / (o * n))
-        var_o = np.maximum(0, (MS_o - MS_i) / (p * n))
-        var_i = np.maximum(0, (MS_i - MS_e) / n)
+        var_p, var_o, var_i, var = self.grr.variance_components
 
         table = pd.DataFrame(
             index=self._table_index(),
