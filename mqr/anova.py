@@ -182,6 +182,6 @@ def _groups_ci(result, value, factor, conf):
     ci = np.zeros([n_levels, 2])
     for i, level in enumerate(level_names):
         nobs_level = groups.count().loc[level]
-        t = se_dist.ppf(1 - alpha / 2) * se / np.sqrt(nobs_level)
-        ci[i, :] = groups.mean().loc[level] + np.array([-t, t])
+        half_width = se_dist.ppf(1 - alpha / 2) * se / np.sqrt(nobs_level)
+        ci[i, :] = groups.mean().loc[level] + np.array([-half_width, half_width])
     return ci
