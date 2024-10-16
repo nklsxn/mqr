@@ -17,7 +17,7 @@ This library is a toolkit for manufacturing quality activities using python.
 Most of the tools are related to quite general statistical methods that are
 commonly used in fields outside manufacturing.
 
-Most of this library falls into one of two categories:
+Most of this library falls into one of three categories:
 1. **Code that automates commonly used plots and tables.** These are elementary,
   in that they don't require much special knowledge of the subject area and are
   easy to interpret, but they require an understanding of libraries like numpy,
