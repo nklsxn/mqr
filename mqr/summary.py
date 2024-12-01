@@ -162,6 +162,9 @@ class Study:
     num_display_fmt: str = field(repr=False)
 
     def __init__(self, data:pd.DataFrame, measurements:list[str]=None, conf=0.95, ddof=1, num_display_fmt='#.5g'):
+        if not isinstance(data, pd.DataFrame):
+            raise ValueError('`data` must be a DataFrame.')
+
         try:
             self.name = data.name
         except:
