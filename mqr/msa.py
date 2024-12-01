@@ -104,6 +104,7 @@ class GRR:
     tolerance: np.float64
     names: NameMapping
     include_interaction: bool
+    include_intercept: bool
     nsigma: int
 
     formula: str
@@ -145,7 +146,6 @@ class GRR:
         self._configure_formula()
 
         self._fit_model(data)
-        self._fit_varcomp()
 
     def _configure_counts(self):
         cols = [self.names._p, self.names._o, self.names._r]
@@ -163,27 +163,6 @@ class GRR:
     def _fit_model(self, data):
         self.model = statsmodels.formula.api.ols(self.formula, self.data)
         self.regression_result = self.model.fit()
-
-    def _fit_varcomp(self):
-        name_m = self.names._m
-        name_p = self.names._p
-        name_o = self.names._o
-        vc = {
-            'Error': '1',
-            'Operator': f'0 + C({name_o})',
-            'Part': f'0 + C({name_p})',
-        }
-        if self.include_interaction:
-            vc['Interaction'] = f'0 + C({name_p}):C({name_o})'
-        groups = np.ones(self.data.shape[0])
-        mod = mixedlm(f'{name_m} ~ 1', self.data, re_formula='0', vc_formula=vc, groups=groups)
-        vcomp = mod.fit().vcomp
-        if self.include_interaction:
-            var, var_i, var_o, var_p = vcomp
-            self.variance_components = var_p, var_o, var_i, var
-        else:
-            var, var_o, var_p = vcomp
-            self.variance_components = var_p, var_o, 0.0, var
 
     def _repr_html_(self):
         return SummaryTable(self)._repr_html_()
@@ -275,7 +254,11 @@ class VarianceTable:
             '% Tolerance']
 
     @staticmethod
-    def _table_styles():
+    def _table_styles(include_interaction):
+        if include_interaction:
+            reprod_indent = 'th.row3,th.row4'
+        else:
+            reprod_indent = 'th.row3'
         return [
             {
                 'selector': '.row_heading',
@@ -290,26 +273,52 @@ class VarianceTable:
                 ]
             },
             {
-                'selector': 'th.row3,th.row4',
+                'selector': reprod_indent,
                 'props': [
                     ('padding-left', '3em'),
                 ]
             }
         ]
 
-    def __init__(self, grr: GRR):
+    def __init__(self, grr: GRR, typ=2):
         self.grr = grr
-        self.anova_table = mqr.anova.summary(grr.regression_result)
-        self._calculate_table(grr)
+        self.anova_table = mqr.anova.summary(grr.regression_result, typ)
+        self._varcomp()
+        self._calculate_table()
         self._set_discrimination()
         self._set_num_distinct_cats()
 
-    def _calculate_table(self, grr):
-        var_p, var_o, var_i, var = self.grr.variance_components
+    def _varcomp(self):
+        name_r = self.grr.names._r
+        name_p = self.grr.names._p
+        name_o = self.grr.names._o
+
+        N_r = self.grr.counts[name_r]
+        N_p = self.grr.counts[name_p]
+        N_o = self.grr.counts[name_o]
+
+        anova_table = self.anova_table
+        MS_e = anova_table.iloc[-2, 2]
+        MS_p = anova_table.iloc[0, 2]
+        MS_o = anova_table.iloc[1, 2]
+        if self.grr.include_interaction:
+            MS_i = anova_table.iloc[2, 2]
+        else:
+            MS_i = 0
+
+        var = MS_e
+        var_i = np.clip((MS_i - MS_e) / N_r, 0, np.inf)
+        var_p = (MS_p - MS_i) / (N_r * N_o)
+        var_o = (MS_o - MS_i) / (N_r * N_p)
+
+        self._variance_components = var_p, var_o, var_i, var
+
+    def _calculate_table(self):
+        var_p, var_o, var_i, var = self._variance_components
 
         table = pd.DataFrame(
             index=self._table_index(),
-            columns=self._table_columns(grr.nsigma),
+            columns=self._table_columns(self.grr.nsigma),
             dtype=np.float64)
         table.iloc[:, 0] = [
             var_o + var_i + var,         # GRR
@@ -322,28 +331,27 @@ class VarianceTable:
         ]
         table.iloc[:, 1] = 100 * table.iloc[:, 0] / table.iloc[-1, 0]
         table.iloc[:, 2] = np.sqrt(table.iloc[:, 0])
-        table.iloc[:, 3] = grr.nsigma * table.iloc[:, 2]
+        table.iloc[:, 3] = self.grr.nsigma * table.iloc[:, 2]
         table.iloc[:, 4] = 100 * table.iloc[:, 3] / table.iloc[-1, 3]
-        table.iloc[:, 5] = 100 * table.iloc[:, 3] / grr.tolerance
+        table.iloc[:, 5] = 100 * table.iloc[:, 3] / self.grr.tolerance
 
-        if not grr.include_interaction:
+        if not self.grr.include_interaction:
             table.drop(index=['Operator*Part'], inplace=True)
 
         self.table = table
 
     def _set_discrimination(self):
-        var_meas = self.table.loc['Gauge RR', 'VarComp']
-        var_total = self.table.loc['Total', 'VarComp']
-        self.discrimination = np.sqrt(2 * var_total / var_meas - 1)
+        var_p, __, __, __ = self._variance_components
+        self.discrimination = (1 + var_p) / (1 - var_p)
 
     def _set_num_distinct_cats(self):
-        var_p, var_o, var_i, var = self.grr.variance_components
+        var_p, var_o, var_i, var = self._variance_components
         self.num_distinct_cats = np.sqrt(2 * var_p / (var_o + var_i + var))
 
     def _repr_html_(self):
         n_cats = int(np.floor(self.num_distinct_cats))
         html = '<div style="display:flex; flex-direction:column; align-items:flex-start;">'
-        html += self.table.style.set_table_styles(self._table_styles())._repr_html_()
+        html += self.table.style.set_table_styles(self._table_styles(self.grr.include_interaction))._repr_html_()
         html += f'<div><b>Number of distinct categories:</b> {n_cats:d}</div>'
         html += '</div>'
         return html
