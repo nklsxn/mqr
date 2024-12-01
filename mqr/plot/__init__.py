@@ -14,15 +14,15 @@ Includes:
 """
 from mqr.plot.figure import Figure
 
-from mqr.plot.lib.confint import confint
-from mqr.plot.lib.ishikawa import ishikawa
-from mqr.plot.lib.summary import summary
+from mqr.plot.confint import confint
+from mqr.plot.ishikawa import ishikawa
+from mqr.plot.summary import summary
 from mqr.plot.lib.util import grouped_df
 
-import mqr.plot.lib.anova as anova
-import mqr.plot.lib.control as control
-import mqr.plot.lib.correlation as correlation
-import mqr.plot.lib.msa as msa
-import mqr.plot.lib.probplot as probplot
-import mqr.plot.lib.process as process
-import mqr.plot.lib.regression as regression
+import mqr.plot.anova as anova
+import mqr.plot.correlation as correlation
+import mqr.plot.msa as msa
+import mqr.plot.process as process
+import mqr.plot.regression as regression
+import mqr.plot.spc as spc
+import mqr.plot.tools as tools

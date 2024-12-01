@@ -6,6 +6,8 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 
+from mqr.plot.defaults import Defaults
+
 class Figure(object):
     """
     Context manager that creates, shows and closes matplotlib subplots.
@@ -29,6 +31,7 @@ class Figure(object):
             m=1, n=1,
             backend=None,
             filename=None,
+            rc_params=None,
             gridspec_kw=None,
             subplot_kw=None,
             **fig_kw):
@@ -59,7 +62,13 @@ class Figure(object):
         self.subplot_kw = subplot_kw
         self.fig_kw = fig_kw
 
+        if rc_params is None:
+            rc_params = {}
+        rc_params = Defaults.rc_params | rc_params
+        self.rc_context = matplotlib.rc_context(rc_params)
+
     def __enter__(self):
+        self.rc_context.__enter__()
         if self.backend is not None:
             self.prev_backend = matplotlib.get_backend()
             matplotlib.use(self.backend)
@@ -78,6 +87,7 @@ class Figure(object):
         plt.close(self.fig)
         if self.prev_backend is not None:
             matplotlib.use(self.prev_backend)
+        self.rc_context.__exit__(exc_type, exc_val, exc_tb)
 
 def points_to_inches(width_pts, *, height_pts=None, hw_ratio=None):
     _PT_PER_INCH = 72.27
