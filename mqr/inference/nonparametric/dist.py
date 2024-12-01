@@ -4,6 +4,8 @@ Hypothesis tests (non-parametric) for distributions.
 
 from mqr.inference.hyptest import HypothesisTest
 
+import mqr.inference.lib.util as util
+
 import scipy
 import statsmodels
 
@@ -34,20 +36,12 @@ def test_1sample(x, method='runs', cutoff='median'):
     -------
     mqr.confit.HypothesisTest
     """
-    import mqr
-
     if method == 'runs':
         description = 'randomness'
         sample_stat_target = 'iid'
         stat, pvalue = statsmodels.sandbox.stats.runs.runstest_1samp(x, cutoff=cutoff, correction=True)
-    elif method == 'adf':
-        description = 'stationarity'
-        sample_stat_target = 'non-stationary'
-        res = statsmodels.tsa.stattools.adfuller(x, )
-        stat = res[0]
-        pvalue = res[1]
     else:
-        raise ValueError(f'method {method} is not available')
+        raise ValueError(util.method_error_msg(method, ['runs']))
 
     return HypothesisTest(
         description=description,
@@ -83,17 +77,17 @@ def test_2sample(x, y, alternative='two-sided', method='ks'):
     mqr.confit.HypothesisTest
     """
     if method == 'ks':
-        method = 'Kolmogorov-Smirnov'
+        method = 'kolmogorov-smirnov'
         stat, pvalue = scipy.stats.ks_2samp(
             data1=x,
             data2=y,
             alternative=alternative)
     elif method == 'runs':
         if alternative != 'two-sided':
-            raise ValueError('Only "two-sided" alternative available')
+            raise ValueError('Only "two-sided" alternative available.')
         stat, pvalue = statsmodels.sandbox.stats.runs.runstest_2samp(x, y, correction=True)
     else:
-        raise NotImplementedError(f'method {method} is not available')
+        raise ValueError(util.method_error_msg(method, ['ks', 'runs']))
 
     return HypothesisTest(
         description='sampling distribution',

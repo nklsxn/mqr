@@ -5,6 +5,7 @@ Hypothesis tests (parametric) for the distribution.
 from mqr.inference.confint import ConfidenceInterval
 from mqr.inference.hyptest import HypothesisTest
 
+import mqr.inference.lib.util as util
 import mqr.interop.inference as interop
 
 def test_1sample(x, test='ad-norm'):
@@ -31,18 +32,18 @@ def test_1sample(x, test='ad-norm'):
         from statsmodels.stats.diagnostic import normal_ad
         description = 'non-normality'
         alternative = 'two-sided'
-        method = 'Anderson-Darling'
+        method = 'anderson-darling'
         target = 'normal'
         statistic, pvalue = normal_ad(x)
     elif test == 'ks-norm':
         from statsmodels.stats.diagnostic import kstest_normal
         description = 'non-normality'
         alternative = 'two-sided'
-        method = 'Kolmogorov-Smirnov'
+        method = 'kolmogorov-smirnov'
         target = 'normal'
         statistic, pvalue = kstest_normal(x, dist='norm')
     else:
-        raise NotImplementedError(f'test {test} is not implemented')
+        raise ValueError(util.method_error_msg(method, ['ad-norm', 'ks-norm']))
 
     return HypothesisTest(
         description=description,

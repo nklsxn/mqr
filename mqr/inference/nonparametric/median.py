@@ -3,6 +3,7 @@ Hypothesis tests (non-parametric) for the median.
 """
 
 from mqr.inference.hyptest import HypothesisTest
+import mqr.inference.lib.util as util
 
 def test_1sample(x, H0_median=0.0, alternative='two-sided', method='sign'):
     """
@@ -32,12 +33,12 @@ def test_1sample(x, H0_median=0.0, alternative='two-sided', method='sign'):
 
     if method == 'sign':
         if alternative != 'two-sided':
-            raise ValueError(f'invalid alternative "{alternative}"')
+            raise ValueError(util.alternative_error_msg(alternative))
         stat, pvalue = statsmodels.stats.descriptivestats.sign_test(x, mu0=H0_median)
     elif method == 'wilcoxon':
         stat, pvalue = st.wilcoxon(x-H0_median, alternative=alternative)
     else:
-        raise ValueError(f'method "{method}" not available')
+        raise ValueError(util.method_error_msg(method, ['sign', 'wilcoxon']))
 
     x_name = x.name if hasattr(x, 'name') else 'x'
     return HypothesisTest(
@@ -51,7 +52,7 @@ def test_1sample(x, H0_median=0.0, alternative='two-sided', method='sign'):
         pvalue=pvalue,
     )
 
-def test_nsample(*x, alternative='two-sided', method='kruskal-wallace'):
+def test_nsample(*x, alternative='two-sided', method='kruskal-wallis'):
     """
     Hypothesis test for equality of medians amongst samples.
 
@@ -75,9 +76,9 @@ def test_nsample(*x, alternative='two-sided', method='kruskal-wallace'):
     """
     import mqr, numpy as np, scipy.stats as st
 
-    if method == 'kruskal-wallace':
+    if method == 'kruskal-wallis':
         if alternative != 'two-sided':
-            raise ValueError(f'invalid alternative "{alternative}"')
+            raise ValueError(util.alternative_error_msg(alternative))
         sample_stat = 'median(x_i)'
         sample_stat_value = 'median(x_j)'
         stat, pvalue = st.kruskal(*x)
@@ -89,7 +90,7 @@ def test_nsample(*x, alternative='two-sided', method='kruskal-wallace'):
         sample_stat_value = 0.0
         stat, pvalue = st.mannwhitneyu(x[0], x[1], alternative=alternative)
     else:
-        raise NotImplementedError(f'method {method} not available')
+        raise ValueError(util.method_error_msg(method, ['kruskal-wallis', 'mann-whitney']))
 
     return HypothesisTest(
         description='equality of medians',

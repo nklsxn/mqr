@@ -33,7 +33,7 @@ def confint_1sample(x, q=0.5, conf=0.95, bounded='both'):
     mqr.confint.ConfidenceInterval
     """
     value = np.quantile(x, q)
-    alt = interop.bounded(bounded, 'scipy', flip=True)
+    alt = interop.bounded(bounded, 'scipy')
     res = scipy.stats.quantile_test(x, q=np.quantile(x, q), p=q, alternative=alt)
     ci = res.confidence_interval(conf)
     percentile = mqr.utils.make_ordinal(100*q)

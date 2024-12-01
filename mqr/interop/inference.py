@@ -1,3 +1,5 @@
+import mqr.inference.lib.util as util
+
 def alternative(alt, lib):
     """
     Convert an alternative string from the scipy convention to another convention.
@@ -20,10 +22,10 @@ def alternative(alt, lib):
         elif alt == 'greater':
             return 'larger'
         else:
-            raise ValueError(f'Invalid alternative "{alt}". Use "two-sided" (default), "less", or "greater".')
+            raise ValueError(util.alternative_error_msg(alt))
     raise ValueError(f'Invalid library {lib}.')
 
-def bounded(bounded, lib, flip=False):
+def bounded(bounded, lib):
     """
     Convert argument specifying bounds of a confidence interval to another
     library's convention.
@@ -48,33 +50,19 @@ def bounded(bounded, lib, flip=False):
         if bounded == 'both':
             return 'two-sided'
         elif bounded == 'below':
-            if flip:
-                return 'smaller'
-            else:
-                return 'larger'
+            return 'larger'
         elif bounded == 'above':
-            if flip:
-                return 'larger'
-            else:
-                return 'smaller'
+            return 'smaller'
         else:
-            raise ValueError(f'Invalid bounded "{bounded}". Use "both" '
-                '(default), "above", or "below".')
+            raise ValueError(util.bounded_error_msg(bounded))
     elif lib == 'scipy':
         if bounded == 'both':
             return 'two-sided'
         elif bounded == 'below':
-            if flip:
-                return 'greater'
-            else:
-                return 'less'
+            return 'greater'
         elif bounded == 'above':
-            if flip:
-                return 'less'
-            else:
-                return 'greater'
+            return 'less'
         else:
-            raise ValueError(f'Invalid bounded "{bounded}". Use "both" '
-                '(default), "above", or "below".')
+            raise ValueError(util.bounded_error_msg(bounded))
     else:
         raise ValueError(f'Invalid library {lib}.')

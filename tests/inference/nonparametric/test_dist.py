@@ -24,17 +24,6 @@ def test_test_1sample():
     assert isinstance(res.stat, numbers.Number)
     assert isinstance(res.pvalue, numbers.Number)
 
-    method = 'adf'
-    res = mqr.inference.nonparametric.dist.test_1sample(x, method)
-    assert res.description == 'stationarity'
-    # assert res.alternative == alternative
-    assert res.method == method
-    assert res.sample_stat == 'dist(x)'
-    assert res.sample_stat_target == 'non-stationary'
-    assert res.sample_stat_value == None
-    assert isinstance(res.stat, numbers.Number)
-    assert isinstance(res.pvalue, numbers.Number)
-
 def test_test_2sample():
     x = np.array([1, 2, 7, 3, 4, 5, 5, 4, 7, 9], dtype=float)
     y = np.array([9, 3, 6, 4, 1, 7, 7, 4, 5, 3], dtype=float)
@@ -44,7 +33,7 @@ def test_test_2sample():
     res = mqr.inference.nonparametric.dist.test_2sample(x, y, alternative, method)
     assert res.description == 'sampling distribution'
     assert res.alternative == alternative
-    assert res.method == 'Kolmogorov-Smirnov'
+    assert res.method == 'kolmogorov-smirnov'
     assert res.sample_stat == 'dist(x)'
     assert res.sample_stat_target == 'dist(y)'
     assert res.sample_stat_value == None

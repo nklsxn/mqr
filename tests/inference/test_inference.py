@@ -15,21 +15,12 @@ def test_alternative():
 
 def test_bounded():
     assert mqr.interop.inference.bounded('both', 'scipy') == 'two-sided'
-    assert mqr.interop.inference.bounded('below', 'scipy') == 'less'
-    assert mqr.interop.inference.bounded('above', 'scipy') == 'greater'
+    assert mqr.interop.inference.bounded('below', 'scipy') == 'greater'
+    assert mqr.interop.inference.bounded('above', 'scipy') == 'less'
 
     assert mqr.interop.inference.bounded('both', 'statsmodels') == 'two-sided'
     assert mqr.interop.inference.bounded('below', 'statsmodels') == 'larger'
     assert mqr.interop.inference.bounded('above', 'statsmodels') == 'smaller'
-
-    assert mqr.interop.inference.bounded('both', 'scipy', flip=True) == 'two-sided'
-    assert mqr.interop.inference.bounded('below', 'scipy', flip=True) == 'greater'
-    assert mqr.interop.inference.bounded('above', 'scipy', flip=True) == 'less'
-
-    assert mqr.interop.inference.bounded('both', 'statsmodels', flip=True) == 'two-sided'
-    assert mqr.interop.inference.bounded('below', 'statsmodels', flip=True) == 'smaller'
-    assert mqr.interop.inference.bounded('above', 'statsmodels', flip=True) == 'larger'
-
 
 def test_confint_result():
     conf = mqr.inference.confint.ConfidenceInterval(

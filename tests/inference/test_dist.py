@@ -16,7 +16,7 @@ def test_test_1_sample():
     res = mqr.inference.dist.test_1sample(x, test)
     assert res.description == 'non-normality'
     assert res.alternative == 'two-sided'
-    assert res.method == 'Anderson-Darling'
+    assert res.method == 'anderson-darling'
     assert res.sample_stat == 'distribution'
     assert res.sample_stat_target == 'normal'
     assert res.sample_stat_value == None
@@ -27,7 +27,7 @@ def test_test_1_sample():
     res = mqr.inference.dist.test_1sample(x, test)
     assert res.description == 'non-normality'
     assert res.alternative == 'two-sided'
-    assert res.method == 'Kolmogorov-Smirnov'
+    assert res.method == 'kolmogorov-smirnov'
     assert res.sample_stat == 'distribution'
     assert res.sample_stat_target == 'normal'
     assert res.sample_stat_value == None

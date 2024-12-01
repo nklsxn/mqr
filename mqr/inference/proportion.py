@@ -8,6 +8,7 @@ from mqr.inference.confint import ConfidenceInterval
 from mqr.inference.hyptest import HypothesisTest
 from mqr.inference.power import TestPower
 
+import mqr.inference.lib.util as util
 import mqr.interop.inference as interop
 from mqr.utils import clip_where
 
@@ -55,9 +56,9 @@ def power_1sample(pa, H0_prop, nobs, alpha=0.05, alternative='two-sided', method
             z = dist.ppf(1 - alpha/2)
             power = 1 - dist.cdf((diff + z * mu) / sigma) + dist.cdf((diff - z * mu) / sigma)
         else:
-            raise ValueError(f'Invalid alternative {alternative}. Use one of "less", "greater" or "two-sided".')
+            raise ValueError(util.alternative_error_msg(alternative))
     else:
-        raise ValueError(f'Invalid method {method}. Use one of "less", "greater" or "two-sided".')
+        raise ValueError(util.method_error_msg(method, ['norm-approx']))
 
     return TestPower(
         name='proportion',
@@ -116,10 +117,9 @@ def power_2sample(p1, p2, nobs, alpha=0.05, alternative='two-sided', method='nor
             den = p_scale
             power = 1 - dist.cdf(num1 / den) + dist.cdf(num2 / den)
         else:
-
-            raise ValueError(f'Invalid alternative {alternative}. Use one of "less", "greater" or "two-sided".')
+            raise ValueError(util.alternative_error_msg(alternative))
     else:
-        raise ValueError(f'Invalid method {method}. Use one of "less", "greater" or "two-sided".')
+        raise ValueError(util.method_error_msg(method, ['norm-approx']))
 
     return TestPower(
         name='difference between proportions',
@@ -171,7 +171,7 @@ def size_1sample(pa, H0_prop, alpha, beta, alternative='two-sided', method='norm
         elif alternative == 'two-sided':
             crit = alpha / 2
         else:
-            raise ValueError(f'Alternative {alternative} not valid. Use one of "less", "greater" or "two-sided".')
+            raise ValueError(util.alternative_error_msg(alternative))
         dist = scipy.stats.norm()
 
         Zb = dist.ppf(1-beta)
@@ -180,7 +180,7 @@ def size_1sample(pa, H0_prop, alpha, beta, alternative='two-sided', method='norm
         denom = np.arcsin(np.sqrt(pa)) - np.arcsin(np.sqrt(H0_prop))
         nobs_opt = num**2 / denom**2 / 4
     else:
-        raise ValueError(f'Method {method} not supported.')
+        raise ValueError(util.method_error_msg(method, ['norm-approx', 'arcsin']))
 
     return TestPower(
         name='proportion',
@@ -232,7 +232,7 @@ def size_2sample(p1, p2, alpha, beta, alternative='two-sided', method='norm-appr
         elif alternative == 'two-sided':
             crit = alpha / 2
         else:
-            raise ValueError(f'Alternative {alternative} not valid. Use one of "less", "greater" or "two-sided".')
+            raise ValueError(util.alternative_error_msg(alternative))
         dist = scipy.stats.norm()
 
         Zb = dist.ppf(1-beta)
@@ -241,7 +241,7 @@ def size_2sample(p1, p2, alpha, beta, alternative='two-sided', method='norm-appr
         denom = np.arcsin(np.sqrt(p1)) - np.arcsin(np.sqrt(p2))
         nobs_opt = 2 * num**2 / denom**2 / 4
     else:
-        raise ValueError(f'Method {method} not supported.')
+        raise ValueError(util.method_error_msg(method, ['norm-approx', 'arcsin']))
 
     return TestPower(
         name='proportion',
@@ -296,6 +296,8 @@ def confint_1sample(count, nobs, conf=0.95, bounded='both', method='agresti-coul
         lower, upper = proportion.confint_1sample_agresti_coull(count, nobs, conf, bounded)
     elif method == 'jeffreys':
         lower, upper = proportion.confint_1sample_jeffreys(count, nobs, conf, bounded)
+    elif method == 'wilson':
+        lower, upper = proportion.confint_1sample_wilson(count, nobs, conf, bounded)
     elif method == 'wilson-cc':
         lower, upper = proportion.confint_1sample_wilson_cc(count, nobs, conf, bounded)
     else:
@@ -306,11 +308,10 @@ def confint_1sample(count, nobs, conf=0.95, bounded='both', method='agresti-coul
                 alpha=alpha,
                 method=method)
         else:
-            msg = (
+            raise ValueError(
                 f'Method "{method}" is passed to statsmodels which does not implement '
-                'one-sided bounds. Use method "agresti-coull", "jeffreys" or '
-                '"wilson-cc" for one-sided confidence bounds.')
-            raise AttributeError(msg)
+                'one-sided bounds. ' +
+                util.method_error_msg(method, ['agresti-coull', 'jeffreys', 'wilson-cc']))
     value = count / nobs
     return ConfidenceInterval(
         name='proportion',
@@ -365,6 +366,8 @@ def confint_2sample(count1, nobs1, count2, nobs2, conf=0.95, bounded='both', met
     """
     if (method == 'agresti-caffo') or (method == 'adj-wald'):
         lower, upper = proportion.confint_2sample_agresti_caffo(count1, nobs1, count2, nobs2, conf, bounded)
+    elif method == 'newcomb':
+        lower, upper = proportion.confint_2sample_newcomb(count1, nobs1, count2, nobs2, conf, bounded)
     elif method == 'newcomb-cc':
         lower, upper = proportion.confint_2sample_newcomb_cc(count1, nobs1, count2, nobs2, conf, bounded)
     else:
@@ -376,11 +379,10 @@ def confint_2sample(count1, nobs1, count2, nobs2, conf=0.95, bounded='both', met
                 compare='diff',
                 method=method)
         else:
-            msg = (
+            raise ValueError(
                 f'Method "{method}" is passed to statsmodels which does not implement '
-                'one-sided bounds. Use method "agresti-caffo" or "newcomb-cc" '
-                'for one-sided confidence bounds.')
-            raise AttributeError(msg)
+                'one-sided bounds. ' +
+                util.method_error_msg(method, ['agresti-caffo', 'newcomb-cc']))
 
     value = count1 / nobs1 - count2 / nobs2
     return ConfidenceInterval(
@@ -434,13 +436,16 @@ def test_1sample(count, nobs, H0_prop, alternative='two-sided', method='binom'):
             alternative=alt)
     elif method == 'chi2':
         if alternative != 'two-sided':
-            raise ValueError(f'invalid alternative "{alternative}"')
+            raise ValueError(
+                f'Method "{method}" is passed to statsmodels which does not implement '
+                'one-sided alternatives. ' +
+                util.method_error_msg(method, ['binom', 'z']))
         stat, pvalue, _ = statsmodels.stats.proportion.proportions_chisquare(
             count=count,
             nobs=nobs,
             value=H0_prop)
     else:
-        raise ValueError(f'method "{method}" is not available')
+        raise ValueError(util.method_error_msg(method, ['binom', 'chi2', 'z']))
 
     return HypothesisTest(
         description='proportion of "true" elements',

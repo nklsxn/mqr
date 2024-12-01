@@ -49,7 +49,7 @@ def test_test_nsample():
         0.5814941 , 0.60785036, 0.32729355, 0.68637953, 0.9616885 ]])
 
     alternative = 'two-sided'
-    method = 'kruskal-wallace'
+    method = 'kruskal-wallis'
     res = mqr.inference.nonparametric.median.test_nsample(x, y, z, alternative=alternative, method=method)
     assert res.description == 'equality of medians'
     assert res.alternative == alternative

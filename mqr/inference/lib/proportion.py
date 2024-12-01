@@ -1,4 +1,5 @@
 from mqr.utils import clip_where
+import mqr.inference.lib.util as util
 
 import numpy as np
 import scipy
@@ -37,7 +38,7 @@ def confint_1sample_agresti_coull(count, nobs, conf, bounded):
     if np.any(nobs < 40):
         msg = (
             'The "agresti-coull" method is recommended when `nobs >= 40`. '
-            'Consider using "wilson" or "jeffreys" methods. See ref [1].')
+            'Consider using "wilson" or "jeffreys" methods. See [1].')
         warnings.warn(msg)
     dist = scipy.stats.norm()
     if bounded == 'both':
@@ -59,7 +60,7 @@ def confint_1sample_agresti_coull(count, nobs, conf, bounded):
         upper = np.minimum(1.0, p + z * np.sqrt(p * (1 - p) / n))
         lower = np.clip(upper, 0.0, 0)
     else:
-        raise ValueError(f'invalid bound "{bounded}"')
+        raise ValueError(util.bounded_error_msg(bounded))
     return lower, upper
 
 def confint_1sample_jeffreys(count, nobs, conf, bounded):
@@ -102,9 +103,41 @@ def confint_1sample_jeffreys(count, nobs, conf, bounded):
         upper = dist.ppf(1 - alpha)
         lower = np.clip(upper, 0.0, 0.0)
     else:
-        raise ValueError(f'invalid bound "{bounded}"')
+        raise ValueError(util.bounded_error_msg(bounded))
     lower = clip_where(lower, 0.0, 0.0, np.isclose(count, 0))
     upper = clip_where(upper, 1.0, 1.0, np.isclose(count, nobs))
+    return lower, upper
+
+def confint_1sample_wilson(count, nobs, conf, bounded):
+    alpha = 1 - conf
+    dist = scipy.stats.norm()
+    p = count / nobs
+
+    if bounded == 'both':
+        z = dist.ppf(1 - alpha / 2)
+        centre = p + z**2 / 2 / nobs
+        width = z * np.sqrt(4 * nobs * p * (1 - p) + z**2) / 2 / nobs
+        scale = 1 + z**2 / nobs
+        lower = (centre - width) / scale
+        upper = (centre + width) / scale
+    elif bounded == 'below':
+        z = dist.ppf(1 - alpha)
+        centre = p + z**2 / 2 / nobs
+        width = z * np.sqrt(4 * nobs * p * (1 - p) + z**2) / 2 / nobs
+        scale = 1 + z**2 / nobs
+        lower = (centre - width) / scale
+        upper = np.clip(lower, 1.0, 1.0)
+    elif bounded == 'above':
+        z = dist.ppf(1 - alpha)
+        centre = p + z**2 / 2 / nobs
+        width = z * np.sqrt(4 * nobs * p * (1 - p) + z**2) / 2 / nobs
+        scale = 1 + z**2 / nobs
+        upper = (centre + width) / scale
+        lower = np.clip(upper, 0.0, 0.0)
+    else:
+        raise ValueError(util.bounded_error_msg(bounded))
+    lower = clip_where(lower, 0.0, 0.0, np.isclose(p, 0))
+    upper = clip_where(upper, 1.0, 1.0, np.isclose(p, 1))
     return lower, upper
 
 def confint_1sample_wilson_cc(count, nobs, conf, bounded):
@@ -157,7 +190,7 @@ def confint_1sample_wilson_cc(count, nobs, conf, bounded):
         upper = np.minimum(1, (a + b_upper) / 2 / (nobs + z**2))
         lower = np.clip(upper, 0.0, 0.0)
     else:
-        raise ValueError(f'invalid bound "{bounded}"')
+        raise ValueError(util.bounded_error_msg(bounded))
     lower = clip_where(lower, 0.0, 0.0, np.isclose(p, 0))
     upper = clip_where(upper, 1.0, 1.0, np.isclose(p, 1))
     return lower, upper
@@ -209,7 +242,33 @@ def confint_2sample_agresti_caffo(count1, nobs1, count2, nobs2, conf, bounded):
         upper = dist.ppf(1 - alpha)
         lower = np.clip(upper, -np.inf, -np.inf)
     else:
-        raise ValueError(f'bound {bounded} not valid')
+        raise ValueError(util.bounded_error_msg(bounded))
+    return lower, upper
+
+def confint_2sample_newcomb(count1, nobs1, count2, nobs2, conf, bounded):
+    alpha = 1 - conf
+    theta_hat = count1 / nobs1 - count2 / nobs2
+    l1, u1 = confint_1sample_wilson(count1, nobs1, conf, bounded)
+    l2, u2 = confint_1sample_wilson(count2, nobs2, conf, bounded)
+
+    if bounded == 'both':
+        z = scipy.stats.norm().ppf(1 - alpha / 2)
+        delta = z * np.sqrt(l1 * (1 - l1) / nobs1 + u2 * (1 - u2) / nobs2)
+        epsilon = z * np.sqrt(u1 * (1 - u1) / nobs1 + l2 * (1 - l2) / nobs2)
+        lower = theta_hat - delta
+        upper = theta_hat + epsilon
+    elif bounded == 'below':
+        z = scipy.stats.norm().ppf(1 - alpha)
+        delta = z * np.sqrt(l1 * (1 - l1) / nobs1 + u2 * (1 - u2) / nobs2)
+        lower = theta_hat - delta
+        upper = np.clip(lower, np.inf, np.inf)
+    elif bounded == 'above':
+        z = scipy.stats.norm().ppf(1 - alpha)
+        epsilon = z * np.sqrt(u1 * (1 - u1) / nobs1 + l2 * (1 - l2) / nobs2)
+        upper = theta_hat + epsilon
+        lower = np.clip(upper, -np.inf, -np.inf)
+    else:
+        raise ValueError(util.bounded_error_msg(bounded))
     return lower, upper
 
 def confint_2sample_newcomb_cc(count1, nobs1, count2, nobs2, conf, bounded):
@@ -261,5 +320,5 @@ def confint_2sample_newcomb_cc(count1, nobs1, count2, nobs2, conf, bounded):
         upper = (p1 - p2) + np.sqrt((upper1 - p1)**2 + (p2 - lower2)**2)
         lower = np.clip(upper, -np.inf, -np.inf)
     else:
-        raise ValueError(f'invalid bound "{bounded}"')
+        raise ValueError(util.bounded_error_msg(bounded))
     return lower, upper

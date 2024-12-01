@@ -1,8 +1,5 @@
-"""
-Confidence intervals and hypothesis tests (parametric) for rates of events.
-"""
-
 import mqr.inference.lib.rate as rate
+import mqr.inference.lib.util as util
 
 from mqr.inference.confint import ConfidenceInterval
 from mqr.inference.hyptest import HypothesisTest
@@ -61,9 +58,9 @@ def power_1sample(ra, H0_rate, nobs, alpha, meas=1.0, alternative='two-sided', m
             num_2 = H0_rate - z * np.sqrt(var_0) - ra
             power = 1 - (dist.cdf(num_1/den) - dist.cdf(num_2/den))
         else:
-            raise ValueError(f'Invalid alternative "{alternative}". Use "two-sided" (default), "less", or "greater".')
+            raise ValueError(util.alternative_error_msg(alternative))
     else:
-        raise ValueError(f'method {method} not available')
+        raise ValueError(util.method_error_msg(method, ['norm-approx']))
 
     return TestPower(
         name='rate of events',
@@ -138,7 +135,7 @@ def power_2sample(r1, r2, nobs, alpha, H0_value=None, meas1=1.0, meas2=1.0,
             method_var=method,
             return_results=False)
     else:
-        raise ValueError(f'Invalid compare "{copmare}". Use "diff" (default), or "ratio".')
+        raise ValueError(util.compare_error_msg('test'))
     return TestPower(
         name=f'{desc} rates of events',
         alpha=alpha,
@@ -181,7 +178,7 @@ def size_1sample(ra, H0_rate, alpha, beta, meas=1.0, alternative='two-sided', me
             NP1 = 1 - beta
             DP1 = alpha / 2
         else:
-            raise ValueError(f'Invalid alternative "{alternative}". Use "two-sided" (default), "less", or "greater".')
+            raise ValueError(util.alternative_error_msg(alternative))
         def ratio(n):
             num = scipy.stats.chi2.ppf(NP1, df=n)
             den = scipy.stats.chi2.ppf(DP1, df=n)
@@ -200,7 +197,7 @@ def size_1sample(ra, H0_rate, alpha, beta, meas=1.0, alternative='two-sided', me
                 alternative=alternative).beta - beta
         nobs_opt = scipy.optimize.fsolve(beta_fn, 1)[0]
     else:
-        raise ValueError(f'Invalid method "{method}"')
+        raise ValueError(util.method_error_msg(method, ['chi2', 'norm-approx']))
 
     return TestPower(
         name='rate of events',
@@ -258,7 +255,7 @@ def size_2sample(r1, r2, alpha, beta, H0_value=None, alternative='two-sided', me
         else:
             crit = alpha / 2
         Zb = scipy.stats.norm().ppf(1-beta)
-        Za = -scipy.stats.norm().ppf(alpha)
+        Za = -scipy.stats.norm().ppf(crit)
         num = Za * np.sqrt(r2) + Zb * np.sqrt(r1)
         nobs_opt = 2 * num**2 / (r1 - r2)**2
     else:
@@ -284,7 +281,7 @@ def size_2sample(r1, r2, alpha, beta, H0_value=None, alternative='two-sided', me
         sample_stat_sym = '/'
         sample_stat_value = r1 / r2
     else:
-        raise ValueError(f'`compare` argument ({compare}) not recognised')
+        raise ValueError(util.compare_error_msg(compare))
 
     return TestPower(
         name=f'{desc} rates of events',
@@ -423,10 +420,10 @@ def confint_2sample(count1, n1, count2, n2, meas1=1.0, meas2=1.0,
             conf, bounded)
     else:
         if bounded != 'both':
-            msg = (f'Method "{method}" is passed to statsmodels, '
-                'which supports only two-sided confidence intervals. Use '
-                '`bounded=both`.')
-            raise ValueError(msg)
+            raise ValueError(
+                f'Method "{method}" is passed to statsmodels which does not implement '
+                'one-sided bounds. ' +
+                util.method_error_msg(method, ['wald', 'wald-moment']))
         alpha = 1 - conf
         (lower, upper) = statsmodels.stats.rates.confint_poisson_2indep(
             count1=count1,
@@ -491,8 +488,8 @@ def test_1sample(count, n, meas=1.0, H0_rate=1.0, alternative='two-sided', metho
         pvalue=res.pvalue,)
 
 def test_2sample(count1, n1, count2, n2, meas1=1.0, meas2=1.0,
-                    H0_value=None, alternative='two-sided', method='score', compare='ratio'):
     """
+                 H0_value=None, alternative='two-sided', method='score', compare='diff'):
     Hypothesis test for equality of rates.
 
     Null-hypothesis:
@@ -549,7 +546,7 @@ def test_2sample(count1, n1, count2, n2, meas1=1.0, meas2=1.0,
         if H0_value is None:
             H0_value = 1.0
     else:
-        raise ValueError(f'`compare` argument ({compare}) not recognised')
+        raise ValueError(util.compare_error_msg(compare))
 
     return HypothesisTest(
         description=f'{desc} rates of events',

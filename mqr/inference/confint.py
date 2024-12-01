@@ -45,43 +45,6 @@ class ConfidenceInterval:
     def __iter__(self):
         return iter((self.lower, self.upper))
 
-    def as_text(self):
-        import mqr.styles
-        from rich import table, text
-        from rich.table import box, Table, Style
-
-        title = (
-            text.Text('Confidence Interval', style=Style(bold=True)) +
-            text.Text('\n'+self.name, style=Style(bold=True, color='grey50')))
-        table = Table(
-            title=title,
-            title_justify='left',
-            box=mqr.styles.default_table_box(),
-            show_header=True,
-            pad_edge=False,
-            collapse_padding=True)
-        alpha = 1 - self.conf
-        if self.bounded == 'both':
-            left_alpha = f'{alpha*100/2:g}%'
-            right_alpha = f'{(1-alpha/2)*100:g}%'
-        elif self.bounded == 'above':
-            left_alpha = ''
-            right_alpha = f'{(1-alpha)*100:g}%'
-        elif self.bounded == 'below':
-            left_alpha = f'{alpha*100:g}%'
-            right_alpha = ''
-        else:
-            raise ValueError(bounded_error_msg(self.bounded))
-        table.add_column('value', justify='left')
-        table.add_column(f'[{left_alpha}', justify='left', header_style=Style(bold=False))
-        table.add_column(f'{right_alpha}]', justify='right', header_style=Style(bold=False))
-        table.add_row(
-            text.Text(f'{self.value:g}', style=Style(bold=True)),
-            f'{self.lower:g}',
-            f'{self.upper:g}')
-
-        return table._repr_mimebundle_([], [])['text/plain']
-
     def _html(self):
         alpha = 1 - self.conf
         if self.bounded == 'both':
@@ -99,26 +62,26 @@ class ConfidenceInterval:
         return f'''
         <table>
         <thead>
-            <tr>
-                <th scope="col" colspan=3 style="text-align: left; padding-bottom: 0px;">Confidence Interval</th>
+            <tr style='padding-bottom:0px;'>
+                <th scope="col" colspan=3 style="text-align:left; padding-bottom:0px;">Confidence Interval</th>
             </tr>
-            <tr style='padding-top: 0px;'>
-                <td colspan=3 style='text-align: left; padding-top: 0px'>{self.name}</td>
+            <tr style='padding-top:0px; padding-bottom:0px;'>
+                <td colspan=3 style='text-align: left; padding-top:0px; padding-bottom:0px;'>{self.name}</td>
+            </tr>
+            <tr style='padding-top:0px;'>
+                <td style='text-align:left; padding-top:0px' colspan=3>{self.conf*100:g}% ({self.method})</td>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <th scope='row'>method</th><td colspan=2 style='text-align:left'>{self.method}</td>
-            </tr>
-            <tr>
                 <th scope='col' style='text-align: left;'>value</th>
-                <th scope='col' style='text-align: left;'>[{left_alpha}</th>
-                <th scope='col' style='text-align: right;'>{right_alpha}]</th>
+                <th scope='col' style='text-align: left;'>lower</th>
+                <th scope='col' style='text-align: left;'>upper</th>
             </tr>
             <tr>
                 <td style='text-align: left;'>{self.value:g}</td>
                 <td style='text-align: left;'>{self.lower:g}</td>
-                <td style='text-align: right;'>{self.upper:g}</td>
+                <td style='text-align: left;'>{self.upper:g}</td>
             </tr>
         </tbody>
         </table>
@@ -126,6 +89,3 @@ class ConfidenceInterval:
 
     def _repr_html_(self):
         return self._html()
-
-    def _repr_pretty_(self, p, cycle):
-        return p.text(self.as_text())

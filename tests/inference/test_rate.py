@@ -356,7 +356,60 @@ def test_confint_2sample():
     assert list(res) == pytest.approx([-np.inf, -82.1635], abs=1e-4)
     method = 'wald-moment'
     res = mqr.inference.rate.confint_2sample(count1, n1, count2, n2, meas1, meas2, conf, bounded=bounded, method=method)
-    assert list(res) == pytest.approx([-np.inf, -83.8581], abs=1e-4)
+    assert list(res) == pytest.approx([-np.inf, -82.1972], abs=1e-4)
+
+def test_confint_2sample_krishnamoorthy_lee():
+    """
+    Checks calculations against the values in Table 7 in [1]_.
+
+    References
+    ----------
+    .. [1] Krishnamoorthy, K., & Lee, M. (2013).
+       New approximate confidence intervals for the difference between
+       two Poisson means and comparison.
+       Journal of Statistical Computation and Simulation, 83(12), 2232-2243.
+    """
+    lower, upper = mqr.inference.lib.rate.confint_2sample_wald(
+        3, 310, 7, 3500,
+        1.0, 1.0,
+        0.95, 'both')
+    assert lower == pytest.approx(-0.0034, abs=1e-4)
+    assert upper == pytest.approx(0.0187, abs=1e-4)
+
+    lower, upper = mqr.inference.lib.rate.confint_2sample_wald(
+        3, 310, 7, 3500,
+        1.0, 1.0,
+        0.95, 'below')
+    assert lower == pytest.approx(-0.00160, abs=1e-5)
+    assert upper == np.inf
+
+    lower, upper = mqr.inference.lib.rate.confint_2sample_wald(
+        3, 310, 7, 3500,
+        1.0, 1.0,
+        0.95, 'above')
+    assert lower == -np.inf
+    assert upper == pytest.approx(0.01695, abs=1e-5)
+
+    lower, upper = mqr.inference.lib.rate.confint_2sample_wald_moment(
+        3, 310, 7, 3500,
+        1.0, 1.0,
+        0.95, 'both')
+    assert lower == pytest.approx(0.0009, abs=1e-4)
+    assert upper == pytest.approx(0.02573, abs=1e-5)
+
+    lower, upper = mqr.inference.lib.rate.confint_2sample_wald_moment(
+        3, 310, 7, 3500,
+        1.0, 1.0,
+        0.95, 'below')
+    assert lower == pytest.approx(0.00156, abs=1e-5)
+    assert upper == np.inf
+
+    lower, upper = mqr.inference.lib.rate.confint_2sample_wald_moment(
+        3, 310, 7, 3500,
+        1.0, 1.0,
+        0.95, 'above')
+    assert lower == -np.inf
+    assert upper == pytest.approx(0.02175, abs=1e-5)
 
 def test_test_1sample():
     count = 20

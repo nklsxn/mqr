@@ -6,11 +6,14 @@ from mqr.inference.confint import ConfidenceInterval
 from mqr.inference.hyptest import HypothesisTest
 from mqr.inference.power import TestPower
 
+import mqr.inference.lib.util as util
 import mqr.interop.inference as interop
 
+import numbers
 import numpy as np
 import scipy
 import statsmodels
+import warnings
 
 def size_1sample(effect, alpha, beta, alternative='two-sided'):
     """
@@ -35,11 +38,15 @@ def size_1sample(effect, alpha, beta, alternative='two-sided'):
     """
     alt = interop.alternative(alternative, 'statsmodels')
     power = 1.0 - beta
-    nobs = statsmodels.stats.power.tt_solve_power(
-        alpha=alpha,
-        power=power,
-        effect_size=effect,
-        alternative=alt)
+    warnings.filterwarnings("error")
+    try:
+        nobs = statsmodels.stats.power.tt_solve_power(
+            alpha=alpha,
+            power=power,
+            effect_size=effect,
+            alternative=alt)
+    finally:
+        warnings.resetwarnings()
     return TestPower(
         name='mean',
         alpha=alpha,
@@ -72,12 +79,16 @@ def size_2sample(effect, alpha, beta, alternative='two-sided'):
     """
     alt = interop.alternative(alternative, 'statsmodels')
     power = 1.0 - beta
-    nobs = statsmodels.stats.power.tt_ind_solve_power(
-        alpha=alpha,
-        power=power,
-        effect_size=effect,
-        ratio=1.0,
-        alternative=alt)
+    warnings.filterwarnings("error")
+    try:
+        nobs = statsmodels.stats.power.tt_ind_solve_power(
+            alpha=alpha,
+            power=power,
+            effect_size=effect,
+            ratio=1.0,
+            alternative=alt)
+    finally:
+        warnings.resetwarnings()
     return TestPower(
         name='difference between means (independent)',
         alpha=alpha,
@@ -156,7 +167,7 @@ def confint_1sample(x, conf=0.95, bounded='both', method='t'):
     elif method == 'z':
         lower, upper = statsmodels.stats.api.DescrStatsW(x).zconfint_mean(alpha, alt)
     else:
-        raise ValueError(f'method {method} is not implemented')
+        raise ValueError(util.method_error_msg(method, ['t', 'z']))
 
     return ConfidenceInterval(
         name='mean',
@@ -212,7 +223,7 @@ def confint_2sample(x, y, conf=0.95, pooled=True, bounded='both', method='t'):
             usevar=usevar,
             alternative=alt)
     else:
-        raise ValueError(f'meethod {method} is not implemented')
+        raise ValueError(util.method_error_msg(method, ['t', 'z']))
     return ConfidenceInterval(
         name='difference between means (independent)',
         method=method,
@@ -280,12 +291,12 @@ def test_1sample(x, H0_mean=0.0, alternative='two-sided', method='t'):
             alternative=alternative)
     elif method == 'z':
         alt = interop.alternative(alternative, lib='statsmodels')
-        statistic, pvalue = statsmodels.stats.api.ztest(
+        statistic, pvalue = statsmodels.stats.weightstats.ztest(
             x1=x,
             value=H0_mean,
             alternative=alt)
     else:
-        raise ValueError(f'method "{method}" is not available')
+        raise ValueError(util.method_error_msg(method, ['t', 'z']))
 
     x_name = x.name if hasattr(x, 'name') else 'x'
     return HypothesisTest(
@@ -327,21 +338,21 @@ def test_2sample(x, y, H0_diff=0.0, pooled=True, alternative='two-sided', method
     alt = interop.alternative(alternative, 'statsmodels')
     usevar = 'pooled' if pooled else 'unequal'
     if method == 't':
-        statistic, pvalue, _dof = statsmodels.stats.api.ttest_ind(
+        statistic, pvalue, _dof = statsmodels.stats.weightstats.ttest_ind(
             x1=x,
             x2=y,
             alternative=alt,
             usevar=usevar,
             value=H0_diff)
     elif method == 'z':
-        statistic, pvalue = statsmodels.stats.api.ztest(
+        statistic, pvalue = statsmodels.stats.weightstats.ztest(
             x1=x,
             x2=y,
             value=H0_diff,
             alternative=alt,
             usevar=usevar)
     else:
-        raise ValueError(f'method "{method}" is not available')
+        raise ValueError(util.method_error_msg(method, ['t', 'z']))
     
     x_name = x.name if hasattr(x, 'name') else 'x'
     y_name = y.name if hasattr(y, 'name') else 'y'
@@ -377,7 +388,7 @@ def test_paired(x, y, alternative='two-sided', method='t'):
     mqr.hyptest.HypothesisTest
     """
     if method != 't':
-        raise ValueError(f'method "{method}" is not available')
+        raise ValueError(util.method_error_msg(method, ['t']))
 
     result = scipy.stats.ttest_rel(x, y, alternative=alternative)
 

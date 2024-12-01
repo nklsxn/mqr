@@ -40,6 +40,7 @@ import mqr.inference.nonparametric
 import mqr.inference.correlation
 import mqr.inference.dist
 import mqr.inference.mean
+import mqr.inference.power
 import mqr.inference.proportion
 import mqr.inference.rate
 import mqr.inference.stddev

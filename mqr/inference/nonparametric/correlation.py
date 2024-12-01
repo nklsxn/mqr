@@ -4,6 +4,8 @@ Hypothesis (non-parametric) tests for correlation.
 
 from mqr.inference.hyptest import HypothesisTest
 
+import mqr.inference.lib.util as util
+
 def test(x, y, alternative='two-sided', method='spearman'):
     """
     Hypothesis test for correlation between two samples.
@@ -41,7 +43,7 @@ def test(x, y, alternative='two-sided', method='spearman'):
             y=y,
             alternative=alternative)
     else:
-        raise ValueError(f'method "{method}" is not available')
+        raise ValueError(util.method_error_msg(method, ['spearman', 'kendall']))
 
     x_name = x.name if hasattr(x, 'name') else 'x'
     y_name = y.name if hasattr(y, 'name') else 'y'

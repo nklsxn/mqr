@@ -5,10 +5,10 @@ Confidence intervals and hypothesis tests (parametric) for correlation.
 from mqr.inference.confint import ConfidenceInterval
 from mqr.inference.hyptest import HypothesisTest
 
+import mqr.inference.lib.util as util
+
 import numpy as np
 import scipy
-
-# From 100 statistical tests, Gopal Kanji
 
 def confint(x, y, conf=0.95, bounded='both', method='fisher-z'):
     """
@@ -40,7 +40,7 @@ def confint(x, y, conf=0.95, bounded='both', method='fisher-z'):
         Critical reviews in analytical chemistry, 36(1), 41-59.
     """
     if method != 'fisher-z':
-        raise NotImplemented('Only `fisher-z` method is implemented.')
+        raise ValueError(util.method_error_msg(method, ['fisher-z']))
 
     if len(x) != len(y):
         raise ValueError(f'Lengths of x and y must be equal.')
@@ -63,7 +63,7 @@ def confint(x, y, conf=0.95, bounded='both', method='fisher-z'):
         lower = _inv_fisher_z(dist.ppf(alpha))
         upper = 1.0
     else:
-        raise ValueError(f'Invalid alternative "{alternative}". Use "two-sided" (default), "less", or "greater".')
+        raise ValueError(util.alternative_error_msg(alternative))
 
     return ConfidenceInterval(
         name='correlation',
@@ -130,7 +130,7 @@ def test(x, y, H0_corr=0.0, alternative='two-sided'):
     elif alternative == 'greater':
         pvalue = 1 - dist.cdf(stat)
     else:
-        raise ValueError(f'Invalid alternative "{alternative}". Use "two-sided" (default), "less", or "greater".')
+        raise ValueError(util.alternative_error_msg(alternative))
 
     x_name = x.name if hasattr(x, 'name') else 'x'
     y_name = y.name if hasattr(y, 'name') else 'y'
@@ -184,7 +184,7 @@ def test_diff(x1, y1, x2, y2, H0_corr1=0.0, H0_corr2=0.0, alternative='two-sided
         Critical reviews in analytical chemistry, 36(1), 41-59.
     """
     if method != 'fisher-z':
-        raise ValueError(f'method "{method}" is not available')
+        raise ValueError(util.method_error_msg(method, ['fisher-z']))
 
     if len(x1) != len(y1):
         raise ValueError('Lengths of x1 and y1 must be equal.')
@@ -215,7 +215,7 @@ def test_diff(x1, y1, x2, y2, H0_corr1=0.0, H0_corr2=0.0, alternative='two-sided
     elif alternative == 'greater':
         pvalue = 1 - dist.cdf(stat)
     else:
-        raise ValueError(f'Invalid alternative "{alternative}". Use "two-sided" (default), "less", or "greater".')
+        raise ValueError(util.alternative_error_msg(alternative))
 
     x1_name = x1.name if hasattr(x1, 'name') else 'x1'
     y1_name = y1.name if hasattr(y1, 'name') else 'y1'

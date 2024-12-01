@@ -6,14 +6,15 @@ from mqr.inference.confint import ConfidenceInterval
 from mqr.inference.hyptest import HypothesisTest
 from mqr.inference.power import TestPower
 
+import mqr.inference.lib.util as util
 import mqr.interop.inference as interop
 
 import numpy as np
 import scipy
 import statsmodels
 
-def power_1sample(effect, nobs, alpha=0.05, alternative='two-sided'):
     """
+def power_1sample(effect, nobs, alpha=0.05, alternative='two-sided', method='chi2'):
     Calculate power for test of variance of a sample.
 
     Null-hypothesis: `effect = var / var_0 == 1` (two-sided).
@@ -47,7 +48,7 @@ def power_1sample(effect, nobs, alpha=0.05, alternative='two-sided'):
         num_2 = dist.ppf(alpha/2)
         power = 1 - (dist.cdf(num_1/den) - dist.cdf(num_2/den))
     else:
-        raise ValueError(f'Invalid alternative "{alternative}". Use "two-sided" (default), "less", or "greater".')
+        raise ValueError(util.alternative_error_msg(alternative))
 
     return TestPower(
         name='variance',
@@ -58,8 +59,8 @@ def power_1sample(effect, nobs, alpha=0.05, alternative='two-sided'):
         method='chi2',
         sample_size=nobs)
 
-def power_2sample(var_ratio, nobs, alpha=0.05, alternative='two-sided'):
     """
+def power_2sample(var_ratio, nobs, alpha=0.05, alternative='two-sided', method='f'):
     Calculate power for test of ratio of variances.
 
     Null-hypothesis: `effect = var_1 / var_2 == 1` (two-sided).
@@ -92,7 +93,7 @@ def power_2sample(var_ratio, nobs, alpha=0.05, alternative='two-sided'):
         num_2 = dist.ppf(alpha/2)
         power = 1 - (dist.cdf(num_1/var_ratio) - dist.cdf(num_2/var_ratio))
     else:
-        raise ValueError(f'Invalid alternative "{alternative}". Use "two-sided" (default), "less", or "greater".')
+        raise ValueError(util.alternative_error_msg(alternative))
 
     return TestPower(
         name='ratio of variances',
@@ -103,8 +104,8 @@ def power_2sample(var_ratio, nobs, alpha=0.05, alternative='two-sided'):
         method='f',
         sample_size=nobs)
 
-def size_1sample(effect, alpha, beta, alternative='two-sided'):
     """
+def size_1sample(effect, alpha, beta, alternative='two-sided', method='chi2'):
     Calculate sample size for test of variance of a sample.
 
     Null-hypothesis: `effect == var / var_0 == 1` (two-sided).
@@ -134,7 +135,8 @@ def size_1sample(effect, alpha, beta, alternative='two-sided'):
             effect=effect,
             nobs=n,
             alpha=alpha,
-            alternative=alternative)
+            alternative=alternative,
+            method=method)
         return power.beta - beta
     nobs = scipy.optimize.fsolve(beta_fn, 2)[0]
 
@@ -147,8 +149,8 @@ def size_1sample(effect, alpha, beta, alternative='two-sided'):
         method='chi2',
         sample_size=nobs)
 
-def size_2sample(var_ratio, alpha, beta, alternative='two-sided'):
     """
+def size_2sample(var_ratio, alpha, beta, alternative='two-sided', method='f'):
     Calculate sample size for test of ratio of variances.
 
     Null-hypothesis: `var_ratio == var_1 / var_2 == 1` (two-sided).
@@ -227,9 +229,9 @@ def confint_1sample(x, conf=0.95, bounded='both', method='chi2'):
             lower = 0.0
             upper = dof * s2 / dist.ppf(alpha)
         else:
-            raise ValueError(f'invalid bound "{bounded}"')
+            raise ValueError(util.bounded_error_msg(bounded))
     else:
-        raise ValueError(f'method "{method}" not supported')
+        raise ValueError(util.method_error_msg(method, ['chi2']))
 
     return ConfidenceInterval(
         name='variance',
@@ -281,9 +283,9 @@ def confint_2sample(x, y, conf=0.95, bounded='both', method='f'):
             lower = -np.inf
             upper = ratio * dist.ppf(1 - alpha)
         else:
-            raise ValueError(f'invalid bound "{bounded}"')
+            raise ValueError(util.bounded_error_msg(bounded))
     else:
-        raise ValueError(f'method "{method}" not supported')
+        raise ValueError(util.method_error_msg(method, ['f']))
 
     return ConfidenceInterval(
         name='ratio of variances',
@@ -294,8 +296,8 @@ def confint_2sample(x, y, conf=0.95, bounded='both', method='f'):
         conf=conf,
         bounded=bounded)
 
-def test_1sample(x, H0_var, alternative='two-sided'):
     """
+def test_1sample(x, H0_var, alternative='two-sided', method='chi2'):
     Hypothesis test for the varianve of a sample.
 
     Null hypothesis: `var(x) / H0_var == 1`.
@@ -314,20 +316,23 @@ def test_1sample(x, H0_var, alternative='two-sided'):
     -------
     mqr.hyptest.HypothesisTest
     """
-    dfx = len(x) - 1
-    s2x = np.var(x, ddof=1)
-    q = dfx * s2x / H0_var # Eqn 8-17, MR
-    dist = scipy.stats.chi2(dfx)
+    if method == 'chi2':
+        dfx = len(x) - 1
+        s2x = np.var(x, ddof=1)
+        q = dfx * s2x / H0_var # Eqn 8-17, MR
+        dist = scipy.stats.chi2(dfx)
 
-    stat = s2x
-    if alternative == 'less':
-        pvalue = dist.cdf(q)
-    elif alternative == 'greater':
-        pvalue = 1 - dist.cdf(q)
-    elif alternative == 'two-sided':
-        pvalue = 2.0 * np.minimum(dist.cdf(q), 1-dist.cdf(q))
+        stat = s2x
+        if alternative == 'less':
+            pvalue = dist.cdf(q)
+        elif alternative == 'greater':
+            pvalue = 1 - dist.cdf(q)
+        elif alternative == 'two-sided':
+            pvalue = 2.0 * np.minimum(dist.cdf(q), 1-dist.cdf(q))
+        else:
+            raise ValueError(util.alternative_error_msg(alternative))
     else:
-        raise ValueError(f'Invalid alternative "{alternative}". Use "two-sided" (default), "less", or "greater".')
+        raise ValueError(util.method_error_msg(method, ['chi2']))
 
     x_name = x.name if hasattr(x, 'name') else 'x'
     return HypothesisTest(
@@ -380,7 +385,7 @@ def test_2sample(x, y, alternative='two-sided', method='f'):
         elif alternative == 'two-sided':
             pvalue = 2.0 * np.minimum(1.0 - dist.cdf(f), dist.cdf(f))
         else:
-            assert False, f'Invalid alternative "{alternative}". Use "two-sided" (default), "less", or "greater".'
+            raise ValueError(util.alternative_error_msg(alternative))
     elif method == 'levene':
         if alternative != 'two-sided':
             raise ValueError('one-sided alternative not available in Levene test')
@@ -396,7 +401,7 @@ def test_2sample(x, y, alternative='two-sided', method='f'):
         rel = '-'
         (stat, pvalue) = scipy.stats.bartlett(x, y)
     else:
-        raise ValueError(f'invalid method "{method}"')
+        raise ValueError(util.method_error_msg(method, ['f', 'bartlett']))
 
     x_name = x.name if hasattr(x, 'name') else 'x'
     y_name = y.name if hasattr(y, 'name') else 'y'

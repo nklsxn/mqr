@@ -6,6 +6,8 @@ from dataclasses import dataclass, field
 import numpy as np
 import scipy
 
+import mqr.inference.lib.util as util
+
 def _hyptest_table_styles():
         return [
             {
@@ -59,29 +61,11 @@ class HypothesisTest:
         self.null = self._null_hypothesis()
         self.alt = self._alt_hypothesis()
 
-    def as_text(self):
-        import mqr.styles
-        from rich import table, text
-        from rich.table import box, Table, Style
-
-        title = (
-            text.Text('Hypothesis Test', style=Style(bold=True)) +
-            text.Text('\n'+self.description, style=Style(bold=True, color='grey50')))
-        table = Table(
-            title=title,
-            title_justify='left',
-            show_header=False,
-            box=mqr.styles.default_table_box(),
-            pad_edge=False,
-            collapse_padding=True)
-        table.add_row('method', self.method)
-        table.add_row('null-hyp', self.null)
-        table.add_row('alt-hyp', self.alt)
-        table.add_section()
-        table.add_row('statistic', f'{self.stat:g}')
-        table.add_row('p-value', f'{self.pvalue:g}', style=Style(bold=True))
-
-        return table._repr_mimebundle_([], [])['text/plain']
+    def __iter__(self):
+        """
+        Iterator over the test statistic and p-value.
+        """
+        return iter((self.stat, self.pvalue))
         
     def _null_hypothesis(self):
         import numbers
@@ -102,7 +86,7 @@ class HypothesisTest:
         elif self.alternative == 'greater':
             alt_sym = '>'
         else:
-            raise RuntimeError(f'Invalid alternative "{self.alternative}". Use "two-sided" (default), "less", or "greater".')
+            raise RuntimeError(util.alternative_error_msg(self.alternative))
 
         if isinstance(self.sample_stat_target, numbers.Number):
             fmt = 'g'
@@ -150,6 +134,3 @@ class HypothesisTest:
 
     def _repr_html_(self):
         return self._html()
-
-    def _repr_pretty_(self, p, cycle):
-        return p.text(self.as_text())

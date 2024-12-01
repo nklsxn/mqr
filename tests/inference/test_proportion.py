@@ -278,6 +278,79 @@ def test_confint_1sample():
     assert lower == pytest.approx(np.array([0., 0., 0.]))
     assert upper == pytest.approx(np.array([0.08504882, 0.63752179, 1.        ]))
 
+def test_confint_1sample_newcomb():
+    """
+    Checks values against Table I in [1]_.
+
+    References
+    ----------
+    .. [1] Newcombe, R. G. (1998).
+       Two‐sided confidence intervals for the single proportion:
+       comparison of seven methods. Statistics in medicine, 17(8), 857-872.
+    """
+    from mqr.inference.lib.proportion import confint_1sample_wilson as wilson
+    from mqr.inference.lib.proportion import confint_1sample_wilson_cc as wilson_cc
+
+    lower, upper = wilson(81, 263, 0.95, 'both')
+    assert lower == pytest.approx(0.2553, abs=1e-4)
+    assert upper == pytest.approx(0.3662, abs=1e-4)
+    lower, upper = wilson_cc(81, 263, 0.95, 'both')
+    assert lower == pytest.approx(0.2535, abs=1e-4)
+    assert upper == pytest.approx(0.3682, abs=1e-4)
+
+    lower, upper = wilson(15, 148, 0.95, 'both')
+    assert lower == pytest.approx(0.0624, abs=1e-4)
+    assert upper == pytest.approx(0.1605, abs=1e-4)
+    lower, upper = wilson_cc(15, 148, 0.95, 'both')
+    assert lower == pytest.approx(0.0598, abs=1e-4)
+    assert upper == pytest.approx(0.1644, abs=1e-4)
+
+    lower, upper = wilson(0, 20, 0.95, 'both')
+    assert lower == pytest.approx(0.0000, abs=1e-4)
+    assert upper == pytest.approx(0.1611, abs=1e-4)
+    lower, upper = wilson_cc(0, 20, 0.95, 'both')
+    assert lower == pytest.approx(0.0000, abs=1e-4)
+    assert upper == pytest.approx(0.2005, abs=1e-4)
+
+    lower, upper = wilson(1, 29, 0.95, 'both')
+    assert lower == pytest.approx(0.0061, abs=1e-4)
+    assert upper == pytest.approx(0.1718, abs=1e-4)
+    lower, upper = wilson_cc(1, 29, 0.95, 'both')
+    assert lower == pytest.approx(0.0018, abs=1e-4)
+    assert upper == pytest.approx(0.1963, abs=1e-4)
+
+def test_confint_1sample_brown_cai_dasgupta():
+    """
+    Checks a few values against Table 5 in [1]_.
+
+    References
+    ----------
+    [1] Brown, L. D. Cai, T. T. and DasGupta, A. (2001).
+        "Interval estimation for a binomial proportion".
+        Statistical Science, 16(2), 101-133.
+    """
+    from mqr.inference.lib.proportion import confint_1sample_jeffreys as jeffreys
+
+    lower, upper = jeffreys(0, 7, 0.95, 'both')
+    assert lower == 0.0
+    assert upper == pytest.approx(0.292, abs=1e-3)
+
+    lower, upper = jeffreys(3, 10, 0.95, 'both')
+    assert lower == pytest.approx(0.093, abs=1e-3)
+    assert upper == pytest.approx(0.606, abs=1e-3)
+
+    lower, upper = jeffreys(1, 27, 0.95, 'both')
+    assert lower == pytest.approx(0.004, abs=1e-3)
+    assert upper == pytest.approx(0.160, abs=1e-3)
+
+    lower, upper = jeffreys(13, 27, 0.95, 'both')
+    assert lower == pytest.approx(0.303, abs=1e-3)
+    assert upper == pytest.approx(0.664, abs=1e-3)
+
+    lower, upper = jeffreys(15, 30, 0.95, 'both')
+    assert lower == pytest.approx(0.328, abs=1e-3)
+    assert upper == pytest.approx(0.672, abs=1e-3)
+
 def test_confint_2sample():
     count1 = 5
     nobs1 = 10
@@ -378,3 +451,84 @@ def test_test_2sample():
     assert res.sample_stat_value == count1 / nobs1 - count2 / nobs2
     assert isinstance(res.stat, numbers.Number)
     assert isinstance(res.pvalue, numbers.Number)
+
+def test_confint_2sample_newcomb():
+    """
+    Checks values against Table II in [1]_.
+
+    References
+    ----------
+    .. [1] Newcombe, R. G. (1998).
+       Interval estimation for the difference between independent proportions:
+       comparison of eleven methods.
+       Statistics in medicine, 17(8), 873-890.
+    """
+    from mqr.inference.lib.proportion import confint_2sample_newcomb as newcomb
+    from mqr.inference.lib.proportion import confint_2sample_newcomb_cc as newcomb_cc
+
+    conf = 0.95
+    bounded = 'both'
+
+    # (a)
+    lower, upper = newcomb(56, 70, 48, 80, conf, bounded)
+    assert lower == pytest.approx(0.0524, abs=1e-4)
+    assert upper == pytest.approx(0.3339, abs=1e-4)
+    lower, upper = newcomb_cc(56, 70, 48, 80, conf, bounded)
+    assert lower == pytest.approx(0.0428, abs=1e-4)
+    assert upper == pytest.approx(0.3422, abs=1e-4)
+
+    # (b)
+    lower, upper = newcomb(9, 10, 3, 10, conf, bounded)
+    assert lower == pytest.approx(0.1705, abs=1e-4)
+    assert upper == pytest.approx(0.8090, abs=1e-4)
+    lower, upper = newcomb_cc(9, 10, 3, 10, conf, bounded)
+    assert lower == pytest.approx(0.1013, abs=1e-4)
+    assert upper == pytest.approx(0.8387, abs=1e-4)
+
+    # (c)
+    lower, upper = newcomb(6, 7, 2, 7, conf, bounded)
+    assert lower == pytest.approx(0.0582, abs=1e-4)
+    assert upper == pytest.approx(0.8062, abs=1e-4)
+    lower, upper = newcomb_cc(6, 7, 2, 7, conf, bounded)
+    assert lower == pytest.approx(-0.0290, abs=1e-4)
+    assert upper == pytest.approx(0.8423, abs=1e-4)
+
+    # (d)
+    lower, upper = newcomb(5, 56, 0, 29, conf, bounded)
+    assert lower == pytest.approx(-0.0381, abs=1e-4)
+    assert upper == pytest.approx(0.1926, abs=1e-4)
+    lower, upper = newcomb_cc(5, 56, 0, 29, conf, bounded)
+    assert lower == pytest.approx(-0.0667, abs=1e-4)
+    assert upper == pytest.approx(0.2037, abs=1e-4)
+
+    # (e)
+    lower, upper = newcomb(0, 10, 0, 20, conf, bounded)
+    assert lower == pytest.approx(-0.1611, abs=1e-4)
+    assert upper == pytest.approx(0.2775, abs=1e-4)
+    lower, upper = newcomb_cc(0, 10, 0, 20, conf, bounded)
+    assert lower == pytest.approx(-0.2005, abs=1e-4)
+    assert upper == pytest.approx(0.3445, abs=1e-4)
+
+    # (f)
+    lower, upper = newcomb(0, 10, 0, 10, conf, bounded)
+    assert lower == pytest.approx(-0.2775, abs=1e-4)
+    assert upper == pytest.approx(0.2775, abs=1e-4)
+    lower, upper = newcomb_cc(0, 10, 0, 10, conf, bounded)
+    assert lower == pytest.approx(-0.3445, abs=1e-4)
+    assert upper == pytest.approx(0.3445, abs=1e-4)
+
+    # (g)
+    lower, upper = newcomb(10, 10, 0, 20, conf, bounded)
+    assert lower == pytest.approx(0.6791, abs=1e-4)
+    assert upper == pytest.approx(1.0000, abs=1e-4)
+    lower, upper = newcomb_cc(10, 10, 0, 20, conf, bounded)
+    assert lower == pytest.approx(0.6014, abs=1e-4)
+    assert upper == pytest.approx(1.0000, abs=1e-4)
+
+    # (h)
+    lower, upper = newcomb(10, 10, 0, 10, conf, bounded)
+    assert lower == pytest.approx(0.6075, abs=1e-4)
+    assert upper == pytest.approx(1.0000, abs=1e-4)
+    lower, upper = newcomb_cc(10, 10, 0, 10, conf, bounded)
+    assert lower == pytest.approx(0.5128, abs=1e-4)
+    assert upper == pytest.approx(1.0000, abs=1e-4)
