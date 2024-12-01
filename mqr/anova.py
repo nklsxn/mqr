@@ -40,9 +40,9 @@ def summary(result, typ=2):
     (pd.DataFrame) -- The ANOVA (type 2) table for the regression
     '''
     table = sm.stats.anova_lm(result, typ=typ)
+    table.loc['Total'] = table.sum(axis=0, skipna=False)
     table['mean_sq'] = table['sum_sq'] / table['df']
     table = table[['df', 'sum_sq', 'mean_sq', 'F', 'PR(>F)']]
-    table.loc['Total'] = table.sum(axis=0, skipna=False)
     return table
 
 def coeffs(result, conf=0.95):
@@ -96,12 +96,10 @@ def groups(result, *, value: str, factor: str, conf=0.95):
     -------
     pd.DataFrame -- Average values per group with confidence intervals.
     """
-
-    from mqr import inference
     alpha = 1 - conf
     df = result.model.data.frame
     groupby = df.groupby(factor)[value]
-    cols = ['count', 'mean', 'std']
+    cols = ['count', 'mean']
     groups = groupby.agg(cols)
     groups.columns = cols
     cis = _groups_ci(result, value, factor, conf)
@@ -123,7 +121,6 @@ def interactions(df: pd.DataFrame, *, value: str, between: list[str]):
     -------
     pd.DataFrame -- Average values per pair of columns in between.
     """
-
     return df.groupby([*between])[value].mean().unstack()
 
 ################################################################################
@@ -150,14 +147,14 @@ def adequacy(result):
         * p (JB): p-value for JB test (null is zero skewness and zero excess
           kurtosis -- normality)
     """
-
-    result.summary()
     data = {
         'S': np.sqrt(result.mse_resid),
         'R-sq': result.rsquared,
         'R-sq (adj)': result.rsquared_adj,
         'F': result.fvalue,
         'PR(>F)': result.f_pvalue,
+        'AIC': result.aic,
+        'BIC': result.bic,
         'N': int(result.nobs),
     }
     return pd.DataFrame(
