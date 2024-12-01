@@ -30,6 +30,7 @@ with the `+` operator to a central composite design, in two blocks, like this:
 """
 
 from dataclasses import dataclass, field
+from collections.abc import Iterable
 import pyDOE3
 import numpy as np
 import pandas as pd
@@ -89,12 +90,12 @@ class Design:
     11       0      2  0.0  0.0  0.0  0.0
     """
     names: list[str]
-    levels: np.ndarray
-    runs: np.ndarray
-    pttypes: np.ndarray
-    blocks: np.ndarray
+    levels: pd.DataFrame
+    runs: pd.Index
+    pttypes: pd.Series
+    blocks: pd.DataFrame
 
-    def replicate(self, n):
+    def replicate(self, n, label=None):
         """
         Create a new design with each run replicated `n` times.
 
@@ -106,16 +107,24 @@ class Design:
         -------
         Design -- A new design that is a replicated version of this one.
         """
-        m, _ = self.levels.shape
+        idx = self.runs.repeat(n)
+        new_runs = pd.RangeIndex(1, len(self) * n + 1)
+        new_levels = self.levels.loc[idx].set_index(new_runs)
+        if self.pttypes is not None:
+            new_pttypes = self.pttypes.loc[idx].set_axis(new_runs)
+        else:
+            new_pttypes = None
+        new_blocks = self.blocks.loc[idx].set_index(new_runs)
+        if label is not None:
+            new_blocks[label] = np.tile(np.arange(n), len(self)) + 1
         return Design(
             names=self.names,
-            levels=np.repeat(self.levels, n, axis=0),
-            runs=np.arange(m*n)+1,
-            pttypes=np.repeat(self.pttypes, n, axis=0),
-            blocks=np.repeat(self.blocks, n, axis=0))
+            levels=new_levels,
+            runs=new_runs,
+            pttypes=new_pttypes,
+            blocks=new_blocks)
 
-
-    def as_block(self, block):
+    def as_block(self, level, name='Block'):
         """
         Return the same set of runs with their block label set to `block`.
 
@@ -127,12 +136,14 @@ class Design:
         -------
         Design -- A copy of this design with a new block label.
         """
+        new_blocks = self.blocks.copy()
+        new_blocks[name] = level
         return Design(
             names=self.names,
             levels=self.levels,
             runs=self.runs,
             pttypes=self.pttypes,
-            blocks=np.full(self.blocks.shape, block))
+            blocks=new_blocks)
 
     def to_df(self):
         """
@@ -142,10 +153,13 @@ class Design:
         -------
         pd.DataFrame -- The design.
         """
-        df = pd.DataFrame(
-            {'PtType': self.pttypes, 'Block': self.blocks},
-            index=self.runs)
-        df[self.names] = self.levels
+
+        df = pd.DataFrame(index=self.runs)
+        if self.pttypes is not None:
+            df['PtType'] = self.pttypes
+        df[self.blocks.columns] = self.blocks
+        for name in self.names:
+            df[name] = self.levels[name]
         return df
 
     def get_factor_df(self, name, ref_levels=0.0):
@@ -168,11 +182,11 @@ class Design:
             variable names as columns.
         """
         df = pd.DataFrame(columns=self.names, dtype=np.float64)
-        df[name] = np.sort(np.unique(self.levels[:, 0]))
+        df[name] = np.sort(np.unique(self.levels[name]))
         df.fillna(ref_levels, inplace=True)
         return df
 
-    def randomise_runs(self, preserve_blocks=True):
+    def randomise_runs(self, order=None):
         """
         Return the same set of runs, randomised over their run labels.
 
@@ -186,27 +200,20 @@ class Design:
         -------
         Design -- A copy of this design, randomised.
         """
-        rnd = np.empty(self.runs.shape, dtype=int)
-        if preserve_blocks:
-            for blk in np.unique(self.blocks):
-                idx = self.blocks == blk
-                rnd[idx] = np.random.choice(
-                    a=self.runs[idx],
-                    size=np.sum(idx),
-                    replace=False)
-            assert np.all(self.blocks[rnd-1] == self.blocks)
-        else:
-            rnd = np.random.choice(
-                a=self.runs,
-                size=len(self.runs),
-                replace=False)
-
+        df = self.to_df()
+        rnd = np.random.choice(
+            a=df.index,
+            size=df.shape[0],
+            replace=False)
+        result = df.loc[rnd]
+        if order is not None:
+            result.sort_values(order, inplace=True, kind='stable')
         return Design(
             names=self.names,
-            levels=self.levels[rnd-1],
-            runs=rnd,
-            pttypes=self.pttypes[rnd-1],
-            blocks=self.blocks[rnd-1])
+            levels=result[self.names],
+            runs=result.index,
+            pttypes=result['PtType'],
+            blocks=result[self.blocks.columns])
 
     def __add__(self, other):
         """
@@ -224,12 +231,14 @@ class Design:
         if self.names != other.names:
             raise AttributeError('Designs must contain the same variables.')
 
-        run_offset = np.max(self.runs)
+        new_runs = self.runs.append(other.runs + self.runs.max())
 
-        new_levels = np.vstack([self.levels, other.levels])
-        new_runs = np.hstack([self.runs, other.runs + run_offset])
-        new_pttypes = np.concatenate([self.pttypes, other.pttypes])
-        new_blocks = np.concatenate([self.blocks, other.blocks])
+        new_levels = pd.concat([self.levels, other.levels], axis=0)
+        new_levels.set_index(new_runs, inplace=True)
+        new_pttypes = pd.concat([self.pttypes, other.pttypes], axis=0).set_axis(new_runs)
+        new_blocks = pd.concat([self.blocks, other.blocks], axis=0)
+        new_blocks.set_index(new_runs, inplace=True)
+
         return Design(
             names=self.names,
             levels=new_levels,
@@ -237,7 +246,10 @@ class Design:
             pttypes=new_pttypes,
             blocks=new_blocks)
 
-    def __matmul__(self, transform):
+    def __len__(self):
+        return len(self.runs)
+
+    def transform(self, **transforms):
         """
         Apply a transform to the levels of this design.
 
@@ -249,15 +261,44 @@ class Design:
         -------
         Design -- A copy of this design with new levels.
         """
+        new_levels = self.levels.copy()
+        for name, tx in transforms.items():
+            if callable(tx):
+                new_levels[name] = tx(self.levels[name])
+            elif isinstance(tx, dict):
+                new_levels[name] = np.vectorize(tx.get)(self.levels[name])
+            else:
+                raise ValueError(f'Unknown transform {tx}.')
         return Design(
             names=self.names,
-            levels=transform(self.levels),
+            levels=new_levels,
             runs=self.runs,
             pttypes=self.pttypes,
             blocks=self.blocks)
 
+    # def __matmul__(self, transform):
+    #     """
+    #     Apply a transform to the levels of this design.
+
+    #     Parameters
+    #     ----------
+    #     transform : :class:`Transform`
+    #         Transform to apply.
+
+    #     Returns
+    #     -------
+    #     :class:`Design`
+    #         A copy of this design with new levels.
+    #     """
+    #     return Design(
+    #         names=self.names,
+    #         levels=transform(self.levels),
+    #         runs=self.runs,
+    #         pttypes=self.pttypes,
+    #         blocks=self.blocks)
+
     @staticmethod
-    def from_levels(names, levels, runs=None, block=1):
+    def from_levels(names, levels, runs=None):
         """
         Construct a design from an array of levels.
 
@@ -277,23 +318,24 @@ class Design:
         -------
         Design -- The new design.
         """
-        if levels.shape[1] != len(names):
-            raise AttributeError('Length of `names` does not match number of columns in `levels`.')
-        m = levels.shape[0]
-        if runs is None:
-            runs = np.arange(m) + 1
-        pttypes = np.apply_along_axis(Design._pttype, 1, levels)
-        m, _ = levels.shape
-        blocks = np.full(m, block)
+        m, n = levels.shape
+        if n != len(names):
+            raise AttributeError('Length of `names` must match number of columns in `levels`.')
+        if (runs is not None) and len(runs) != m:
+            raise AttributeError('Length of `runs` must match number of rows in `levels`.')
+
+        runs = pd.RangeIndex(1, m+1) if (runs is None) else pd.Index(runs)
+        levels = pd.DataFrame(levels, index=runs, columns=names)
+        blocks = pd.DataFrame(index=runs)
         return Design(
             names=names,
             levels=levels,
             runs=runs,
-            pttypes=pttypes,
+            pttypes=None,
             blocks=blocks)
 
     @staticmethod
-    def from_fullfact(names, levels, block=1):
+    def from_fullfact(names, levels, scale_origin=True, pttypes=True):
         """
         Construct a design from `pyDOE3.fullfact(...)`, and centre the level
         values on 0.
@@ -312,22 +354,19 @@ class Design:
         -------
         Design -- The new design.
         """
-        exp_levels = pyDOE3.fullfact(levels)
-        for i, lvl in enumerate(levels):
-            exp_levels[:, i] = Design._scale(exp_levels[:, i], lvl)
-        m = exp_levels.shape[0]
-        runs = np.arange(m) + 1
-        pttypes = np.full(m, 1)
-        blocks = np.full(m, block)
-        return Design(
-            names=names,
-            levels=exp_levels,
-            runs=runs,
-            pttypes=pttypes,
-            blocks=blocks)
+        coded_levels = pyDOE3.fullfact(levels)
+        design = Design.from_levels(names, coded_levels)
+        if scale_origin:
+            value_counts = [len(np.unique(design.levels[name])) for name in design.names]
+            mapper = lambda x: Design._scale(len(np.unique(x)))(x)
+            design.levels = design.levels.apply(mapper)
+        if np.all(np.isclose(levels, 2)):
+            design.pttypes = pd.Series(np.ones(len(design), dtype='u1'), design.runs)
+
+        return design
 
     @staticmethod
-    def from_fracfact(names, gen, block=1):
+    def from_fracfact(names, gen):
         """
         Construct a design from `pyDOE3.fracfact(...)`.
 
@@ -346,19 +385,12 @@ class Design:
         Design -- The new design.
         """
         levels = pyDOE3.fracfact(gen)
-        m = levels.shape[0]
-        runs = np.arange(m) + 1
-        pttypes = np.full(m, 1)
-        blocks = np.full(m, block)
-        return Design(
-            names=names,
-            levels=levels,
-            runs=runs,
-            pttypes=pttypes,
-            blocks=blocks)
+        design = Design.from_levels(names, levels)
+        design.pttypes = pd.Series(np.ones(len(design), dtype='u1'), design.runs)
+        return design
 
     @staticmethod
-    def from_ccdesign(names, block=1, center=(0, 0), alpha='orthogonal', face='circumscribed'):
+    def from_ccdesign(names, center=(0, 0), alpha='orthogonal', face='circumscribed'):
         """
         Construct a design from `pyDOE3.ccdesign(...)`.
 
@@ -377,21 +409,13 @@ class Design:
         -------
         Design -- The new design.
         """
-        n = len(names)
-        levels = pyDOE3.ccdesign(n, center=center, alpha=alpha, face=face)
-        m = levels.shape[0]
-        runs = np.arange(m) + 1
-        pttypes = np.apply_along_axis(Design._pttype, 1, levels)
-        blocks = np.full(m, block)
-        return Design(
-            names=names,
-            levels=levels,
-            runs=runs,
-            pttypes=pttypes,
-            blocks=blocks)
+        levels = pyDOE3.ccdesign(len(names), center=center, alpha=alpha, face=face)
+        design = Design.from_levels(names, levels)
+        design.pttypes = design.levels.apply(Design._pttype, axis=1).astype('u1')
+        return design
 
     @staticmethod
-    def from_centrepoints(names, n, block=1):
+    def from_centrepoints(names, n):
         """
         Construct a design from runs of centrepoints.
 
@@ -409,19 +433,12 @@ class Design:
         Design -- The new design.
         """
         levels = np.zeros([n, len(names)])
-        m = levels.shape[0]
-        runs = np.arange(m) + 1
-        pttypes = np.full(n, 0)
-        blocks = np.full(n, block)
-        return Design(
-            names=names,
-            levels=levels,
-            runs=runs,
-            pttypes=pttypes,
-            blocks=blocks)
+        design = Design.from_levels(names, levels)
+        design.pttypes = pd.Series(np.zeros(len(design), dtype='u1'), design.runs)
+        return design
 
     @staticmethod
-    def from_axial(names, exclude=None, magnitude=2.0, block=1):
+    def from_axial(names, exclude=None, magnitude=2.0):
         """
         Construct a design from runs of axial points.
 
@@ -453,16 +470,25 @@ class Design:
                 levels[2*j, i] = -magnitude
                 levels[2*j+1, i] = magnitude
                 j += 1
-        m = levels.shape[0]
-        runs = np.arange(m) + 1
-        pttypes = np.full(m, 2)
-        blocks = np.full(m, block)
-        return Design(
-            names=names,
-            levels=levels,
-            runs=runs,
-            pttypes=pttypes,
-            blocks=blocks)
+        design = Design.from_levels(names, levels)
+        design.pttypes = pd.Series(2*np.ones(len(design), dtype='u1'), design.runs)
+        return design
+
+    @staticmethod
+    def _is_centre(point):
+        # Origin is a centre point
+        return np.all(np.isclose(point, 0.0))
+
+    @staticmethod
+    def _is_corner(point):
+        # Same distance from the origin on all axes
+        d = np.abs(point)
+        return np.all(np.isclose(d.iloc[1:], d.iloc[0]))
+
+    @staticmethod
+    def _is_axial(point):
+        # One non-zero entry (on an axis)
+        return np.sum(~np.isclose(point, 0.0)) == 1
 
     @staticmethod
     def _pttype(point):
@@ -473,26 +499,22 @@ class Design:
             - any point with only one non-zero entry is an axial point
             - all other points cannot be classified
         '''
-        if np.all(np.isclose(point, 0.0)):
-            # Centre point
+        if Design._is_centre(point):
             return 0
-        elif np.all(np.isclose(np.abs(point), np.mean(np.abs(point)))):
-            # Corner point
+        elif Design._is_corner(point):
             return 1
-        elif np.sum(~np.isclose(point, 0.0)) == 1:
-            # Axial point
+        elif Design._is_axial(point):
             return 2
-        elif np.sum(np.isclose(np.abs(point), 1.0)) == 2:
-            # Edge point
-            return 3
         else:
-            raise AttributeError(f'Could not determine type of point: {point}.')
+            return None
 
     @staticmethod
-    def _scale(levels, lvl):
-        s = 1 if lvl % 2 else 2
-        scaled = levels * s
-        return scaled - scaled[-1] / 2
+    def _scale(level_count):
+        def scale(levels):
+            s = 1 if level_count % 2 else 2
+            scaled = levels * s
+            return scaled - scaled.max() / 2
+        return scale
 
     def _repr_(self):
         return self.to_df()
@@ -503,7 +525,7 @@ class Design:
 @dataclass
 class Transform:
     @staticmethod
-    def from_map(level_map):
+    def from_map(map):
         """
         Construct an affine transform.
 
@@ -523,37 +545,12 @@ class Transform:
         -------
         Affine(Transform) -- The transform.
         """
-        n = len(level_map)
-        scale = np.empty(n)
-        translate = np.empty(n)
-        for i, d in enumerate(level_map):
-            [(l, lval), (r, rval)] = d.items()
-            scale[i] = (rval - lval) / (r - l)
-            translate[i] = lval - l * scale[i]
+        [(l, lval), (r, rval)] = map.items()
+        scale = (rval - lval) / (r - l)
+        translate = lval - l * scale
         return Affine(
             scale=scale,
             translate=translate)
-
-    @staticmethod
-    def from_categories(category_map):
-        """
-        Construct an affine transform.
-
-        Arguments
-        ---------
-        category_map (list[dict[float, object]]) -- A list of dictionaries that
-            map from an existing level to a new level. Each dict corresponds to
-            a variable and has two float keys, corresponding to existing levels
-            and mapping to any object that is the new corresponding level.
-            Unlike the Affine transform, the Categorical transform does not
-            interpolate/extrapolate values; each level in the design must appear
-            in the dict.
-
-        Returns
-        -------
-        Categorical(Transform) -- The transform.
-        """
-        return Categorical(category_map)
 
 @dataclass
 class Affine(Transform):
@@ -569,34 +566,10 @@ class Affine(Transform):
     translate (np.ndarray) -- A vector with the same dimension as the variable
         space, that offsets the labels after they are scaled by `scale`.
     """
-    scale: np.ndarray
-    translate: np.ndarray
+    scale: float
+    translate: float
 
-    def __call__(self, levels):
-        return levels * self.scale + self.translate
+    def __call__(self, level):
 
-@dataclass
-class Categorical(Transform):
-    """
-    A transform for categorical levels in a Design.
 
-    .
-
-    Attributes
-    ----------
-    categories (list[dict]) -- List of maps corresponding to variables; existing
-        levels for keys and new categorical levels for values.
-    dtype (str) -- Type of the new category values.
-    """
-    categories: list[dict]
-    dtype: str = field(default='<U64')
-
-    def __call__(self, levels):
-        if levels.shape[1] != len(self.categories):
-            raise AttributeError(f'wrong number of variables (got {levels.shape[1]} columns, expected {len(self.categories)})')
-
-        res = np.empty(levels.shape, dtype=self.dtype)
-        for i in range(len(self.categories)):
-            tr = lambda x: self.categories[i][x]
-            res[:, i] = np.vectorize(tr)(levels[:, i])
-        return res
+        return level * self.scale + self.translate
