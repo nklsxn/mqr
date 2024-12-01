@@ -41,3 +41,23 @@ def clip_where(a, a_min, a_max, where):
         return aa[0]
     else:
         return aa
+
+def fredholm2(t0, fn_K, fn_g, lmda, x, w):
+
+    if len(x) != len(w):
+        raise ValueError('Vectors x and w must be the same length.')
+
+    N = len(x)
+    g = np.full([N, 1], np.nan)
+    K = np.full([N, N], np.nan)
+    I = np.eye(N)
+
+    for i in range(N):
+        g[i] = fn_g(i)
+        for j in range(N):
+            K[i, j] = w[j] * fn_K(x[i], x[j])
+
+    L = np.linalg.solve(I - lmda * K, g)[:, 0]
+
+    # Nystrom's interpolation
+    return fn_g(t0) + lmda * np.sum(w * L * fn_K(t0, x))

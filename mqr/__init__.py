@@ -2,14 +2,13 @@ import importlib.metadata
 __version__ = importlib.metadata.version('mqr-quality')
 
 import mqr.anova
-import mqr.constants
-import mqr.control
 import mqr.doe
 import mqr.inference
 import mqr.msa
 import mqr.nbtools
 import mqr.plot
 import mqr.process
+import mqr.spc
 import mqr.summary
 
 # Sample data
