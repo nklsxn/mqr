@@ -10,6 +10,7 @@ import mqr.plot
 import mqr.process
 import mqr.spc
 import mqr.summary
+import mqr.transforms
 
 # Sample data
 def sample_data(name):
