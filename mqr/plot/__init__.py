@@ -1,16 +1,46 @@
 """
-Routines for common plots.
+=======================
+Plots (:mod:`mqr.plot`)
+=======================
 
-Includes:
-* fishbone diagrams (`ishikawa`),
-* descriptive statistics (`summary`),
-* correlation (`correlation`),
-* confidence intervals (`confint`),
-* process capability (`process`).
-* residuals and interactions from regression (`regression`),
-* measurement system analysis (`msa`).
-* statistical process control charts (`control`), and
-* probability plots (`probplot`).
+.. currentmodule:: mqr.plot
+
+.. rubric:: Functions
+.. autosummary::
+    :toctree: generated/
+
+    Figure
+    confint
+    ishikawa
+    summary
+
+.. rubric:: Modules
+.. autosummary::
+
+    anova
+    msa
+    process
+    correlation
+    regression
+    spc
+
+.. rubric:: Modules
+.. autosummary::
+
+    tools
+
+.. toctree::
+    :maxdepth: 1
+    :hidden:
+    :titlesonly:
+
+    plot/mqr.plot.anova
+    plot/mqr.plot.msa
+    plot/mqr.plot.process
+    plot/mqr.plot.correlation
+    plot/mqr.plot.regression
+    plot/mqr.plot.spc
+    plot/mqr.plot.tools
 """
 from mqr.plot.figure import Figure
 

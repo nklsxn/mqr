@@ -6,9 +6,10 @@ def make_ordinal(n):
 
     Thanks to: https://stackoverflow.com/a/50992575
 
-    Arguments
-    ---------
-    n -- the number to express in ordinal representation
+    Parameters
+    ----------
+    n : int
+        Number to express in ordinal representation
     '''
     if not np.isclose(n, int(n)):
         number = str(n)
@@ -25,13 +26,16 @@ def clip_where(a, a_min, a_max, where):
     '''
     Clamp `a` so that `a_min <= a <= a_max` is true or all true, masked by `where`.
 
-    Arguments
-    ---------
-    a (number or array) -- value or values to clip.
-    a_min (number) -- minimum value.
-    a_max (number) -- maximum value.
-    where (bool or array[bool]) -- clip when this value or corresponding element
-        evaluates to `True`.
+    Parameters
+    ----------
+    a : number or array_like
+        Value or values to clip.
+    a_min : number
+        Minimum value.
+    a_max : number
+        Maximum value.
+    where : bool or array[bool]
+        Clip when this value or corresponding element evaluates to `True`.
     '''
     aa = np.atleast_1d(a).copy()
     aa[where] = np.clip(np.atleast_1d(a)[where], a_min, a_max)
@@ -43,6 +47,42 @@ def clip_where(a, a_min, a_max, where):
         return aa
 
 def fredholm2(t0, fn_K, fn_g, lmda, x, w):
+    """
+    Solve a Fredholm equation of the second kind.
+
+    Evaluates f at t0 in:
+
+    .. math::
+
+        f(t) = g(t) + λ \\int_Q K(t, s) f(s) ds
+
+    where the definite integral is approximated over the region Q defined by the
+    quadrature points `x` and weights `w`.
+
+    Uses the quadrature points and weights provided to form linear equations,
+    and then interpolates the result using Nystrom's method. See [1]_ for a summary.
+
+    Parameters
+    ----------
+    t0 : float
+        Point to evaluate the function `f(t)`.
+    fn_K : Callable[]
+        Function that returns values of `K(t, s)`; see equation above.
+    fn_g : Callable[]
+        Function that returns values of `g(t)`; see equation above.
+    lmbda : float
+        Multiple of the integral term; see equation above.
+    x : array_like
+        Quadrature abcissa points.
+    w : array_like
+        Quadrature weights.
+
+    References
+    ----------
+    .. [1]  Press, W. H. (2007).
+            Numerical recipes 3rd edition: The art of scientific computing.
+            Cambridge university press.
+    """
 
     if len(x) != len(w):
         raise ValueError('Vectors x and w must be the same length.')

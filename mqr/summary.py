@@ -1,5 +1,18 @@
 """
-Summary statistics for samples of data.
+=======================================
+Summary Statistics (:mod:`mqr.summary`)
+=======================================
+
+.. currentmodule:: mqr.summary
+
+.. rubric:: Classes
+
+.. autosummary::
+    :toctree: generated/
+
+    Sample
+    Study
+
 """
 
 import numpy as np
@@ -20,37 +33,115 @@ class Sample:
     Construct using a pandas Series (ie. a column from a dataframe). Intended
     for use by a `Study` object.
 
-    Arguments
-    ---------
-    name (str) -- Name of the KPI or measurement.
-    conf (float) -- Confidence level to use in confidence intervals.
-    data (pd.Series) -- Sample measurements.
+    Attributes
+    ----------
+    name : str
+        Name of the KPI or measurement.
+    conf : float
+        Confidence level to use in confidence intervals.
+    data : pd.Series
+        Sample measurements.
 
-    ad_stat(float) -- Anderson-Darling normality test statistic.
-    ad_pvalue (float) -- p-value associated with `ad_stat`.
-    ks_stat (float) -- Kolmogorov-Smirnov goodness of fit (with normal) test statistic.
-    ks_pvalue (float) -- p-value associated with `ks_stat`.
-    nobs (int) -- Number of measurements in the sample.
+    ad_stat : float
+        Anderson-Darling normality test statistic.
+    ad_pvalue : float
+        p-value associated with `ad_stat`.
+    ks_stat : float
+        Kolmogorov-Smirnov goodness of fit (with normal) test statistic.
+    ks_pvalue : float
+        p-value associated with `ks_stat`.
+    nobs : int
+        Number of measurements in the sample.
 
-    mean (float) -- Sample mean.
-    sem (float) -- Standard error of mean.
-    std (float) -- Sample standard deviation.
-    var (float) -- Sample variance.
-    skewness (float) -- Skewness.
-    kurtosis (float) -- Kurtosis.
-    minimum (float) -- Smallest observation.
-    quartile1 (float) -- 25th percentile observation.
-    median (float) -- Median observation.
-    quartile3 (float) -- 75th percentile obsevation.
-    maximum (float) --  Largest observation.
-    iqr (float) -- Inter-quartile range.
+    mean : float
+        Sample mean.
+    sem : float
+        Standard error of mean.
+    std : float
+        Sample standard deviation.
+    var : float
+        Sample variance.
+    skewness : float
+        Skewness.
+    kurtosis : float
+        Kurtosis.
+    minimum : float
+        Smallest observation.
+    quartile1 : float
+        25th percentile observation.
+    median : float
+        Median observation.
+    quartile3 : float
+        75th percentile obsevation.
+    maximum : float
+         Largest observation.
+    iqr : float
+        Inter-quartile range.
 
-    conf_mean (ConfidenceInterval) -- Conf interval on the mean.
-    conf_var (ConfidenceInterval) -- Conf interval on the variance.
-    conf_quartile1 (ConfidenceInterval) -- Conf interval on the 25th percentile.
-    conf_median (ConfidenceInterval) -- Conf interval on the median.
-    conf_quartile3 (ConfidenceInterval) -- Conf interval on the 75th percentile.
-    outliers (np.ndarray) -- List of points falling further from a quartile than `1.5 * iqr`.
+    conf_mean : ConfidenceInterval
+        Conf interval on the mean.
+    conf_var : ConfidenceInterval
+        Conf interval on the variance.
+    conf_quartile1 : ConfidenceInterval
+        Conf interval on the 25th percentile.
+    conf_median : ConfidenceInterval
+        Conf interval on the median.
+    conf_quartile3 : ConfidenceInterval
+        Conf interval on the 75th percentile.
+    outliers : array_like
+        List of points falling further from a quartile than `1.5 * iqr`.
+
+    Examples
+    --------
+    In a jupyter notebook, sample summaries are shown as HTML tables:
+
+    >>> data = pd.read_csv(mqr.sample_data('study-random-5x5.csv'))
+    >>> mqr.summary.Sample(data['KPI1'])
+
+    produces
+
+    +--------------------------------+
+    | KPI1                           |
+    +================================+
+    | Normality (Anderson-Darling).  |
+    +--------------+-----------------+
+    | Stat         | 0.34261         |
+    +--------------+-----------------+
+    | P-value      | 0.48588         |
+    +--------------+-----------------+
+    |                                |
+    +--------------+-----------------+
+    | N            | 120             |
+    +--------------+-----------------+
+    |                                |
+    +--------------+-----------------+
+    | Mean         | 149.97          |
+    +--------------+-----------------+
+    | StdDev       | 1.1734          |
+    +--------------+-----------------+
+    | Variance     | 1.3768          |
+    +--------------+-----------------+
+    | Skewness     | 0.23653         |
+    +--------------+-----------------+
+    |                                |
+    +--------------+-----------------+
+    | Kurtosis     | 0.34012         |
+    +--------------+-----------------+
+    | Minimum      | 147.03          |
+    +--------------+-----------------+
+    | 1st Quartile | 149.22          |
+    +--------------+-----------------+
+    | Median       | 149.97          |
+    +--------------+-----------------+
+    | 3rd Quartile | 150.56          |
+    +--------------+-----------------+
+    | Maximum      | 153.27          |
+    +--------------+-----------------+
+    |                                |
+    +--------------+-----------------+
+    | N Outliers.  | 5               |
+    +--------------+-----------------+
+
     """
     name: str = None
     conf: float = field(default=np.nan, repr=False)
@@ -137,21 +228,74 @@ class Study:
     """
     Measurements and summary statistics for a set of samples from a process.
 
+    Attributes
+    ----------
+    name : str
+        The name of the process or experiment.
+    data : pd.DataFrame
+        Measurements with KPIs in each column, and possibly other columns like
+        run lables, operator IDs, etc.
+    measurements : list[str]
+        A list of column names to include for descriptive stats.
+    samples : dict[str, mqr.process.Sample]
+        Automatically constructed. Dict of `mqr.process.Sample` for each KPI in
+        the dataframe.
+    conf : float
+        Confidence level to use for confidence intervals.
+    num_display_fmt : int
+        The format specifier to use when displaying data as text.
+
+    Examples
+    --------
     Construct this object using a dataframe of measurements, optionally providing
     a list of columns to include:
-    >>> df = pd.read_csv('process_measurements.csv')
-    >>> Study(df, ['Input1', 'Input2', 'Input3', 'OutputA', 'OutputB'])
 
-    Fields
-    ------
-    name (str) -- The name of the process or experiment.
-    data (pd.DataFrame) -- Measurements with KPIs in each column, and possibly
-        other columns like run lables, operator IDs, etc.
-    measurements (list[str]) -- A list of column names to include for descriptive stats.
-    samples (dict[str, mqr.process.Sample]) -- Automatically constructed. Dict
-        of `mqr.process.Sample` for each KPI in the dataframe.
-    conf (float) -- Confidence level to use for confidence intervals.
-    num_display_fmt (int) -- The format specifier to use when displaying data as text.
+    >>> data = pd.read_csv(mqr.sample_data('study-random-5x5.csv'))
+    >>> mqr.summary.Study(
+    >>>     data=data,
+    >>>     measurements=['KPI1', 'KPI2', 'KPI3', 'KPO1', 'KPO2'],
+    >>>     conf=0.98)
+
+    That input is shown in notebooks as an HTML table:
+
+    +--------------+---------+-----------+-----------+----------+----------+
+    |              | KPI1    | KPI2      | KPI3      | KPO1     | KPO2     |
+    +==============+=========+===========+===========+==========+==========+
+    | Normality (Anderson-Darling)                                         |
+    +--------------+---------+-----------+-----------+----------+----------+
+    | Stat         | 0.34261 | 0.23796   | 1.1874    | 0.19203  | 0.70213  |
+    +--------------+---------+-----------+-----------+----------+----------+
+    | P-value      | 0.48588 | 0.77835   | 0.0040775 | 0.89417  | 0.065144 |
+    +--------------+---------+-----------+-----------+----------+----------+
+    +--------------+---------+-----------+-----------+----------+----------+
+    | N            | 120     | 120       | 120       | 120      | 120      |
+    +--------------+---------+-----------+-----------+----------+----------+
+    +--------------+---------+-----------+-----------+----------+----------+
+    | Mean         | 149.97  | 20.003    | 14.004    | 160.05   | 4.0189   |
+    +--------------+---------+-----------+-----------+----------+----------+
+    | StdDev       | 1.1734  | 0.24527   | 0.75643   | 2.0489   | 1.5634   |
+    +--------------+---------+-----------+-----------+----------+----------+
+    | Variance     | 1.3768  | 0.060156  | 0.57219   | 4.1979   | 2.4443   |
+    +--------------+---------+-----------+-----------+----------+----------+
+    | Skewness     | 0.23653 | -0.31780  | -0.63437  | -0.12064 | 0.087295 |
+    +--------------+---------+-----------+-----------+----------+----------+
+    | Kurtosis     | 0.34012 | -0.032159 | 0.37947   | -0.16908 | -0.18817 |
+    +--------------+---------+-----------+-----------+----------+----------+
+    +--------------+---------+-----------+-----------+----------+----------+
+    | Minimum      | 147.03  | 19.234    | 11.639    | 154.89   | -0.37247 |
+    +--------------+---------+-----------+-----------+----------+----------+
+    | 1st Quartile | 149.22  | 19.833    | 13.642    | 158.87   | 2.9019   |
+    +--------------+---------+-----------+-----------+----------+----------+
+    | Median       | 149.97  | 20.012    | 14.033    | 160.02   | 3.9264   |
+    +--------------+---------+-----------+-----------+----------+----------+
+    | 3rd Quartile | 150.56  | 20.173    | 14.481    | 161.35   | 5.2160   |
+    +--------------+---------+-----------+-----------+----------+----------+
+    | Maximum      | 153.27  | 20.505    | 15.460    | 164.51   | 8.2828   |
+    +--------------+---------+-----------+-----------+----------+----------+
+    +--------------+---------+-----------+-----------+----------+----------+
+    | N Outliers   | 5       | 1         | 4         | 1        | 0        |
+    +--------------+---------+-----------+-----------+----------+----------+
+
     """
     name: str
     data: pd.DataFrame = field(repr=False)
@@ -183,6 +327,14 @@ class Study:
         self.num_display_fmt = num_display_fmt
 
     def get_data(self, exclude_inputs=True):
+        """
+        Get source Dataframe, optionally showing only measurement columns.
+
+        Parameters
+        ----------
+        exclude_inputs : bool, optional
+            When `True`, only show columns listed in `measurements`.
+        """
         if exclude_inputs:
             return self.data[self.measurements]
         else:

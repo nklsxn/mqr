@@ -1,7 +1,3 @@
-"""
-Confidence intervals and hypothesis tests (parametric) for the mean.
-"""
-
 from mqr.inference.confint import ConfidenceInterval
 from mqr.inference.hyptest import HypothesisTest
 from mqr.inference.power import TestPower
@@ -17,24 +13,24 @@ import warnings
 
 def size_1sample(effect, alpha, beta, alternative='two-sided'):
     """
-    Calculate sample size for test of mean of sample.
+    Calculate sample size for a t-test for the mean.
 
-    Calls stats.models.stats.power.tt_solve_power` (statsmodels.org).
+    Calls :func:`sm..tt_solve_power <statsmodels.stats.power.tt_solve_power>`.
 
-    Arguments
-    ---------
-    effect (float) -- Required effect size.
-    alpha (float) -- Required significance.
-    beta (float) -- Required beta (1 - power).
-
-    Optional
-    --------
-    alternative (str) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
+    Parameters
+    ----------
+    effect : float
+        Required effect size; Cohen's F.
+    alpha : float
+        Required significance.
+    beta : float
+        Required beta (1 - power).
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
 
     Returns
     -------
-    mqr.power.TestPower
+    :class:`mqr.inference.power.TestPower`
     """
     alt = interop.alternative(alternative, 'statsmodels')
     power = 1.0 - beta
@@ -60,22 +56,22 @@ def size_2sample(effect, alpha, beta, alternative='two-sided'):
     """
     Calculate sample size for test of difference of unpaired means.
 
-    Calls `statsmodels.stats.power.tt_ind_solve_power` (statsmodels.org).
+    Calls :func:`sm..tt_ind_solve_power <statsmodels.stats.power.tt_ind_solve_power>`.
 
-    Arguments
-    ---------
-    effect (float) -- Required effect size.
-    alpha (float) -- Required significance.
-    beta (float) -- Required beta (1 - power).
-
-    Optional
-    --------
-    alternative (str) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
+    Parameters
+    ----------
+    effect : float
+        Required effect size; Cohen's F.
+    alpha : float
+        Required significance.
+    beta : float
+        Required beta (1 - power).
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
 
     Returns
     -------
-    mqr.power.TestPower
+    :class:`mqr.inference.power.TestPower`
     """
     alt = interop.alternative(alternative, 'statsmodels')
     power = 1.0 - beta
@@ -102,22 +98,22 @@ def size_paired(effect, alpha, beta, alternative='two-sided'):
     """
     Calculate sample size for test of difference of unpaired means.
 
-    Calls `statsmodels.stats.power.TTestPower` (statsmodels.org).
+    Calls :meth:`sm..solve_power <statsmodels.stats.power.TTestPower.solve_power>`.
 
-    Arguments
-    ---------
-    effect (float) -- Required effect size.
-    alpha (float) -- Required significance.
-    beta (float) -- Required beta (1 - power).
-
-    Optional
-    --------
-    alternative (str) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
+    Parameters
+    ----------
+    effect : float
+        Required effect size; Cohen's F.
+    alpha : float
+        Required significance.
+    beta : float
+        Required beta (1 - power).
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
 
     Returns
     -------
-    mqr.power.TestPower
+    :class:`mqr.inference.power.TestPower`
     """
     alt = interop.alternative(alternative, 'statsmodels')
     power = 1.0 - beta
@@ -139,25 +135,25 @@ def confint_1sample(x, conf=0.95, bounded='both', method='t'):
     """
     Confidence interval for mean.
 
-    Uses `statsmodels.stats.api.DescrStatsW(...).tconfint_mean` (statsmodels.org).
-
-    Arguments
-    ---------
-    x (array[float]) -- Calculate interval for mean of this sample.
-
-    Optional
-    --------
-    conf (float) -- Confidence level that determines the width of the interval.
-        (Default 0.95.)
-    bounded (str) -- Which sides of the interval to close. One of "both",
-        "below" or "above". (Default "both".)
-    method (str) -- Type of test (default "t"):
-        "t" for student's t (`statsmodels...tconfint_mean', scipy.org),
-        "z" for z-score (`statsmodels...zconfint_mean`, statsmodels.org).
+    Parameters
+    ----------
+    x : array_like
+        Interval for the mean of the population from which this data was sampled.
+    conf : float, optional
+        Confidence level that determines the width of the interval.
+    bounded : {'both', 'below', 'above'}, optional
+        Which sides of the interval to close.
+    method : {'t', 'z'}, optional
+        | 't'
+        |   Interval from Student's t distribution.
+            Calls :meth:`sm..tconfint_mean <statsmodels.stats.weightstats.DescrStatsW.tconfint_mean>`.
+        | 'z'
+        |   Interval from the z-scores.
+            Calls :meth:`sm..zconfint_mean <statsmodels.stats.weightstats.DescrStatsW.zconfint_mean>`.
 
     Returns
     -------
-    mqr.confint.ConfidenceInterval
+    :class:`mqr.inference.confint.ConfidenceInterval`
     """
     value = np.mean(x)
     alt = interop.bounded(bounded, 'statsmodels')
@@ -182,27 +178,27 @@ def confint_2sample(x, y, conf=0.95, pooled=True, bounded='both', method='t'):
     """
     Confidence interval for difference of two unpaired means.
 
-    Uses `DescrStatsW` and `CompareMeans` from `statsmodels.stats.api` (statsmodels.org).
-
-    Arguments
-    ---------
-    x, y (array[float]) -- Calculate interval for difference between means of these samples.
-
-    Optional
-    --------
-    conf (float) -- Confidence level that determines the width of the interval.
-        (Default 0.95.)
-    pooled (bool) -- When `True`, the samples have the same variance,
-        `False` otherwise. (Default True.)
-    bounded (str) -- Which sides of the interval to close. One of "both",
-        "below" or "above". (Default "both".)
-    method (str) -- Type of test (default "t"):
-        "t" for student's t (`statsmodels...tconfint_diff', scipy.org),
-        "z" for z-score (`statsmodels...zconfint_diff`, statsmodels.org).
+    Parameters
+    ----------
+    x, y : array_like
+        Calculate interval for difference between means of these samples.
+    conf : float
+        Confidence level that determines the width of the interval.
+    pooled : bool
+        When `True`, the samples have the same variance, `False` otherwise.
+    bounded : {'both', 'below', 'above'}, optional
+        Which sides of the interval to close.
+    method : {'t', 'z'}, optional
+        | 't'
+        |   Interval based on Student's t distribution.
+            Calls :meth:`sm..tconfint_diff <statsmodels.stats.weightstats.CompareMeans.tconfint_diff>`.
+        | 'z'
+        |   Interval based on z-scores.
+            Calls :meth:`sm..zconfint_diff <statsmodels.stats.weightstats.CompareMeans.zconfint_diff>`.
 
     Returns
     -------
-    mqr.confint.ConfidenceInterval
+    :class:`mqr.inference.confint.ConfidenceInterval`
     """
     value = np.mean(x) - np.mean(y)
     alt = interop.bounded(bounded, 'statsmodels')
@@ -237,24 +233,25 @@ def confint_paired(x, y, conf=0.95, bounded='both', method='t'):
     """
     Confidence interval for difference of two paired means.
 
-    Equivalent to `mqr.inference.mean.confint_1sample(x-y)`.
-
-    Arguments
-    ---------
-    x, y (array[float]) -- Calculate interval for difference between means of these samples.
-
-    Optional
-    --------
-    conf (float) -- Confidence level that determines the width of the interval.
-        (Default 0.95.)
-    bounded (str) -- Which sides of the interval to close. (Default "both".)
-    method (str) -- Type of test (default "t"):
-        "t" for student's t (`scipy.stats.ttest_1samp`, scipy.org),
-        "z" for z-score (`statsmodels.stats.api.ztest`, statsmodels.org).
+    Parameters
+    ----------
+    x, y : array_like
+        Calculate interval for difference between means of these samples.
+    conf : float, optional
+        Confidence level that determines the width of the interval.
+    bounded : {'two-sided', 'less', 'greater'}, optional
+        Which sides of the interval to close.
+    method : {'t', 'z'}, optional
+        | 't'
+        |   Interval based on Student's t distribution.
+            Calls :meth:`sm..tconfint_mean <statsmodels.stats.weightstats.DescrStatsW.tconfint_mean>`.
+        | 'z'
+        |   Interval based on z-score.
+            Calls :meth:`sm..zconfint_mean <statsmodels.stats.weightstats.DescrStatsW.zconfint_mean>`.
 
     Returns
     -------
-    mqr.confint.ConfidenceInterval
+    :class:`mqr.inference.confint.ConfidenceInterval`
     """
     delta = x - y
     ci = confint_1sample(delta, conf, bounded, method)
@@ -265,24 +262,28 @@ def test_1sample(x, H0_mean=0.0, alternative='two-sided', method='t'):
     """
     Hypothesis test for the mean of a sample.
 
-    Null-hypothesis: `mean(x) == H0_mean`.
+    Null-hypothesis
+        mean(`x`) == `H0_mean`
 
-    Arguments
-    ---------
-    x (array[float]) -- Test mean of this sample.
-
-    Optional
-    --------
-    H0_mean (float) -- Null-hypothesis mean. (Default 0.)
-    alternative (str) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
-    method (str) -- Type of test (default "t"):
-        "t" for student's t (`scipy.stats.ttest_1samp`, scipy.org),
-        "z" for z-score (`statsmodels.stats.api.ztest`, statsmodels.org).
+    Parameters
+    ----------
+    x : array_like
+        Test mean of this sample.
+    H0_mean : float, optional
+        Null-hypothesis mean.
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
+    method : {'t', 'z'}, optional
+        | 't'
+        |   Test based on Student's t distribution.
+            Calls :func:`scipy..ttest_1samp <scipy.stats.ttest_1samp>`.
+        | 'z'
+        |   Test based on z-score.
+            Calls :func:`sm..ztest <statsmodels.stats.weightstats.ztest>`.
 
     Returns
     -------
-    mqr.hyptest.HypothesisTest
+    :class:`mqr.inference.hyptest.HypothesisTest`
     """
     if method == 't':
         statistic, pvalue = scipy.stats.ttest_1samp(
@@ -314,26 +315,30 @@ def test_2sample(x, y, H0_diff=0.0, pooled=True, alternative='two-sided', method
     """
     Hypothesis test for the difference between means of two unpaired samples.
 
-    Null-hypothesis: `mean(x) - mean(y) == H0_diff`.
+    Null-hypothesis
+        mean(`x`) - mean(`y`) == `H0_diff`
 
-    Arguments
-    ---------
-    x, y (array[float]) -- Test the difference between means of these samples.
-
-    Optional
-    --------
-    H0_diff (float) -- Null-hypothesis difference. (Default 0.)
-    pooled (bool) -- When `True`, the samples have the same variance,
-        `False` otherwise. (Default True.)
-    alternative (str) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
-    method (str) -- Type of test (default "t"):
-        "t" for student's t (`statsmodels.stats.api.ttest_ind`, statsmodels.org),
-        "z" for z-score (`statsmodels.stats.api.ztest`, statsmodels.org).
+    Parameters
+    ----------
+    x, y : array_like
+        Test the difference between means of these samples.
+    H0_diff : float, optional
+        Null-hypothesis difference.
+    pooled : bool, optional
+        `True` when the samples are taken from the same population, `False` otherwise.
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
+    method : {'t', 'z'}, optional
+        | 't'
+        |   Test based on Student's t distribution
+            Calls :func:`sm..ttest_ind <statsmodels.stats.weightstats.ttest_ind>`.
+        | 'z'
+        |   Test based on z-score.
+            Calls :func:`sm..ztest <statsmodels.stats.weightstats.ztest>`.
 
     Returns
     -------
-    mqr.hyptest.HypothesisTest
+    :class:`mqr.inference.hyptest.HypothesisTest`
     """
     alt = interop.alternative(alternative, 'statsmodels')
     usevar = 'pooled' if pooled else 'unequal'
@@ -370,22 +375,22 @@ def test_paired(x, y, alternative='two-sided', method='t'):
     """
     Hypothesis test for the difference between means of two paired samples.
 
-    Null-hypothesis: `mean(x) == mean(y)`.
+    Null-hypothesis
+        mean(`x`) == mean(`y`)
 
-    Arguments
-    ---------
-    x, y (array[float]) -- Test the difference between means of these samples.
-
-    Optional
-    --------
-    alternative (str) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
-    method (str) -- Type of test, only the default:
-        "t" for student's t (`scipy.stats.ttest_rel`, scipy.org).
+    Parameters
+    ----------
+    x, y : array_like
+        Test the difference between means of these samples.
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
+    method : 't', optional
+        Only Student's t is currently available.
+        Calls :func:`scipy..ttest_rel <scipy.stats.ttest_rel>`.
 
     Returns
     -------
-    mqr.hyptest.HypothesisTest
+    :class:`mqr.inference.hyptest.HypothesisTest`
     """
     if method != 't':
         raise ValueError(util.method_error_msg(method, ['t']))

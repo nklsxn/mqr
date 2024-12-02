@@ -1,7 +1,3 @@
-"""
-Confidence intervals and hypothesis tests (parametric) for variance.
-"""
-
 from mqr.inference.confint import ConfidenceInterval
 from mqr.inference.hyptest import HypothesisTest
 from mqr.inference.power import TestPower
@@ -13,27 +9,31 @@ import numpy as np
 import scipy
 import statsmodels
 
-    """
 def power_1sample(effect, nobs, alpha=0.05, alternative='two-sided', method='chi2'):
+    '''
     Calculate power for test of variance of a sample.
 
-    Null-hypothesis: `effect = var / var_0 == 1` (two-sided).
+    Null-hypothesis
+        `effect` = var / var_0 == 1
 
-    Arguments
-    ---------
-    effect (float) -- Effect size.
-    nobs (float) -- Number of observations in sample.
-
-    Optional
-    --------
-    alpha (float) -- Significance level. (Default 0.05.)
-    alternative (str) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
+    Parameters
+    ----------
+    effect : float
+        Effect size.
+    nobs : float
+        Number of observations in sample.
+    alpha : float, optional
+        Significance level.
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
+    method : {'chi2'}, optional
+        Only the 'chi2' is available. Calculates the power directly from the
+        Chi-squared distribution.
 
     Returns
     -------
-    mqr.power.TestPower
-    """
+    :class:`mqr.inference.power.TestPower`
+    '''
     den = effect
     dist = scipy.stats.chi2(nobs-1)
 
@@ -59,27 +59,31 @@ def power_1sample(effect, nobs, alpha=0.05, alternative='two-sided', method='chi
         method='chi2',
         sample_size=nobs)
 
-    """
 def power_2sample(var_ratio, nobs, alpha=0.05, alternative='two-sided', method='f'):
+    '''
     Calculate power for test of ratio of variances.
 
-    Null-hypothesis: `effect = var_1 / var_2 == 1` (two-sided).
+    Null-hypothesis
+        `effect` = var_1 / var_2 == 1
 
-    Arguments
-    ---------
-    var_ratio (float) -- Effect size.
-    nobs (float) -- Number of observations in sample.
-
-    Optional
-    --------
-    alpha (float) -- Significance level. (Default 0.05.)
-    alternative (str) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
+    Parameters
+    ----------
+    var_ratio : float
+        Effect size.
+    nobs : float
+        Number of observations in sample.
+    alpha : float, optional
+        Significance level.
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
+    method : {'f'}, optional
+        Only 'f' is available. Calculates the power directly from the
+        F distribution.
 
     Returns
     -------
-    mqr.power.TestPower
-    """
+    :class:`mqr.inference.power.TestPower`
+    '''
     dist = scipy.stats.f(nobs-1, nobs-1)
 
     if alternative == 'less':
@@ -104,27 +108,31 @@ def power_2sample(var_ratio, nobs, alpha=0.05, alternative='two-sided', method='
         method='f',
         sample_size=nobs)
 
-    """
 def size_1sample(effect, alpha, beta, alternative='two-sided', method='chi2'):
+    '''
     Calculate sample size for test of variance of a sample.
 
-    Null-hypothesis: `effect == var / var_0 == 1` (two-sided).
+    Null-hypothesis
+        `effect` == var / var_0 == 1
 
-    Arguments
-    ---------
-    effect (float) -- Required effect size.
-    alpha (float) -- Required significance.
-    beta (float) -- Required beta (1 - power).
-
-    Optional
-    --------
-    alternative (str) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
+    Parameters
+    ----------
+    effect : float
+        Required effect size.
+    alpha : float
+        Required significance.
+    beta : float
+        Required beta (1 - power).
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
+    method : {'chi2'}, optional
+        Numerically solves :func:`power_1sample` (passing `method`) equal to
+        1 - 'beta' by changing `n`. Only 'chi2' is available.
 
     Returns
     -------
-    mqr.power.TestPower
-    """
+    :class:`mqr.inference.power.TestPower`
+    '''
     if (effect < 1) and (alternative == 'greater'):
         raise ValueError('alternative "greater" not valid when effect < 1')
     elif (effect > 1) and (alternative == 'less'):
@@ -149,27 +157,31 @@ def size_1sample(effect, alpha, beta, alternative='two-sided', method='chi2'):
         method='chi2',
         sample_size=nobs)
 
-    """
 def size_2sample(var_ratio, alpha, beta, alternative='two-sided', method='f'):
+    '''
     Calculate sample size for test of ratio of variances.
 
-    Null-hypothesis: `var_ratio == var_1 / var_2 == 1` (two-sided).
+    Null-hypothesis
+        `var_ratio` = var_1 / var_2 == 1
 
-    Arguments
-    ---------
-    var_ratio (float) -- Required effect size.
-    alpha (float) -- Required significance.
-    beta (float) -- Required beta (1 - power).
-
-    Optional
-    --------
-    alternative (float) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
+    Parameters
+    ----------
+    var_ratio : float
+        Required effect size.
+    alpha : float
+        Required significance.
+    beta : float
+        Required beta (1 - power).
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
+    method : {'f'}, optional
+        Numerically solves :func:`power_2sample` (passing `method`) equal to
+        1 - 'beta' by changing `n`. Only 'f' is available.
 
     Returns
     -------
-    mqr.power.TestPower
-    """
+    :class:`mqr.inference.power.TestPower`
+    '''
     if (alternative == 'less') and (var_ratio > 1.0):
             raise ValueError('diff must be > 1 for a greater-than alternative hypothesis')
     elif (alternative == 'greater') and (var_ratio < 1.0):
@@ -194,26 +206,24 @@ def size_2sample(var_ratio, alpha, beta, alternative='two-sided', method='f'):
         sample_size=nobs)
 
 def confint_1sample(x, conf=0.95, bounded='both', method='chi2'):
-    """
+    '''
     Confidence interval for the variance of a sample.
 
-    Arguments
-    ---------
-    x (array[float]) -- Calcaulate interval for the variance of this sample.
-
-    Optional
-    --------
-    conf (float) -- Confidence level that determines the width of the interval.
-        (Default 0.95.)
-    bounded (str) -- Which sides of the interval to close. One of "both",
-        "below" or "above". (Default "both".)
-    method (str) -- Type of test (only "chi2"):
-        "chi2" for an exact interval based on the chi-squared distribution.
+    Parameters
+    ----------
+    x : array_like
+        Calcaulate interval for the variance of this sample.
+    conf : float, optional
+        Confidence level that determines the width of the interval.
+    bounded : {'both', 'below', 'above'}, optional
+        Which sides of the interval to close.
+    method : {'chi2'}, optional
+        Only 'chi2' for an exact interval based on the chi-squared distribution.
 
     Returns
     -------
-    mqr.confint.ConfidenceInterval
-    """
+    :class:`mqr.inference.confint.ConfidenceInterval`
+    '''
     if method == 'chi2':
         alpha = 1 - conf
         nobs = len(x)
@@ -243,27 +253,24 @@ def confint_1sample(x, conf=0.95, bounded='both', method='chi2'):
         bounded=bounded)
 
 def confint_2sample(x, y, conf=0.95, bounded='both', method='f'):
-    """
+    '''
     Confidence interval for the ratio of variances of two samples.
 
-    Arguments
-    ---------
-    x, y (array[float]) -- Calcaulate interval for the ratio of variances of
-        these two samples.
-
-    Optional
-    --------
-    conf (float) -- Confidence level that determines the width of the interval.
-        (Default 0.95.)
-    bounded (str) -- Which sides of the interval to close. One of "both",
-        "below" or "above". (Default "both".)
-    method (str) -- Type of test (only "f"):
-        "f" for an exact interval based on the F distribution.
+    Parameters
+    ----------
+    x, y : array_like
+        Calcaulate interval for the ratio of variances of these two samples.
+    conf : float, optional
+        Confidence level that determines the width of the interval.
+    bounded : {'both', 'below', 'above'}, optional
+        Which sides of the interval to close.
+    method : {'f'}, optional
+        Only 'f' for an exact interval based on the F distribution.
 
     Returns
     -------
-    mqr.confint.ConfidenceInterval
-    """
+    :class:`mqr.inference.confint.ConfidenceInterval`
+    '''
     if method == 'f':
         alpha = 1 - conf
         s2x = np.var(x, ddof=1)
@@ -296,26 +303,28 @@ def confint_2sample(x, y, conf=0.95, bounded='both', method='f'):
         conf=conf,
         bounded=bounded)
 
-    """
 def test_1sample(x, H0_var, alternative='two-sided', method='chi2'):
+    '''
     Hypothesis test for the varianve of a sample.
 
-    Null hypothesis: `var(x) / H0_var == 1`.
+    Null hypothesis
+        var(`x`) / `H0_var` == 1
 
-    Arguments
-    ---------
-    x (array[float]) -- Test variance of this sample.
-    H0_var (float) -- Null-hypothesis variance.
-
-    Optional
-    --------
-    alternative (str) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
+    Parameters
+    ----------
+    x : array_like
+        Test variance of this sample.
+    H0_var : float
+        Null-hypothesis variance.
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
+    method : {'chi2'}, optional
+        Only 'chi2' for an exact test based on the Chi-squared distribution.
 
     Returns
     -------
-    mqr.hyptest.HypothesisTest
-    """
+    :class:`mqr.inference.hyptest.HypothesisTest`
+    '''
     if method == 'chi2':
         dfx = len(x) - 1
         s2x = np.var(x, ddof=1)
@@ -346,27 +355,29 @@ def test_1sample(x, H0_var, alternative='two-sided', method='chi2'):
         pvalue=pvalue,)
 
 def test_2sample(x, y, alternative='two-sided', method='f'):
-    """
+    '''
     Hypothesis test for the ratio of variances of two samples.
 
-    Null hypothesis: `var(x) / var(y) == 1`.
+    Null hypothesis
+        var(`x`) / var(`y`) == 1
 
-    Arguments
-    ---------
-    x, y (array[float]) -- Test ratio of variances of these two samples.
-
-    Optional
-    --------
-    alternative (str) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
-    method (str) -- Type of test (default "f"):
-        "f" for F-test (calculated directly from f-dist),
-        "bartlett" for Bartlett's test (`scipy.stats.bartlett`, scipy.org).
+    Parameters
+    ----------
+    x, y : array_like
+        Test ratio of variances of these two samples.
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
+    method : {'f', 'bartlett'}, optional
+        | 'f'
+        |   F-test from the F distribution of the ratio of equal variances.
+        | 'bartlett'
+        |   Bartlett's test.
+            Calls :func:`scipy..bartlett <scipy.stats.bartlett>`.
 
     Returns
     -------
-    mqr.hyptest.HypothesisTest
-    """
+    :class:`mqr.inference.hyptest.HypothesisTest`
+    '''
     if method == 'f':
         description = 'ratio of variances'
         tgt = 1.0

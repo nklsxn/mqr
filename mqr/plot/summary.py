@@ -1,3 +1,7 @@
+"""
+Visual representation of descriptive statistics.
+"""
+
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -7,6 +11,20 @@ from mqr.plot.lib.util import set_kws
 
 def summary(sample: Sample, ax, hyp_mean=None,
             hist_kws=None, box_kws=None, conf_kws=None):
+    '''
+    Histogram, boxplot and confidence interval for a sample.
+
+    Best plotted on axes arranged vertically.
+
+    Parameters
+    ----------
+    sample : mqr.summary.Sample
+        Sample to use for all three plots.
+    ax : matplotlib.axes.Axes
+        Axes for plot.
+    hyp_mean: float, optional
+        Hypothesised mean to plot on a confidence interval.
+    '''
     hist_kws = set_kws(
         hist_kws,
         color='C0',

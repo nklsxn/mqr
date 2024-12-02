@@ -1,9 +1,3 @@
-"""
-Plot dataframe columns adjacent to one another.
-
-Commonly used to present measurement system analysis results.
-"""
-
 from mergedeep import merge
 import matplotlib.transforms as transforms
 import numpy as np
@@ -16,10 +10,16 @@ def grouped_df(data, ax,
     """
     Plots from a pandas.DataFrame with columns grouped along the x-axis.
 
-    Arguments
-    ---------
-    data (pd.DataFrame) -- Dataframe whose columns will be plot next to each other.
-    ax (matplotlib.axes.Axes) -- Axes for plot.
+    Parameters
+    ----------
+    data : pandas.DataFrame
+        Dataframe whose columns will be plot next to each other.
+    ax : matplotlib.axes.Axes
+        Axes for plot.
+    line_kws : dict
+        Keyword args for lines, passed to :func:`matplotlib..plot <matplotlib.pyplot.plot>`.
+    text_kws : dict
+        Keyword args for text, passed to :func:`matplotlib..text <matplitlib.pyplot.text>`.
     """
     line_kws = set_kws(
         line_kws,
@@ -54,6 +54,25 @@ def grouped_df(data, ax,
     ax.set_xticklabels(np.tile(idx_labels, N), rotation=90)
 
 def scaled_density(xs, data, dist=None, bins='auto'):
+    """
+    Calculate the PDF of the points `xs`, scaled to match a histogram.
+
+    Parameters
+    ----------
+    xs : array_like
+        X values.
+    data : array_like
+        Sampled random data.
+    dist : :class:`scipy.stats.rv_continuous`
+        Distribution of the density.
+    bins : str, optional
+        Passed to :func:`numpy.histogram_bin_edges` to calculate bin widths.
+
+    Returns
+    -------
+    array_like
+        Y values corresponding to `xs` for the scaled density.
+    """
     if dist is None:
         dist = scipy.stats.norm.fit(data)
     elif isinstance(dist, scipy.stats.distributions.rv_continuous):
@@ -65,6 +84,23 @@ def scaled_density(xs, data, dist=None, bins='auto'):
     return ys * N * binwidth
 
 def set_kws(input_kws, **default_kws):
+    """
+    Merges dicts of keyword arguments.
+
+    Parameters
+    ----------
+    input_kws : dict
+        Overriding keyword arguments that, when specified, replace the values
+        in `default_kws`.
+    default_kws : dict
+        Default values that can be overriden by `input_kws`.
+
+    Returns
+    -------
+    dict
+        A set of keyword arguments containing all of `input_kws` and any of
+        `default_kws` whose key did not appear in `default_kws`.
+    """
     if input_kws is None:
         input_kws = {}
     return merge(default_kws, input_kws)

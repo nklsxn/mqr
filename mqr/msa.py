@@ -1,7 +1,24 @@
 """
-Measurement system analysis.
+============================================
+Measurement system analysis (:mod:`mqr.msa`)
+============================================
+
+.. currentmodule:: mqr.msa
 
 Construction and presentation of gauge repeatability and reproducibility study.
+
+.. rubric:: Construction
+.. autosummary::
+    :toctree: generated/
+
+    GRR
+    NameMapping
+
+.. rubric:: Results
+.. autosummary::
+    :toctree: generated/
+
+    VarianceTable
 """
 
 from dataclasses import dataclass, field
@@ -19,18 +36,16 @@ class NameMapping:
     A definition of terms that maps variables in an experiment to standard terms
     in a GRR study.
 
-    Any values not specified take their default:
-    - "measurement" for a measured observation/KPI value,
-    - "part" for part ID,
-    - "operator" for an operator ID, and
-    - "replicate" for a replicate ID/label.
-
     Attributes
     ----------
-    measurement (str) -- Column name referring to the observation/KPI.
-    part (str) -- Column name referring to the categorical part ID.
-    operator (str) -- Column name referring to the categorical operator ID.
-    replicate (str) -- Column name referring to the categorical replicate ID.
+    measurement : str, optional
+        Column name referring to the observation/KPI. Default 'measurement'.
+    part : str, optional
+        Column name referring to the categorical part ID. Default 'part'.
+    operator : str, optional
+        Column name referring to the categorical operator ID. Default 'operator'.
+    replicate : str, optional
+        Column name referring to the categorical replicate ID. Default 'replicate'.
     """
     measurement: str = field(default='measurement')
     part: str = field(default='part')
@@ -45,12 +60,16 @@ class NameMapping:
         """
         Construct NameMapping.
 
-        Optional
-        ---------
-        measurement (str) -- see Attribute.
-        part (str) -- see Attribute.
-        operation (str) -- see Attribute.
-        replicate (str) -- see Attribute.
+        Parameters
+        ----------
+        measurement : str, optional
+            see Attribute.
+        part : str, optional
+            see Attribute.
+        operation : str, optional
+            see Attribute.
+        replicate : str, optional
+            see Attribute.
         """
         if measurement:
             self.measurement = self._m = measurement
@@ -70,34 +89,29 @@ class GRR:
 
     Attributes
     ----------
-    data (pd.DataFrame) -- Experiment runs and measurements, including columns
-        for measurement, part, operator and replicate. See `NameMapping` for how
-        to name these columns.
-    tolerance (np.float64) -- Width of the tolerance of the process in the same
-        units as the measurements.
-    names (NameMapping) -- A name mapping that defines how custom names translate
-        to the standard names used in this library. See `mqr.msa.NameMapping`.
-    include_interaction (bool) -- When `True`, include terms in the ANOVA for
-        the interaction between operator and part.
-    nsigma (int) -- Target capability of the process.
-
-    Attributes (automatically generated)
-    ------------------------------------
-    formula (str) -- Formula passed to statsmodels for regression.
-    counts (tuple[int]) -- Number of measurements, and number of unique levels
-        in categorical variables part, operator and replicate.
-    residuals (np.ndarray) -- Error values from regression.
-    anova_table (pd.DataFrame) -- Table of SS and MS values with p-values from
-        the standard categorical contrasts in ANOVA.
-    adequacy_table (pd.DataFrame) -- Statistics relating to quality of regression
-        model. See `mqr.anova.adequacy`.
-    grr_table (pd.DataFrame) -- Table showing contributions to variance from
-        experimental repeatability, reproducibility, operator and part.
-    discrimination (np.float64) -- Discrimination index. A measure of the
-        resolution of the measurement system.
-    model (statsmodels.regression.linear_model.OLS) -- Model used to calculate
-        the ANOVA.
-    regression_result (statsmodels.regression.linear_model.RegressionResultsWrapper) --
+    data : pd.DataFrame
+        Experiment runs and measurements, including columns for measurement, part,
+        operator and replicate. See `NameMapping` for how to name these columns.
+    tolerance : np.float64
+        Width of the tolerance of the process in the same units as the measurements.
+    names : NameMapping
+        A name mapping that defines how custom names translate to the standard
+        names used in this library. See `mqr.msa.NameMapping`.
+    include_interaction : bool
+        When `True`, include terms in the ANOVA for the interaction between
+        operator and part.
+    include_intercept : bool
+        When `True`, include terms in the ANOVA for the intercept.
+    nsigma : int
+        Target capability of the process.
+    formula : str, automatic
+        Formula passed to statsmodels for regression.
+    counts : tuple[int], automatic
+        Number of measurements, and number of unique levels in categorical
+        variables part, operator and replicate.
+    model : automatic
+        Linear model for OLS.
+    regression_result : statsmodels.regression.linear_model.RegressionResultsWrapper, automatic
         Result of calling `fit()` on the `model`.
     """
     data: pd.DataFrame
@@ -126,14 +140,18 @@ class GRR:
 
         Arguments
         ---------
-        data (pd.DataFrame) -- See attribute.
-        tolerance (float) -- See attribute.
-
-        Optional
-        --------
-        names (mqr.msa.NameMapping) -- See attribute.
-        include_interaction (bool) -- See attribute.
-        nsigma (float) -- See attribute.
+        data : pd.DataFrame
+            See attribute.
+        tolerance : float
+            See attribute.
+        names : mqr.msa.NameMapping, optional
+            See attribute. Defaults to `NameMapping()`.
+        include_interaction : bool, optional
+            See attribute.
+        include_intercept : bool, optional
+            See attribute.
+        nsigma : float
+            See attribute.
         """
         self.data = data
         self.tolerance = tolerance
@@ -226,6 +244,31 @@ class SummaryTable:
         return html
 
 class VarianceTable:
+    """
+    GRR variance components
+
+    Attributes
+    ----------
+    grr : :class:`GRR`
+        GRR study object used to create the variance components.
+    anova_table : pandas.DataFrame, automatic
+        ANOVA summary table.
+    table : pandas.DataFrame
+        Table of variance components from GRR model.
+    num_distinct_cat : float
+        Number of confidence intervals on part measurements that will span the
+        part variability (without overlap). For example, if `num_distinct_cat`
+        is 5 then the measurement system can discern five groups of parts.
+    discrimination : float
+        Discrimination ratio, see [1]_.
+
+    References
+    ----------
+    .. [1]  Montgomery, D. C. (2009).
+            Statistical quality control (Vol. 7).
+            New York: Wiley.
+
+    """
     grr: NameMapping
     anova_table: pd.DataFrame
     table: pd.DataFrame

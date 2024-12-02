@@ -1,7 +1,3 @@
-"""
-Confidence intervals and hypothesis tests (parametric) for proportions.
-"""
-
 import mqr.inference.lib.proportion as proportion
 
 from mqr.inference.confint import ConfidenceInterval
@@ -20,25 +16,28 @@ def power_1sample(pa, H0_prop, nobs, alpha=0.05, alternative='two-sided', method
     """
     Calculate power of a test of proportion in a sample.
 
-    Null-hypothesis: `pa - H0_prop == 0`.
+    Null-hypothesis
+        `pa` - `H0_prop` == 0
 
-    Arguments
-    ---------
-    pa (float) -- Alternative hypothesis proportion, forming effect size.
-    H0_prop (float) -- Null-hypothesis proportion.
-    nobs (int) -- Number of observations.
-    alpha (float) -- Required significance.
-
-    Optional
-    --------
-    alternative (float) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
-    method (str) -- Test method. Only "norm-approx", the normal approximation to
-        the binomial distribution is implemented.
+    Parameters
+    ----------
+    pa : float
+        Alternative hypothesis proportion, forming effect size.
+    H0_prop : float
+        Null-hypothesis proportion.
+    nobs : int
+        Number of observations.
+    alpha : float
+        Required significance.
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
+    method : {'norm-approx'}, optional
+        Test method. Only 'norm-approx', the normal approximation to the
+        binomial distribution is implemented.
 
     Returns
     -------
-    mqr.power.TestPower
+    :class:`mqr.inference.power.TestPower`
     """
     if method == 'norm-approx':
         diff = H0_prop - pa
@@ -73,25 +72,28 @@ def power_2sample(p1, p2, nobs, alpha=0.05, alternative='two-sided', method='nor
     """
     Calculate power of a test of difference of two proportions in two samples.
 
-    Null-hypothesis: `p1 - p2 == 0`.
+    Null-hypothesis
+        `p1` - `p2` == 0
 
-    Arguments
-    ---------
-    p1 (float) -- First proportion.
-    p2 (float) -- Second proportion.
-    nobs (int) -- Number of observations.
-    alpha (float) -- Required significance.
-
-    Optional
-    --------
-    alternative (float) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
-    method (str) -- Test method. Only "norm-approx", the normal approximation to
-        the binomial distribution, is implemented.
+    Parameters
+    ----------
+    p1 : float
+        First proportion.
+    p2 : float
+        Second proportion.
+    nobs : int
+        Number of observations.
+    alpha : float
+        Required significance.
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
+    method : {'norm-approx'}, optional
+        Test method. Only 'norm-approx', the normal approximation to the
+        binomial distribution, is implemented.
 
     Returns
     -------
-    mqr.power.TestPower
+    :class:`mqr.inference.power.TestPower`
     """
     if method == 'norm-approx':
         diff = p2 - p1
@@ -134,26 +136,31 @@ def size_1sample(pa, H0_prop, alpha, beta, alternative='two-sided', method='norm
     """
     Calculate sample size for test of proportion.
 
-    Null-hypothesis: `pa - H0_prop == 0`.
+    Null-hypothesis
+        `pa` - `H0_prop` == 0
 
-    Arguments
-    ---------
-    pa (float) -- Alternative proportiond, forming the effect size with `p0`.
-    p0 (float) -- Null proportion.
-    alpha (float) -- Required significance.
-    beta (float) -- Required beta (1 - power).
-
-    Optional
-    --------
-    alternative (float) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
-    method (str) -- One of
-        'norm-approx' normal approximation to the binomial distribution,
-        'arcsin' inverse-sine approximation to the binomial distribution.
+    Parameters
+    ----------
+    pa : float
+        Alternative proportion, forming the effect size with `p0`.
+    p0 : float
+        Null proportion.
+    alpha : float
+        Required significance.
+    beta : float
+        Required beta (1 - power).
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
+    method : {'norm-approx', 'arcsin'}, optional
+        | 'norm-approx'
+        |   Normal approximation to the binomial distribution.
+            Solves :func:`power_1sample` equal to requested power by changing `nobs`.
+        | 'arcsin'
+        |   Inverse-sine approximation to the binomial distribution.
 
     Returns
     -------
-    mqr.power.TestPower
+    :class:`mqr.inference.power.TestPower`
     """
     if method == 'norm-approx':
         def power_fn(nobs):
@@ -195,26 +202,31 @@ def size_2sample(p1, p2, alpha, beta, alternative='two-sided', method='norm-appr
     """
     Calculate sample size to test equality of two proportions.
 
-    Null-hypothesis: `p1 - p2 == 0`.
+    Null-hypothesis
+        `p1` - `p2` == 0
 
-    Arguments
-    ---------
-    p1 (float) -- First proportion.
-    p2 (float) -- Second propotion, forming effect size with `p1`.
-    alpha (float) -- Required significance.
-    beta (float) -- Required beta (1 - power).
-
-    Optional
-    --------
-    alternative (float) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
-    method (str) -- Test method. One of
-        'norm-approx': the normal approximation to the binomial distribution,
-        'arcsin': the arcsin method.
+    Parameters
+    ----------
+    p1 : float
+        First proportion.
+    p2 : float
+        Second propotion, forming effect size with `p1`.
+    alpha : float
+        Required significance.
+    beta : float
+        Required beta (1 - power).
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
+    method : {'norm-approx', 'arcsin'}, optional
+        | 'norm-approx'
+        |   Numerically solves the normal approximation to the binomial
+            distribution by searching over `nobs`.
+        | 'arcsin'
+        |   Inverse-sine method.
 
     Returns
     -------
-    mqr.power.TestPower
+    :class:`mqr.inference.power.TestPower`
     """
     if method == 'norm-approx':
         def power_fn(nobs):
@@ -256,39 +268,46 @@ def confint_1sample(count, nobs, conf=0.95, bounded='both', method='agresti-coul
     """
     Confidence interval for proportion `count / nobs`.
 
-    Following Brown, Cai and DasGupta (2001), use the "wilson-cc" or "jeffreys"
-    method for small sample size, and use the "agresti-coull" or "jeffreys" for
-    larger sample sizes. The authors recommend n = 40 as the boundary between
-    small and large.
+    Following [1]_, use the 'wilson-cc' or 'jeffreys' method for small sample
+    size, and use the 'agresti-coull' or 'jeffreys' for larger sample sizes.
+    The authors recommend n = 40 as the boundary between small and large.
 
-    Arguments
-    ---------
-    count (int) -- Number of "true" observations.
-    nobs (int) -- Total observations.
-
-    Optional
-    --------
-    conf (float) -- Confidence level that determines the width of the interval.
-    bounded (str) -- Which sides of the interval to close. One of "both",
-        "below" or "above". (Default "both".)
-    method (str) -- Statistical test to use. One of:
-        "agresti-coull (default)" the Agresti-Coull interval,
-        "jeffreys" the Jeffreys interval (a Bayesian method),
-        "wilson-cc" the Wilson score interval with continuity correction,
-        (others) everything else is passed to `statsmodels.stats.proportion.proportion_confint`.
+    Parameters
+    ----------
+    count : int
+        Number of "true" observations.
+    nobs : int
+        Total observations.
+    conf : float, optional
+        Confidence level that determines the width of the interval.
+    bounded : {'both', 'below', 'above'}, optional
+        Which sides of the interval to close.
+    method : {'agresti-coull', 'jeffreys', 'wilson', 'wilson-cc'}, optional
+        | 'agresti-coull'
+        |   Agresti-Coull interval, see [1]_.
+        | 'jeffreys'
+        |   Jeffreys interval (a Bayesian method), see [1]_.
+        | 'wilson'
+        |   Wilson method without continuity correction (method 3 in [2]_).
+        | 'wilson-cc'
+        |   Wilson method with continuity correction (method 4 in [2]_).
+        | (other)
+        |   Everything else is passed to
+            :func:`sm..proportion_confint <statsmodels.stats.proportion.proportion_confint>`.
 
     Returns
     -------
-    mqr.confint.ConfidenceInterval
+    :class:`mqr.inference.confint.ConfidenceInterval`
 
     References
     ----------
-    [1] Brown, L. D. Cai, T. T. and DasGupta, A. (2001).
-        "Interval estimation for a binomial proportion".
-        Statistical Science, 16(2), 101-133.
-    [2] Park, H., & Leemis, L. M. (2019).
-        Ensemble confidence intervals for binomial proportions.
-        Statistics in Medicine, 38(18), 3460-3475.
+    .. [1]  Brown, L. D. Cai, T. T. and DasGupta, A. (2001).
+            Interval estimation for a binomial proportion.
+            Statistical Science, 16(2), 101-133.
+    .. [2]  Newcombe, R. G. (1998).
+            Two‐sided confidence intervals for the single proportion:
+            comparison of seven methods.
+            Statistics in medicine, 17(8), 857-872.
     """
     alpha = 1 - conf
 
@@ -324,45 +343,49 @@ def confint_1sample(count, nobs, conf=0.95, bounded='both', method='agresti-coul
 
 def confint_2sample(count1, nobs1, count2, nobs2, conf=0.95, bounded='both', method='newcomb-cc'):
     """
-    Confidence interval for difference between proportions
-    `count1 / nobs1 - count2 / nobs2`.
+    Confidence interval for difference between proportions `count1 / nobs1 - count2 / nobs2`.
 
-    Calls `statsmodels.stats.proportion.confint_proportions_2indep` when method
-    is neither 'agresti-caffo' nor 'newcomb-cc'.
-
-    Arguments
-    ---------
-    count1 (int) -- Number of "true" observations in first sample.
-    nobs1 (int) -- Total observations in first sample.
-    count2 (int) -- Number of "true" observations in second sample.
-    nobs2 (int) -- Total observations in second sample.
-
-    Optional
-    --------
-    conf (float) -- Confidence level that determines the width of the interval.
-        (Default 0.95.)
-    bounded (str) -- Which sides of the interval to close. One of "both",
-        "below" or "above". (Default "both".)
-    method (str) -- Statistical test to use (default "agresti-caffo"). One of:
-        "agresti-caffo" (aka "adj-wald") an adjusted normal approximation.
-            See reference [2].
-        "newcomb-cc" Newcomb's score method with continuity correction,
-        (others) passed to `statsmodels.stats.proportion.confint_proportions_2indep`
+    Parameters
+    ----------
+    count1 : int
+        Number of "true" observations in first sample.
+    nobs1 : int
+        Total observations in first sample.
+    count2 : int
+        Number of "true" observations in second sample.
+    nobs2 : int
+        Total observations in second sample.
+    conf : float, optional
+        Confidence level that determines the width of the interval.
+    bounded : {'both', 'below', 'above'}, optional
+        Which sides of the interval to close.
+    method : {'agresti-caffo', 'newcomb', 'newcomb-cc'}, optional
+        | 'agresti-caffo' (or 'adj-wald')
+        |   Agresti-caffo method an adjusted normal approximation.
+            See reference [1]_.
+        | 'newcomb'
+        |   A method presented by Newcomb as method 10 in [2]_.
+        | 'newcomb-cc'
+        |   Continuity-corrected version of 'newcomb'; method 11 in [2]_.
+        | (other)
+        |   Everything else is passed to
+            :func:`sm..confint_proportions_2indep <statsmodels.stats.proportion.confint_proportions_2indep>`
             for comparison of the difference.
 
     Returns
     -------
-    mqr.confint.ConfidenceInterval
+    :class:`mqr.inference.confint.ConfidenceInterval`
 
     References
     ----------
-    [1] NIST.
-        Engineering Statistics Handbook.
-        https://www.itl.nist.gov/div898/handbook/prc/section3/prc33.htm
-    [2] Agresti, A., & Caffo, B. (2000).
-        Simple and effective confidence intervals for proportions and differences
-        of proportions result from adding two successes and two failures.
-        The American Statistician, 54(4), 280-288.
+    .. [1]  Agresti, A., & Caffo, B. (2000).
+            Simple and effective confidence intervals for proportions and differences
+            of proportions result from adding two successes and two failures.
+            The American Statistician, 54(4), 280-288.
+    .. [2]  Newcombe, R. G. (1998).
+            Interval estimation for the difference between independent proportions:
+            comparison of eleven methods.
+            Statistics in medicine, 17(8), 873-890.
     """
     if (method == 'agresti-caffo') or (method == 'adj-wald'):
         lower, upper = proportion.confint_2sample_agresti_caffo(count1, nobs1, count2, nobs2, conf, bounded)
@@ -398,27 +421,31 @@ def test_1sample(count, nobs, H0_prop, alternative='two-sided', method='binom'):
     """
     Hypothesis test for the proportion of "true" elements in a sample.
 
-    Null-hypothesis: `count / nobs == H0_prop`.
+    Null-hypothesis
+        `count` / `nobs` == `H0_prop`
 
-    Arguments
-    ---------
-    count (int) -- Number of "true" observations.
-    nobs (int) -- Total number of observations.
-    H0_prop (float) -- Null-hypothesis proportion.
-
-    Optional
-    --------
-    alternative (str) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". Valid for methods "binom" and "chi2".
-        (Default "two-sided".)
-    method (str) -- Type of test (default "binom"). One of
-        "binom" (`statsmodels.stats.proportion.binom_test`, statsmodels.org),
-        "chi2" (`statsmodels.stats.proportion.proportions_chisquare`, statsmodels.org),
-        "z" (`statsmodels.stats.proportions_ztest`, statsmodels.org).
+    Parameters
+    ----------
+    count : int
+        Number of "true" observations.
+    nobs : int
+        Total number of observations.
+    H0_prop : float
+        Null-hypothesis proportion.
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis. Valid for methods 'binom' and 'z';
+        method 'chi2' supports only two-sided tests.
+    method : {'binom', 'chi2', 'z'}, optional
+        | 'binom'
+        |   Calls :func:`sm..binom_test <statsmodels.stats.proportion.binom_test>`.
+        | 'chi2'
+        |   Calls :func:`sm..proportions_chisquare <statsmodels.stats.proportion.proportions_chisquare>`.
+        | 'z'
+        |   Calls :func:`sm..proportions_ztest <statsmodels.stats.proportion.proportions_ztest>`.
 
     Returns
     -------
-    mqr.hyptest.HypothesisTest
+    :class:`mqr.inference.hyptest.HypothesisTest`
     """
     alt = interop.alternative(alternative, lib='statsmodels')
     if method == 'binom':
@@ -461,30 +488,29 @@ def test_2sample(count1, nobs1, count2, nobs2, H0_diff=0.0, alternative='two-sid
     """
     Hypothesis test for the difference between proportions of two samples.
 
-    Null-hypothesis: `count1 / nobs1 - count2 / nobs2 == H0_diff`.
+    Null-hypothesis
+        `count1` / `nobs1` - `count2` / `nobs2` == `H0_diff`
 
-    Calls `statsmodels.stats.proportion.test_proportions_2indep` (statsmodels.org).
-
-    Arguments
-    ---------
-    count1 (int) -- Number of "true" observations in first sample.
-    nobs1 (int) -- Total number of observations in second sample.
-    count2 (int) -- Number of "true" observations in second sample.
-    nobs2 (int) -- Total number of observations in seconds sample.
-    H0_diff (float) -- Null-hypothesis difference.
-
-    Optional
-    --------
-    alternative (str) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
-    method (str) -- Type of test (default "agresti-caffo"). One of
-        "wald",
-        "agresti-caffo", or
-        "score".
+    Parameters
+    ----------
+    count1 : int
+        Number of "true" observations in first sample.
+    nobs1 : int
+        Total number of observations in second sample.
+    count2 : int
+        Number of "true" observations in second sample.
+    nobs2 : int
+        Total number of observations in seconds sample.
+    H0_diff : float
+        Null-hypothesis difference.
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
+    method : str, optional
+        Passed to :func:`sm..test_proportions_2indep <statsmodels.stats.proportion.test_proportions_2indep>`.
 
     Returns
     -------
-    mqr.hyptest.HypothesisTest
+    :class:`mqr.inference.hyptest.HypothesisTest`
     """
     alt = interop.alternative(alternative, 'statsmodels')
     res = statsmodels.stats.proportion.test_proportions_2indep(

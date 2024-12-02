@@ -1,7 +1,3 @@
-"""
-Confidence intervals and hypothesis tests (parametric) for standard deviation.
-"""
-
 from mqr.inference.confint import ConfidenceInterval
 from mqr.inference.hyptest import HypothesisTest
 from mqr.inference.power import TestPower
@@ -14,22 +10,23 @@ def size_1sample(std_ratio, alpha, beta, alternative='two-sided'):
     """
     Calculate sample size for test of standard deviation of a sample.
 
-    Null-hypothesis: `std_ratio = sigma / sigma0 == 1` (two-sided).
+    Null-hypothesis
+        `std_ratio` = sigma / sigma0 == 1
 
-    Arguments
-    ---------
-    std_ratio (float) -- Required effect size.
-    alpha (float) -- Required significance.
-    beta (float) -- Required beta (1 - power).
-
-    Optional
-    --------
-    alternative (float) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
+    Parameters
+    ----------
+    std_ratio : float
+        Required effect size.
+    alpha : float
+        Required significance.
+    beta : float
+        Required beta (1 - power).
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
 
     Returns
     -------
-    mqr.power.TestPower
+    :class:`mqr.inference.power.TestPower`
     """
     var = variance.size_1sample(np.square(std_ratio), alpha, beta, alternative)
     return TestPower(
@@ -45,22 +42,23 @@ def size_2sample(std_ratio, alpha, beta, alternative='two-sided'):
     """
     Calculate sample size for test of ratio of standard deviations.
 
-    Null-hypothesis: `std_ratio == sigma_1 / sigma_2 == 1` (two-sided).
+    Null-hypothesis
+        `std_ratio` = sigma_1 / sigma_2 == 1
 
-    Arguments
-    ---------
-    std_ratio (float) -- Required effect size.
-    alpha (float) -- Required significance.
-    beta (float) -- Required beta (1 - power).
-
-    Optional
-    --------
-    alternative (float) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
+    Parameters
+    ----------
+    std_ratio : float
+        Required effect size.
+    alpha : float
+        Required significance.
+    beta : float
+        Required beta (1 - power).
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
 
     Returns
     -------
-    mqr.power.TestPower
+    :class:`mqr.inference.power.TestPower`
     """
     var = variance.size_2sample(np.square(std_ratio), alpha, beta, alternative)
     return TestPower(
@@ -76,18 +74,20 @@ def confint_1sample(x, conf=0.95, bounded='both', method='chi2'):
     """
     Confidence interval for the standard deviation of a sample.
 
-    Arguments
-    ---------
-    x (array[float]) -- Calcaulate interval for the standard deviation of this sample.
-
-    Optional
-    --------
-    conf (float) -- Confidence level that determines the width of the interval.
-        (Default 0.95.)
+    Parameters
+    ----------
+    x : array_like
+        Calcaulate interval for the standard deviation of this sample.
+    conf : float, optional
+        Confidence level that determines the width of the interval.
+    bounded : {'both', 'below', 'above'}, optional
+        Which sides of the interval to close.
+    method : {'chi2'}, optional
+        Only an interval based on the 'chi2' distribution is implemented.
 
     Returns
     -------
-    mqr.confint.ConfidenceInterval
+    :class:`mqr.inference.confint.ConfidenceInterval`
     """
     var = variance.confint_1sample(x, conf, bounded=bounded, method=method)
     return ConfidenceInterval(
@@ -103,19 +103,21 @@ def confint_2sample(x, y, conf=0.95, bounded='both', method='f'):
     """
     Confidence interval for the ratio of standard deviations of two samples.
 
-    Arguments
-    ---------
-    x, y (array[float]) -- Calcaulate interval for the ratio of standard
-        deviations of these two samples.
-
-    Optional
-    --------
-    conf (float) -- Confidence level that determines the width of the interval.
-        (Default 0.95.)
+    Parameters
+    ----------
+    x, y : array_like
+        Calculate interval for the ratio of standard deviations of these two samples.
+    conf : float, optional
+        Confidence level that determines the width of the interval.
+    bounded : {'both', 'below', 'above'}, optional
+        Which sides of the interval to close.
+    method : {'f'}, optional
+        Only 'f' is available, which calculates the standard deviation from an
+        interval on variance.
 
     Returns
     -------
-    mqr.confint.ConfidenceInterval
+    :class:`mqr.inference.confint.ConfidenceInterval`
     """
     var = variance.confint_2sample(x, y, conf, bounded=bounded, method=method)
     lower = 0.0 if bounded == 'above' else np.sqrt(var.lower)
@@ -133,21 +135,21 @@ def test_1sample(x, H0_std, alternative='two-sided'):
     """
     Hypothesis test for the varianve of a sample.
 
-    Null hypothesis: `var(x) / H0_var == 1`.
+    Null hypothesis
+        var(`x`) / `H0_var` == 1
 
-    Arguments
-    ---------
-    x (array[float]) -- Test variance of this sample.
-    H0_var (float) -- Null-hypothesis variance.
-
-    Optional
-    --------
-    alternative (str) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
+    Parameters
+    ----------
+    x : array_like
+        Test variance of this sample.
+    H0_std : float
+        Null-hypothesis standard deviation.
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
 
     Returns
     -------
-    mqr.hyptest.HypothesisTest
+    :class:`mqr.inference.hyptest.HypothesisTest`
     """
     var = variance.test_1sample(x, np.square(H0_std), alternative)
     x_name = x.name if hasattr(x, 'name') else 'x'
@@ -165,23 +167,24 @@ def test_2sample(x, y, alternative='two-sided'):
     """
     Hypothesis test for the ratio of variances of two samples.
 
-    Null hypothesis: `var(x) / var(y) == 1`.
+    Null hypothesis
+        var(`x`) / var(`y`) == 1
 
-    Arguments
-    ---------
-    x, y (array[float]) -- Test ratio of variances of these two samples.
-
-    Optional
-    --------
-    alternative (str) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
-    method (str) -- Type of test (default "f"):
-        "f" for F-test (calculated directly from f-dist),
-        "bartlett" for Bartlett's test (`scipy.stats.bartlett`, scipy.org).
+    Parameters
+    ----------
+    x, y : array_like
+        Test ratio of variances of these two samples.
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
+    method : {'f', 'bartlett'}, optional
+        | 'f'
+        |   F-test on variances applied to the squares of sample standard deviations.
+        | 'bartlett'
+        |   Bartlett's test. Calls :func:`scipy..bartlett <scipy.stats.bartlett>`.
 
     Returns
     -------
-    mqr.hyptest.HypothesisTest
+    :class:`mqr.inference.hyptest.HypothesisTest`
     """
     var = variance.test_2sample(x, y, alternative, 'f')
     x_name = x.name if hasattr(x, 'name') else 'x'

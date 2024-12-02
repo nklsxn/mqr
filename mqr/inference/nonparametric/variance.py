@@ -1,7 +1,3 @@
-"""
-Hypothesis tests (non-parametric) for the variance.
-"""
-
 from mqr.inference.hyptest import HypothesisTest
 
 import mqr.inference.lib.util as util
@@ -12,23 +8,26 @@ def test_nsample(*x, alternative='two-sided', method='levene'):
     """
     Hypothesis test for homogeneity of variances of multiple samples.
 
-    Null hypothesis: `var(x_i) == var(x_j)` for all `i`, `j`.
+    Null hypothesis
+        var(`x[i]`) == var(`x[j]`), for all `i`, `j`
 
-    Arguments
-    ---------
-    x (list[array[float]]) -- Test equality of variances of these samples.
-
-    Optional
-    --------
-    alternative (str) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
-    method (str) -- Type of test (default "levene"):
-        "levene" (`scipy.stats.levene`, scipy.org),
-        "fligner-killeen" (`scipy.stats.fligner`, scipy.org).
+    Parameters
+    ----------
+    x : array_like
+        Test equality of variances of these samples.
+    alternative : {'two-sided'}, optional
+        Sense of alternative hypothesis. Only 'two-sided' is currently supported.
+    method : {'levene', 'fligner-killeen'}, optional
+        | 'levene'
+        |   Levene's test for homogeneity of variance.
+            Calls :func:`scipy..levene <scipy.stats.levene>`.
+        | 'fligner-killeen'
+        |   Fligner-Killeen test for homogeneity of variance.
+            Calls :func:`scipy..fligner <scipy.stats.fligner>`.
 
     Returns
     -------
-    mqr.hyptest.HypothesisTest
+    :class:`mqr.inference.hyptest.HypothesisTest`
     """
     if method == 'levene':
         if alternative != 'two-sided':

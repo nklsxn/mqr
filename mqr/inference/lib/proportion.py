@@ -11,15 +11,19 @@ def confint_1sample_agresti_coull(count, nobs, conf, bounded):
     Confidence interval for proportion `count / nobs`.
 
     Implements the Agresti-Coull interval, which is not recommended for small
-    sample sizes (small means nobs < 40), according to [1].
+    sample sizes (small means nobs < 40), according to [1]_. In those cases [1]_
+    recommends Wilson with continuity correction or Jeffreys.
 
-    Arguments
-    ---------
-    count (int) -- Number of "true" observations.
-    nobs (int) -- Total observations.
-    conf (float) -- Confidence level that determines the width of the interval.
-    bounded (str) -- Which sides of the interval to close. One of "both",
-        "below" or "above".
+    Parameters
+    ----------
+    count : int
+        Number of "true" observations.
+    nobs : int
+        Total observations.
+    conf : float
+        Confidence level that determines the width of the interval.
+    bounded : {'both', 'below', 'above'}
+        Which sides of the interval to close.
 
     Returns
     -------
@@ -27,12 +31,9 @@ def confint_1sample_agresti_coull(count, nobs, conf, bounded):
 
     References
     ----------
-    [1] Brown, L. D. Cai, T. T. and DasGupta, A. (2001).
-        "Interval estimation for a binomial proportion".
-        Statistical Science, 16(2), 101-133.
-    [2] Park, H., & Leemis, L. M. (2019).
-        Ensemble confidence intervals for binomial proportions.
-        Statistics in Medicine, 38(18), 3460-3475.
+    .. [1]  Brown, L. D. Cai, T. T. and DasGupta, A. (2001).
+            "Interval estimation for a binomial proportion".
+            Statistical Science, 16(2), 101-133.
     """
     alpha = 1 - conf
     if np.any(nobs < 40):
@@ -68,15 +69,18 @@ def confint_1sample_jeffreys(count, nobs, conf, bounded):
     Confidence interval for proportion `count / nobs`.
 
     Implements the Jeffreys interval, which is a bayesian method that also has
-    desirable frequentist properties (see [1]).
+    desirable frequentist properties (see [1]_).
 
-    Arguments
-    ---------
-    count (int) -- Number of "true" observations.
-    nobs (int) -- Total observations.
-    conf (float) -- Confidence level that determines the width of the interval.
-    bounded (str) -- Which sides of the interval to close. One of "both",
-        "below" or "above".
+    Parameters
+    ----------
+    count : int
+        Number of "true" observations.
+    nobs : int
+        Total observations.
+    conf : float
+        Confidence level that determines the width of the interval.
+    bounded : {'both', 'below', 'above'}
+        Which sides of the interval to close.
 
     Returns
     -------
@@ -84,12 +88,9 @@ def confint_1sample_jeffreys(count, nobs, conf, bounded):
 
     References
     ----------
-    [1] Brown, L. D. Cai, T. T. and DasGupta, A. (2001).
-        "Interval estimation for a binomial proportion".
-        Statistical Science, 16(2), 101-133.
-    [2] Park, H., & Leemis, L. M. (2019).
-        Ensemble confidence intervals for binomial proportions.
-        Statistics in Medicine, 38(18), 3460-3475.
+    .. [1]  Brown, L. D. Cai, T. T. and DasGupta, A. (2001).
+            "Interval estimation for a binomial proportion".
+            Statistical Science, 16(2), 101-133.
     """
     alpha = 1 - conf
     dist = scipy.stats.beta(count + 1/2, nobs - count + 1/2)
@@ -109,6 +110,33 @@ def confint_1sample_jeffreys(count, nobs, conf, bounded):
     return lower, upper
 
 def confint_1sample_wilson(count, nobs, conf, bounded):
+    """
+    Confidence interval for proportion `count / nobs`.
+
+    Implements the Wilson method without continuity correction (method 3 in [1]_).
+
+    Parameters
+    ----------
+    count : int
+        Number of "true" observations.
+    nobs : int
+        Total observations.
+    conf : float
+        Confidence level that determines the width of the interval.
+    bounded : {'both', 'below', 'above'}
+        Which sides of the interval to close.
+
+    Returns
+    -------
+    (float, float)
+
+    References
+    ----------
+    .. [1]  Newcombe, R. G. (1998).
+            Two‐sided confidence intervals for the single proportion:
+            comparison of seven methods.
+            Statistics in medicine, 17(8), 857-872.
+    """
     alpha = 1 - conf
     dist = scipy.stats.norm()
     p = count / nobs
@@ -144,15 +172,18 @@ def confint_1sample_wilson_cc(count, nobs, conf, bounded):
     """
     Confidence interval for proportion `count / nobs`.
 
-    Implements the Wilson method with continuity correction.
+    Implements the Wilson method with continuity correction (method 4 in [1]_).
 
-    Arguments
-    ---------
-    count (int) -- Number of "true" observations.
-    nobs (int) -- Total observations.
-    conf (float) -- Confidence level that determines the width of the interval.
-    bounded (str) -- Which sides of the interval to close. One of "both",
-        "below" or "above".
+    Parameters
+    ----------
+    count : int
+        Number of "true" observations.
+    nobs : int
+        Total observations.
+    conf : float
+        Confidence level that determines the width of the interval.
+    bounded : {'both', 'below', 'above'}
+        Which sides of the interval to close.
 
     Returns
     -------
@@ -160,12 +191,9 @@ def confint_1sample_wilson_cc(count, nobs, conf, bounded):
 
     References
     ----------
-    [1] Brown, L. D. Cai, T. T. and DasGupta, A. (2001).
-        "Interval estimation for a binomial proportion".
-        Statistical Science, 16(2), 101-133.
-    [2] Park, H., & Leemis, L. M. (2019).
-        Ensemble confidence intervals for binomial proportions.
-        Statistics in Medicine, 38(18), 3460-3475.
+    .. [1]  Newcombe, R. G. (1998).
+            Two‐sided confidence intervals for the single proportion:
+            comparison of seven methods. Statistics in medicine, 17(8), 857-872.
     """
     alpha = 1 - conf
     dist = scipy.stats.norm()
@@ -197,34 +225,37 @@ def confint_1sample_wilson_cc(count, nobs, conf, bounded):
 
 def confint_2sample_agresti_caffo(count1, nobs1, count2, nobs2, conf, bounded):
     """
-    Confidence interval for difference between proportions
-    `count1 / nobs1 - count2 / nobs2`.
+    Confidence interval for difference between proportions `count1 / nobs1 - count2 / nobs2`.
 
-    Implements the Agresti-Caffo method.
+    Implements the Agresti-Caffo method. Note that this method performs well
+    over most parameters, but is not optimal over all parameters. For details
+    see ([1]_).
 
-    Arguments
-    ---------
-    count1 (int) -- Number of "true" observations in first sample.
-    nobs1 (int) -- Total observations in first sample.
-    count2 (int) -- Number of "true" observations in second sample.
-    nobs2 (int) -- Total observations in second sample.
-    conf (float) -- Confidence level that determines the width of the interval.
-    bounded (str) -- Which sides of the interval to close. One of "both",
-        "below" or "above".
+    Parameters
+    ----------
+    count1 : int
+        Number of "true" observations in first sample.
+    nobs1 : int
+        Total observations in first sample.
+    count2 : int
+        Number of "true" observations in second sample.
+    nobs2 : int
+        Total observations in second sample.
+    conf : float
+        Confidence level that determines the width of the interval.
+    bounded : {'both', 'below', 'above'}
+        Which sides of the interval to close.
 
     Returns
     -------
-    mqr.confint.ConfidenceInterval
+    :class:`mqr.inference.confint.ConfidenceInterval`
 
     References
     ----------
-    [1] NIST.
-        Engineering Statistics Handbook.
-        https://www.itl.nist.gov/div898/handbook/prc/section3/prc33.htm
-    [2] Agresti, A., & Caffo, B. (2000).
-        Simple and effective confidence intervals for proportions and differences
-        of proportions result from adding two successes and two failures.
-        The American Statistician, 54(4), 280-288.
+    .. [1]  Agresti, A., & Caffo, B. (2000).
+            Simple and effective confidence intervals for proportions and differences
+            of proportions result from adding two successes and two failures.
+            The American Statistician, 54(4), 280-288.
     """
     alpha = 1 - conf
     p1 = (count1 + 1) / (nobs1 + 2)
@@ -246,6 +277,37 @@ def confint_2sample_agresti_caffo(count1, nobs1, count2, nobs2, conf, bounded):
     return lower, upper
 
 def confint_2sample_newcomb(count1, nobs1, count2, nobs2, conf, bounded):
+    """
+    Confidence interval for difference between proportions `count1 / nobs1 - count2 / nobs2`.
+
+    Implements method 10 in [1]_.
+
+    Parameters
+    ----------
+    count1 : int
+        Number of "true" observations in first sample.
+    nobs1 : int
+        Total observations in first sample.
+    count2 : int
+        Number of "true" observations in second sample.
+    nobs2 : int
+        Total observations in second sample.
+    conf : float
+        Confidence level that determines the width of the interval.
+    bounded : {'both', 'below', 'above'}
+        Which sides of the interval to close.
+
+    Returns
+    -------
+    :class:`mqr.inference.confint.ConfidenceInterval`
+
+    References
+    ----------
+    .. [1]  Newcombe, R. G. (1998).
+            Interval estimation for the difference between independent proportions:
+            comparison of eleven methods.
+            Statistics in medicine, 17(8), 873-890.
+    """
     alpha = 1 - conf
     theta_hat = count1 / nobs1 - count2 / nobs2
     l1, u1 = confint_1sample_wilson(count1, nobs1, conf, bounded)
@@ -273,34 +335,39 @@ def confint_2sample_newcomb(count1, nobs1, count2, nobs2, conf, bounded):
 
 def confint_2sample_newcomb_cc(count1, nobs1, count2, nobs2, conf, bounded):
     """
-    Confidence interval for difference between proportions
-    `count1 / nobs1 - count2 / nobs2`.
+    Confidence interval for difference between proportions `count1 / nobs1 - count2 / nobs2`.
 
-    Implements the Newcomb method with continuity correction.
+    Implements method 11 in [1]_. Further discussion and comparisons in [2]_.
 
-    Arguments
-    ---------
-    count1 (int) -- Number of "true" observations in first sample.
-    nobs1 (int) -- Total observations in first sample.
-    count2 (int) -- Number of "true" observations in second sample.
-    nobs2 (int) -- Total observations in second sample.
-    conf (float) -- Confidence level that determines the width of the interval.
-    bounded (str) -- Which sides of the interval to close. One of "both",
-        "below" or "above".
+    Parameters
+    ----------
+    count1 : int
+        Number of "true" observations in first sample.
+    nobs1 : int
+        Total observations in first sample.
+    count2 : int
+        Number of "true" observations in second sample.
+    nobs2 : int
+        Total observations in second sample.
+    conf : float
+        Confidence level that determines the width of the interval.
+    bounded : {'both', 'below', 'above'}
+        Which sides of the interval to close.
 
     Returns
     -------
-    mqr.confint.ConfidenceInterval
+    :class:`mqr.inference.confint.ConfidenceInterval`
 
     References
     ----------
-    [1] NIST.
-        Engineering Statistics Handbook.
-        https://www.itl.nist.gov/div898/handbook/prc/section3/prc33.htm
-    [2] Agresti, A., & Caffo, B. (2000).
-        Simple and effective confidence intervals for proportions and differences
-        of proportions result from adding two successes and two failures.
-        The American Statistician, 54(4), 280-288.
+    .. [1]  Newcombe, R. G. (1998).
+            Interval estimation for the difference between independent proportions:
+            comparison of eleven methods.
+            Statistics in medicine, 17(8), 873-890.
+    .. [2]  Agresti, A., & Caffo, B. (2000).
+            Simple and effective confidence intervals for proportions and differences
+            of proportions result from adding two successes and two failures.
+            The American Statistician, 54(4), 280-288.
     """
     p1 = count1 / nobs1
     p2 = count2 / nobs2

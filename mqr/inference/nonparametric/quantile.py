@@ -1,7 +1,3 @@
-"""
-Confidence intervals and hypothesis tests (non-parametric) for quantiles.
-"""
-
 from mqr.inference.confint import ConfidenceInterval
 from mqr.inference.hyptest import HypothesisTest
 
@@ -15,22 +11,22 @@ def confint_1sample(x, q=0.5, conf=0.95, bounded='both'):
     """
     Confidence interval for the quantile of a sample.
     
-    Calls `scipy.stats.quantile_test` (scipy.org).
+    Calls :func:`scipy <scipy.stats.quantile_test>`.
 
-    Arguments
-    ---------
-    x (array[float]) -- Calculate the confidence interval for the quantile of this sample.
-
-    Optional
-    --------
-    q (float) -- Calculate the interval around this quantile. (Default 0.5.)
-    conf (float) -- Confidence level that determines the width of the interval.
-        (Default 0.95.)
-    bounded (str) -- Which sides of the interval to close. (Default "both".)
+    Parameters
+    ----------
+    x : array_like
+        Calculate the confidence interval for the quantile of this sample.
+    q : float, optional
+        Calculate the interval around this quantile.
+    conf : float, optional
+        Confidence level that determines the width of the interval.
+    bounded : {'both', 'below', 'above'}, optional
+        Which sides of the interval to close.
 
     Returns
     -------
-    mqr.confint.ConfidenceInterval
+    :class:`mqr.inference.confint.ConfidenceInterval`
     """
     value = np.quantile(x, q)
     alt = interop.bounded(bounded, 'scipy')
@@ -50,24 +46,26 @@ def test_1sample(x, H0_quant=None, q=0.5, alternative='two-sided'):
     """
     Hypothesis test for the quantile of a sample.
 
-    Null-hypothesis: `quantile(x, q) == H0_quant`.
+    Null-hypothesis
+        quantile(`x`, `q`) == `H0_quant`.
 
-    Calls `scipy.stats.quantile_test` (scipy.org).
+    Calls :func:`scipy..quantile_test <scipy.stats.quantile_test>`.
 
-    Arguments
-    ---------
-    x (array[float]) -- Test quantile of this sample.
-
-    Optional
-    --------
-    H0_quant (float) -- Null-hypothesis value associated with `q`. (Default None.)
-    q (float) -- Test the value associated with this quantile. (Default 0.5.)
-    alternative (str) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
+    Parameters
+    ----------
+    x : array_like
+        Test quantile of this sample.
+    H0_quant : float, optional
+        Null-hypothesis value associated with ``q``. Default is the ``q`` th
+        quantile of ``x``.
+    q : float, optional
+        Test the value associated with this quantile.
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
 
     Returns
     -------
-    mqr.hyptest.HypothesisTest
+    :class:`mqr.inference.hyptest.HypothesisTest`
     """
     if H0_quant is None:
         H0_quant = np.quantile(x, q)

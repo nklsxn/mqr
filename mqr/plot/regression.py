@@ -1,3 +1,64 @@
+"""
+================================================
+Regression analysis (:mod:`mqr.plot.regression`)
+================================================
+
+.. currentmodule:: mqr.plot.regression
+
+.. autosummary::
+    :toctree: generated/
+
+    residuals
+    influence
+    res_probplot
+    res_histogram
+    res_v_obs
+    res_v_fit
+    res_v_factor
+
+Examples
+--------
+This example uses :func:`residuals` which displays :func:`res_probplot`,
+:func:`res_histogram`, :func:`res_v_obs` and :func:`res_v_fit` into four supplied
+axes. The example also plots th residuals against factors using :func:`res_v_factor`.
+Finally, the example overlay on the `res_v_obs` plot an influence statistic using
+:func:`influence`.
+
+First set up the data and fit a model whose residuals will be shown.
+
+.. plot::
+    :context: close-figs
+    :nofigs:
+
+    import statsmodels
+
+    # Raw data
+    data = pd.read_csv(mqr.sample_data('anova-glue.csv'), index_col='Run')
+
+    # Fit a linear model
+    model = statsmodels.formula.api.ols('adhesion_force ~ C(primer) * C(glue)', data)
+    result = model.fit()
+
+Now create the residuals plots. There are six axes altogether: four for
+:func:`residuals` and another two for :func:`res_v_factor` applied to each factor.
+
+.. plot::
+    :context: close-figs
+
+    fig, axs = plt.subplots(3, 2, figsize=(8, 5), layout='constrained')
+
+    # show the four residuals plots
+    mqr.plot.regression.residuals(result.resid, result.fittedvalues, axs=axs[:2, :])
+
+    # plot residuals against each factor
+    mqr.plot.regression.res_v_factor(result.resid, data['primer'], axs[2, 0])
+    mqr.plot.regression.res_v_factor(result.resid, data['glue'], axs[2, 1])
+
+    # show Cook's Distance measure of influence.
+    mqr.plot.regression.influence(result, 'cooks_dist', axs[1, 0])
+
+"""
+
 import numpy as np
 import probscale
 import statsmodels.api as sm
@@ -9,6 +70,19 @@ from mqr.plot.defaults import Defaults
 from mqr.plot.lib.util import set_kws
 
 def res_probplot(resid, ax, probplot_kws=None):
+    """
+    Probability plot of residuals from result of calling `fit()` on statsmodels
+    model.
+
+    Parameters
+    ----------
+    resid : array_like
+        Residuals from regression.
+    ax : matplotlib.axes.Axes
+        Axes for the plot.
+    probplot_kws : dict, optional
+        Keyword arguments passed to `probscale.probplot`.
+    """
     probplot_kws = set_kws(
         probplot_kws,
         probax='y',
@@ -31,6 +105,23 @@ def res_probplot(resid, ax, probplot_kws=None):
     ax.set_ylabel('probability')
 
 def res_histogram(resid, ax, show_density=True, hist_kws=None, density_kws=None):
+    """
+    Plot histogram of residuals from result of calling `fit()` on statsmodels
+    model.
+
+    Parameters
+    ----------
+    resid : array_like
+        Residuals from regression.
+    ax : matplotlib.axes.Axes
+        Axes for the plot.
+    show_density : bool, optional
+        Draw a fitted normal distribution density over the histogram.
+    hist_kws : dict, optional
+        Keyword arguments passed to `seaborn.histplot`.
+    density_kws : dict, optional
+        Keyword arguments passed to `matplotlib.pyplot.plot`.
+    """
     hist_kws = set_kws(
         hist_kws,
         color='C0',
@@ -56,6 +147,20 @@ def res_histogram(resid, ax, show_density=True, hist_kws=None, density_kws=None)
     ax.set_ylabel('frequency')
 
 def res_v_obs(resid, ax, plot_kws=None, bar_kws=None):
+    """
+    Plot residuals versus observations.
+
+    Parameters
+    ----------
+    resid : array_like
+        Residuals from regression.
+    ax : matplotlib.axes.Axes
+        Axes for plot.
+    plot_kws : dict, optional
+        Keyword arguments passed to `matplotlib.pyplot.plot`.
+    bar_kws : dict, optional
+        Keyword arguments passed to `matplotlib.pyplot.bar`.
+    """
     plot_kws = set_kws(
         plot_kws,
         color='C0',
@@ -82,6 +187,20 @@ def res_v_obs(resid, ax, plot_kws=None, bar_kws=None):
     ax.set_ylabel('residual')
 
 def res_v_fit(resid, fitted, ax, plot_kws=None):
+    """
+    Plot residual versus fit.
+
+    Parameters
+    ----------
+    resid : array_like
+        Residuals from regression.
+    fitted : array_like
+        Fitted values from regression.
+    ax : matplotlib.axes.Axes
+        Axes for plot.
+    plot_kws : dict, optional
+        Keyword arguments passed to `matplotlib.pyplot.plot`.
+    """
     plot_kws = set_kws(
         plot_kws,
         color='C0',
@@ -95,6 +214,24 @@ def res_v_fit(resid, fitted, ax, plot_kws=None):
     ax.set_ylabel('residual')
 
 def res_v_factor(resid, factor, ax, factor_ticks=True, factor_name=None, plot_kws=None):
+    """
+    Plot a factor versus fit.
+
+    Parameters
+    ----------
+    resid : array_like
+        Residuals from regression.
+    factor
+        Values of a factor (levels) from data.
+    ax : matplotlib.axes.Axes
+        Axes for plot.
+    factor_ticks : bool, optional
+        When `True`, uses unique values in `factor` as x-ticks.
+    factor_name : str, optional
+        Name of the factor to be printed as the x-axis label.
+    plot_kws : dict, optional
+        Keyword arguments passed to `matplotlib.pyplot.plot`.
+    """
     plot_kws = set_kws(
         plot_kws,
         color='C0',
@@ -116,6 +253,25 @@ def res_v_factor(resid, factor, ax, factor_ticks=True, factor_name=None, plot_kw
     ax.grid(axis='y')
 
 def residuals(resid, fitted, axs):
+    """
+    Plot a probability plot of residuals, histogram of residuals, residuals
+    versus observation and residuals versus fitted values for the residuals in
+    a fitted statsmodels model.
+
+    Parameters
+    ----------
+    resid
+        Residuals from regression.
+    fitted
+        Fitted values from regression.
+    axs : np.ndarray[matplotlib.axes.Axes]
+        Array of axes for plot. Must have four elements. Will be flattened
+        before use.
+
+    Examples
+    --------
+    See :mod:`mqr.plot.regression`.
+    """
     axs = axs.flatten()
     assert len(axs) == 4 , f'subplots must have 4 axes.'
 
@@ -125,6 +281,24 @@ def residuals(resid, fitted, axs):
     res_v_fit(resid, fitted, ax=axs[3])
 
 def influence(result, influence_stat, ax, bar_kws=None):
+    """
+    Plot a bar graph of an influence statistic onto a twin axis of `ax`.
+
+    Parameters
+    ----------
+    result : statsmodels.regression.linear_model.RegressionResults
+        Result of calling `fit` on a statsmodel linear regression model.
+    influence_stat: {'cooks_dist', 'bonferroni'}
+        Plot this influence statistic for each residual as a bar.
+    ax : matplotlib.axes.Axes
+        Axes from which the twin axes will be created for the plot.
+    bar_kws : dict, optional
+        Keyword arguments passed to `matplotlib.pyplot.bar`.
+
+    Examples
+    --------
+    See :mod:`mqr.plot.regression`.
+    """
     bar_kws = set_kws(
         bar_kws,
         alpha=0.5,

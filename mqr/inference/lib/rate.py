@@ -8,28 +8,32 @@ import warnings
 
 def confint_1sample_chi2(count, n, meas, conf, bounded):
     """
-    Confidence interval for rate `count / n / meas` using the chi-squared
-    method. See [1].
+    Confidence interval for rate `count / n / meas`.
 
-    Arguments
-    ---------
-    count (int) -- Number of events.
-    n (int) -- Number of periods over which events were counted.
-    meas (float) -- Extent of one period of observation. (Default 1.0.)
-    conf (float) -- Confidence level that determines the width of the interval.
-        (Default 0.95.)
-    bounded (str) -- Which sides of the interval to close. One of "both",
-        "below" or "above". (Default "both".)
+    Uses the chi-squared method, method 1 in [1]_.
+
+    Parameters
+    ----------
+    count : int
+        Number of events.
+    n : int
+        Number of periods over which events were counted.
+    meas : float
+        Extent of one period of observation.
+    conf : float
+        Confidence level that determines the width of the interval.
+    bounded : {'both', 'below', 'above'}
+        Which sides of the interval to close.
 
     Returns
     -------
-    mqr.confint.ConfidenceInterval
+    :class:`mqr.inference.confint.ConfidenceInterval`
 
     References
     ----------
-    [1] Patil, V. V., & Kulkarni, H. V. (2012).
-        Comparison of confidence intervals for the Poisson mean: some new aspects.
-        REVSTAT-Statistical Journal, 10(2), 211-22.
+    .. [1]  Patil, V. V., & Kulkarni, H. V. (2012).
+            Comparison of confidence intervals for the Poisson mean: some new aspects.
+            REVSTAT-Statistical Journal, 10(2), 211-22.
     """
     alpha = 1 - conf
     if bounded == 'both':
@@ -47,31 +51,38 @@ def confint_1sample_chi2(count, n, meas, conf, bounded):
 
 def confint_1sample_exact(count, n, meas, conf, bounded):
     """
-    Confidence interval for rate `count / n / meas` using the exact method.
+    Confidence interval for rate `count / n / meas`.
 
+    Uses the exact method, method 9 in [1]_.
+
+    Parameters
+    ----------
+    count : int
+        Number of events.
+    n : int
+        Number of periods over which events were counted.
+    meas : float
+        Extent of one period of observation.
+    conf : float
+        Confidence level that determines the width of the interval.
+    bounded : {'both', 'below', 'above'}
+        Which sides of the interval to close.
+
+    Notes
+    -----
     Searches the Poisson cumulative distribution for a rate that that produces
-    the given confidence when `count` and `n` have the specified values. See [1].
-
-    Arguments
-    ---------
-    count (int) -- Number of events.
-    n (int) -- Number of periods over which events were counted.
-    meas (float) -- Extent of one period of observation. (Default 1.0.)
-    conf (float) -- Confidence level that determines the width of the interval.
-        (Default 0.95.)
-    bounded (str) -- Which sides of the interval to close. One of "both",
-        "below" or "above". (Default "both".)
+    the given confidence when `count` and `n` have the specified values.
 
     Returns
     -------
-    mqr.confint.ConfidenceInterval
+    :class:`mqr.inference.confint.ConfidenceInterval`
 
     References
     ----------
-    [1] Barker, L. (2002).
-        A comparison of nine confidence intervals for a Poisson parameter when
-        the expected number of events is ≤ 5.
-        The American Statistician, 56(2), 85-89.
+    .. [1]  Barker, L. (2002).
+            A comparison of nine confidence intervals for a Poisson parameter when
+            the expected number of events is ≤ 5.
+            The American Statistician, 56(2), 85-89.
     """
     if (count < 0) or (n < 0) or (meas < 0):
         raise ValueError(f'Arguments `count`, `n` and `meas` must all be non-negative.')
@@ -102,33 +113,42 @@ def confint_1sample_exact(count, n, meas, conf, bounded):
 
 def confint_1sample_wald_cc(count, n, meas, conf, bounded):
     """
-    Confidence interval for rate `count / n / meas` using the modified Wald method.
+    Confidence interval for rate `count / n / meas`.
 
-    The continuity correction is applied to both mean and variance. See [1] and [2].
+    Uses the Wald method with continuity correction, method 5 in [1]_ and
+    method 3 in [2]_.
 
-    Arguments
-    ---------
-    count (int) -- Number of events.
-    n (int) -- Number of periods over which events were counted.
-    meas (float) -- Extent of one period of observation. (Default 1.0.)
-    conf (float) -- Confidence level that determines the width of the interval.
-        (Default 0.95.)
-    bounded (str) -- Which sides of the interval to close. One of "both",
-        "below" or "above". (Default "both".)
+    Parameters
+    ----------
+    count : int
+        Number of events.
+    n : int
+        Number of periods over which events were counted.
+    meas : float
+        Extent of one period of observation.
+    conf : float
+        Confidence level that determines the width of the interval.
+    bounded : {'both', 'below', 'above'}
+        Which sides of the interval to close.
+
+    Notes
+    -----
+    The continuity correction is applied to both mean and variance.
+    See [1]_ and [2]_.
 
     Returns
     -------
-    mqr.confint.ConfidenceInterval
+    :class:`mqr.inference.confint.ConfidenceInterval`
 
     References
     ----------
-    [1] Patil, V. V., & Kulkarni, H. V. (2012).
-        Comparison of confidence intervals for the Poisson mean: some new aspects.
-        REVSTAT-Statistical Journal, 10(2), 211-22.
-    [2] Barker, L. (2002).
-        A comparison of nine confidence intervals for a Poisson parameter when
-        the expected number of events is ≤ 5.
-        The American Statistician, 56(2), 85-89.
+    .. [1]  Patil, V. V., & Kulkarni, H. V. (2012).
+            Comparison of confidence intervals for the Poisson mean: some new aspects.
+            REVSTAT-Statistical Journal, 10(2), 211-22.
+    .. [2]  Barker, L. (2002).
+            A comparison of nine confidence intervals for a Poisson parameter when
+            the expected number of events is ≤ 5.
+            The American Statistician, 56(2), 85-89.
     """
     alpha = 1 - conf
     value = count / n / meas
@@ -148,6 +168,37 @@ def confint_1sample_wald_cc(count, n, meas, conf, bounded):
     return lower, upper
 
 def confint_2sample_wald(count1, n1, count2, n2, meas1, meas2, conf, bounded):
+    """
+    Confidence interval for difference of rates `count1 / n1 / meas1 - count2 / n2 / meas2`.
+
+    Uses Wald method, equation (9) in [1]_.
+
+    Parameters
+    ----------
+    count1 : int
+        Number of events in first observation.
+    n1 : int
+        Number of periods over which first events were counted.
+    count2 : int
+        Number of events in second observation.
+    n2 : int
+        Number of periods over which second events were counted.
+    meas1 : float
+        Extent of one period in first observation.
+    meas2 : float
+        Extent of one period in second observation.
+    conf : float
+        Confidence level that determines the width of the interval.
+    bounded : {'both', 'below', 'above'}
+        Which sides of the interval to close.
+
+    References
+    ----------
+    .. [1]  Krishnamoorthy, K., & Lee, M. (2013).
+            New approximate confidence intervals for the difference between
+            two Poisson means and comparison.
+            Journal of Statistical Computation and Simulation, 83(12), 2232-2243.
+    """
     alpha = 1 - conf
     r1 = count1 / n1 / meas1
     r2 = count2 / n2 / meas2
@@ -168,6 +219,37 @@ def confint_2sample_wald(count1, n1, count2, n2, meas1, meas2, conf, bounded):
     return lower, upper
 
 def confint_2sample_wald_moment(count1, n1, count2, n2, meas1, meas2, conf, bounded):
+    """
+    Confidence interval for difference of rates `count1 / n1 / meas1 - count2 / n2 / meas2`.
+
+    Uses the method referred to as the "moment CI", equation (8) in [1]_.
+
+    Parameters
+    ----------
+    count1 : int
+        Number of events in first observation.
+    n1 : int
+        Number of periods over which first events were counted.
+    count2 : int
+        Number of events in second observation.
+    n2 : int
+        Number of periods over which second events were counted.
+    meas1 : float
+        Extent of one period in first observation.
+    meas2 : float
+        Extent of one period in second observation.
+    conf : float
+        Confidence level that determines the width of the interval.
+    bounded : {'both', 'below', 'above'}
+        Which sides of the interval to close.
+
+    References
+    ----------
+    .. [1]  Krishnamoorthy, K., & Lee, M. (2013).
+            New approximate confidence intervals for the difference between
+            two Poisson means and comparison.
+            Journal of Statistical Computation and Simulation, 83(12), 2232-2243.
+    """
     alpha = 1 - conf
     if bounded == 'both':
         z = scipy.stats.norm().ppf(1 - alpha / 2)

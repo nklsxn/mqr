@@ -14,24 +14,62 @@ import matplotlib.pyplot as plt
 @dataclass
 class ConfidenceInterval:
     """
-    Result of calculating a confidence interval
+    Result type for confidence interval calculations.
 
     Attributes
     ----------
-    name (str) -- Statistic on which the confidence interval was calculated.
-    method (str) -- Statistical method for determining the interval
-    value (float) -- Value of the statistic.
-    lower (float) -- Lower limit of the interval.
-    upper (float) -- Upper limit of the interval.
-    conf (float) -- Confidence dictating the width of the interval.
+    name: str
+        Statistic on which the confidence interval was calculated.
+    method: str
+        Statistical method for determining the interval.
+    value: float
+        Value of the bounded statistic.
+    lower: float
+        Lower limit of the interval.
+    upper: float
+        Upper limit of the interval.
+    conf: float
+        Confidence that determines the width of the interval.
+    bounded: {'both', 'below', 'above'}
+        Which sides of the statistic are bounded by this interval.
 
     Notes
     -----
-    Printed as an HTML table in notebooks. Printed as a text table on the command line.
+    The type is iterable, and iterates over the lower and upper bounds (in that
+    order).
 
-    Is iterable, which results in an iterator over the lower and upper bounds of
-    the interval:
-    >>> lower, upper = ConfidenceInterval(...)
+    Examples
+    --------
+    The results of confidence interval calculations will be return like this.
+
+    >>> import mqr
+    >>> ci = mqr.inference.confint.ConfidenceInterval(
+    >>>     'name', 'method',
+    >>>     value=1.0, lower=0.0, upper=2.0,
+    >>>     conf=0.98, bounded='both')
+    >>> print(ci)
+    ConfidenceInterval(
+        name='test', method='method',
+        value=1.0, lower=0.0, upper=2.0,
+        conf=0.98, bounded='both')
+
+    Iterate over the lower and upper bounds:
+
+    >>> lower, upper = ci
+    >>> lower, upper
+    (0.0, 2.0)
+
+    When displayed in a jupyter notebook, this class is shown as an HTML table:
+
+    +-----------+-----------+-----------+
+    | | **Confidence Interval**         |
+    | | name                            |
+    | | 98% (fisher-z)                  |
+    +===========+===========+===========+
+    | **value** | **lower** | **upper** |
+    +-----------+-----------+-----------+
+    | 1.0       | 0.0       | 2.0       |
+    +-----------+-----------+-----------+
     """
 
     name: str
@@ -43,6 +81,9 @@ class ConfidenceInterval:
     bounded: str
 
     def __iter__(self):
+        """
+        Iterator over the lower and upper bounds of the confidence interval.
+        """
         return iter((self.lower, self.upper))
 
     def _html(self):

@@ -1,7 +1,3 @@
-"""
-Confidence intervals and hypothesis tests (parametric) for correlation.
-"""
-
 from mqr.inference.confint import ConfidenceInterval
 from mqr.inference.hyptest import HypothesisTest
 
@@ -12,32 +8,29 @@ import scipy
 
 def confint(x, y, conf=0.95, bounded='both', method='fisher-z'):
     """
-    Confidence interval on correlation (using the Pearson correlation coefficient).
+    Confidence interval on the Pearson correlation coefficient.
 
-    Uses Fisher's z-transform, see [1].
-
-    Arguments
-    ---------
-    x, y (array[float]) -- Calculate correlation between these samples.
-
-    Optional
-    --------
-    conf (float) -- Confidence level that determines the width of the interval.
-        (Default 0.95.)
-    bounded (str) -- Which sides of the interval to close (default "both"). One
-        of "both", "above" or "below.
-    method (str) -- Type of statistic. Only the default, "fisher-z" Fisher's
-        z-transform, is implemented.
+    Parameters
+    ----------
+    x, y : array_like
+        Calculate correlation between these samples.
+    conf : float, optional
+        Confidence level that determines the width of the interval.
+    bounded : {'both', 'above', 'below'}, optional
+        Which sides of the interval to close.
+    method : {'fisher-z'}, optional
+        Type of statistic. Only Fisher's z-transform (see [1]_), is currently
+        implemented.
 
     Returns
     -------
-    mqr.confint.ConfidenceInterval
+    :class:`mqr.inference.confint.ConfidenceInterval`
 
     References
     ----------
-    [1] Asuero, A. G., Sayago, A., & González, A. G. (2006).
-        The correlation coefficient: An overview.
-        Critical reviews in analytical chemistry, 36(1), 41-59.
+    .. [1]  Asuero, A. G., Sayago, A., & González, A. G. (2006).
+            The correlation coefficient: An overview.
+            Critical reviews in analytical chemistry, 36(1), 41-59.
     """
     if method != 'fisher-z':
         raise ValueError(util.method_error_msg(method, ['fisher-z']))
@@ -76,36 +69,41 @@ def confint(x, y, conf=0.95, bounded='both', method='fisher-z'):
 
 def test(x, y, H0_corr=0.0, alternative='two-sided'):
     """
-    Hypothesis test for correlation (Pearson) between two samples.
+    Hypothesis test on the Pearson correlation coefficient.
 
-    Null-hypothesis: `corr(x, y) == H0_corr`.
+    Null-hypothesis
+        corr(`x`, `y`) == `H0_corr`
 
-    Uses Fisher's z-transform, see [1].
-
-    Arguments
-    ---------
-    x, y (array[float]) -- Test correlation of these two equal-length samples.
-
-    Optional
-    --------
-    H0_corr (float) -- Null-hypothesis correlation coefficient. (Default 0.)
-    alternative (str) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
-    method (str) -- Type of statistic; only the default "fisher-z" is implemented.
+    Parameters
+    ----------
+    x, y : array_like
+        Test correlation of these two equal-length samples.
+    H0_corr : float, optional
+        Null-hypothesis correlation coefficient.
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
 
     Returns
     -------
-    mqr.hyptest.HypothesisTest
+    :class:`mqr.inference.hyptest.HypothesisTest`
 
     Raises
     ------
-    ValueError -- Length of x and y are different.
+    ValueError
+        Length of `x` and `y` are different.
+
+    Notes
+    -----
+    Chooses a method depending on the null-hypothesis. When the null-hypothesis
+    correlation is zero, calculates a t-statistic according to Pearson. On the
+    other hand, when the null-hypothesis correlation is non-zero, calculates a
+    Gaussian statistic based on Fisher's z-transform (see [1]_).
 
     References
     ----------
-    [1] Asuero, A. G., Sayago, A., & González, A. G. (2006).
-        The correlation coefficient: An overview.
-        Critical reviews in analytical chemistry, 36(1), 41-59.
+    .. [1]  Asuero, A. G., Sayago, A., & González, A. G. (2006).
+            The correlation coefficient: An overview.
+            Critical reviews in analytical chemistry, 36(1), 41-59.
     """
     if len(x) != len(y):
         raise ValueError(f'Lengths of x and y must be equal.')
@@ -146,42 +144,47 @@ def test(x, y, H0_corr=0.0, alternative='two-sided'):
 
 def test_diff(x1, y1, x2, y2, H0_corr1=0.0, H0_corr2=0.0, alternative='two-sided', method='fisher-z'):
     """
-    Hypothesis test on the difference of two correlations (Pearson).
+    Hypothesis test on the difference of two Pearson correlations.
 
-    Null-hypothesis: `corr(x1, y1) - corr(x2, y2) == H0_corr1 - H0_corr2`.
-    Note that the alternatives mean "less" or "greater" on the real number line,
-    not in absolute value.
+    Null-hypothesis
+        corr(`x1`, `y1`) - corr(`x2`, `y2`) == `H0_corr1` - `H0_corr2`
 
-    Uses Fisher's z-transform, see [1].
-
-    Arguments
-    ---------
-    x1, y1 (array[float]) -- First pair of samples.
-    x2, y2 (array[float]) -- Second pair of samples whose correlation will be
-        subtracted from the correlation of the first pair to form the difference.
-
-    Optional
-    --------
-    H0_corr1, H0_corr2 (float) -- Null-hypothesis difference is
-        `H0_corr1 - H0_corr2`. (Defaults 0 and 0.)
-    alternative (str) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
-    method (str) -- Type of statistic; only the default "fisher-z" is supported.
+    Parameters
+    ----------
+    x1, y1 : array_like
+        First pair of samples.
+    x2, y2 : array_like
+        Second pair of samples whose correlation will be subtracted from the
+        correlation of the first pair to form the difference.
+    H0_corr1, H0_corr2 : float, optional
+        Null-hypothesis difference is `H0_corr1` - `H0_corr2`.
+    alternative : {'both', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
+    method : {'fisher-z'}, optional
+        Type of statistic; only 'fisher-z' is implemented.
 
     Returns
     -------
-    mqr.hyptest.HypothesisTest
+    :class:`mqr.inference.hyptest.HypothesisTest`
+
+    Notes
+    -----
+    Uses Fisher's z-transform, see [1]_.
+
+    Note that the alternatives mean "less" or "greater" on the real number line,
+    not in absolute value.
 
     Raises
     ------
-    ValueError -- Lengths of x1 and y1 are different.
-               -- Lengths of x2 and y2 are different.
+    ValueError
+        Lengths of `x1` and `y1` are different, or lengths of `x2` and `y2` are
+        different.
 
     References
     ----------
-    [1] Asuero, A. G., Sayago, A., & González, A. G. (2006).
-        The correlation coefficient: An overview.
-        Critical reviews in analytical chemistry, 36(1), 41-59.
+    .. [1]  Asuero, A. G., Sayago, A., & González, A. G. (2006).
+            The correlation coefficient: An overview.
+            Critical reviews in analytical chemistry, 36(1), 41-59.
     """
     if method != 'fisher-z':
         raise ValueError(util.method_error_msg(method, ['fisher-z']))

@@ -1,7 +1,3 @@
-"""
-Hypothesis tests (parametric) for the distribution.
-"""
-
 from mqr.inference.confint import ConfidenceInterval
 from mqr.inference.hyptest import HypothesisTest
 
@@ -10,23 +6,27 @@ import mqr.interop.inference as interop
 
 def test_1sample(x, test='ad-norm'):
     """
-    Hypothesis test on distribution.
+    Hypothesis test on sampling distribution.
 
-    Null-hypothesis: `x` was sampled from `dist`.
+    Null-hypothesis
+        | 'ad-norm', 'ks-norm'
+        |   `x` was sampled from the a normal distribution
 
-    Arguments
-    ---------
-    x (array[float]) -- Test the hypothesis that `x` was sampled from `dist`.
-
-    Optional
-    --------
-    test (str) -- Statistical test to run. Only the default 'ad-norm' for the
-        Anderson-Darling normality test is available
-        (`statsmodels.stats.diagnostic.normal_ad`, statsmodels.org).
+    Parameters
+    ----------
+    x : array_like
+        Test the distribution of these values.
+    test : {'ad-norm', 'ks-norm'}, optional
+        | 'ad-norm'
+        |   Anderson-Darling normality test.
+            Calls :func:`sm..normal_ad <statsmodels.stats.diagnostic.normal_ad>`.
+        | 'ks-norm'
+        |   Kolmogoroc-Smirnov test against the normal distribution.
+            Calls :func:`sm..kstest_normal <statsmodels.stats.diagnostic.kstest_normal>`.
 
     Returns
     -------
-    mqr.confit.HypothesisTest
+    :class:`mqr.inference.hyptest.HypothesisTest`
     """
     if test == 'ad-norm':
         from statsmodels.stats.diagnostic import normal_ad

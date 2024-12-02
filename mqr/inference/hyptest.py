@@ -1,7 +1,3 @@
-"""
-Result type and presentation for hypothesis tests.
-"""
-
 from dataclasses import dataclass, field
 import numpy as np
 import scipy
@@ -25,25 +21,90 @@ class HypothesisTest:
 
     Attributes
     ----------
-    description (str) -- Description of the statistic on which the test is performed.
-    alternative (str) -- Sense of the alternative hypothesis. One of "two-sided",
-        "less" or "greater".
-    method (str) -- The name of the test method, eg. "Kruskall-Wallace".
-    sample_stat (str) -- The name of the statistic from the sample on which the
-        test is performed. For example, when performing an hypothesis test on the
-        mean of a sample, `sample_stat` is the mean. This is independent of the method.
-    sample_stat_target (str) -- The hypothesised value of the sample statistic.
+    description : str
+        Description of the statistic on which the test is performed.
+    alternative : {'two-sided', 'less', 'greater'}
+        Sense of the alternative hypothesis.
+    method : str
+        Name of the test method, eg. 'Kruskall-Wallace'.
+    sample_stat : str
+        Name of the statistic from the sample on which the test is performed.
         For example, when performing an hypothesis test on the mean of a sample,
-        `sample_stat_target` is the hypothesised mean that appears in the null-hypothesis.
-    sample_stat_value (np.float64) -- The actual value of the sample statistic
-        calculated from the sample.
-    stat (np.float64) -- The test statistic. For example, in an hypothesis test
-        on the mean of a sample, `stat` might be the score on a student's-t
-        distribution.
-    pvalue (np.float64) -- The p-value associated with the test statistic.
+        `sample_stat` is the mean. This is independent of the method.
+    sample_stat_target : str
+        Hypothesised value of the sample statistic. For example, when performing
+        an hypothesis test on the mean of a sample, `sample_stat_target` is
+        the hypothesised mean that appears in the null-hypothesis. Expressed as
+        a string because some hypothesis tests target non-numeric properties,
+        like distributions.
+    sample_stat_value : float
+        Actual value of the sample statistic calculated from the sample. Use
+        `None` when the `sample_stat_target` is non-numeric.
+    stat : float
+        Test statistic. For example, in an hypothesis test on the mean of a
+        sample, `stat` might be the score on a student's-t distribution.
+    pvalue : float
+        p-value associated with the test statistic.
+    null : None
+        Automatically generated. A string representation of the null-hypothesis.
+    alt : None
+        Automatically generated. A string representation of the alternative-hypothesis.
 
-    null (str) -- Automatically generated. A string representation of the null-hypothesis.
-    alt (str) -- Automatically generated. A string representation of the alternative-hypothesis.
+    Notes
+    -----
+    This class is iterable, and iterates over the test statistic and p-value (in
+    that order).
+
+    Examples
+    --------
+    All hypothesis tests return a type constructed like this.
+
+    >>> import mqr
+    >>> hyptest = mqr.inference.hyptest.HypothesisTest(
+    >>>     description='Example mean test',
+    >>>     alternative='less',
+    >>>     method='Example students-t',
+    >>>     sample_stat='mean(x)',
+    >>>     sample_stat_target='1.6',
+    >>>     sample_stat_value=1.4,
+    >>>     stat=-2.828427124746192,
+    >>>     pvalue=0.02371032779215975)
+    >>> hyptest
+    HypothesisTest(
+        description='Example mean test',
+        alternative='less',
+        method='Example students-t',
+        sample_stat='mean(x)',
+        sample_stat_target='1.6',
+        sample_stat_value=1.4,
+        stat=-2.828427124746192,
+        pvalue=0.02371032779215975,
+        null='mean(x) == 1.6',
+        alt='mean(x) < 1.6')
+
+    Iterate over the test statistic and p-value:
+
+    >>> stat, pvalue = hyptest
+    >>> stat, pvalue
+    (-2.828427124746192, 0.02371032779215975)
+
+    When displayed in a jupyter notebook, the example here will be shown as an
+    HTML table:
+
+    +------------------------+---------------------+
+    | | **Hypothesis Test**                        |
+    | | Example mean test                          |
+    +========================+=====================+
+    | **method**             | Example students-t  |
+    +------------------------+---------------------+
+    | **H**:sub:`0`          | mean(x) == 1.6      |
+    +------------------------+---------------------+
+    | **H**:sub:`1`          | mean(x) < 1.6       |
+    +------------------------+---------------------+
+    | **statistic**          | -2.828427124746192  |
+    +------------------------+---------------------+
+    | **p-value**            | 0.02371032779215975 |
+    +------------------------+---------------------+
     """
     description: str
     alternative: str

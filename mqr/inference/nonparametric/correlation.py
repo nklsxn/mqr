@@ -1,7 +1,3 @@
-"""
-Hypothesis (non-parametric) tests for correlation.
-"""
-
 from mqr.inference.hyptest import HypothesisTest
 
 import mqr.inference.lib.util as util
@@ -10,23 +6,26 @@ def test(x, y, alternative='two-sided', method='spearman'):
     """
     Hypothesis test for correlation between two samples.
 
-    Null-hypothesis: `corr(x, y) == 0`.
+    Null hypothesis
+        corr(`x`, `y`) == 0
 
-    Arguments
-    ---------
-    x, y (array[float]) -- Test correlation of these two equal-length samples.
-
-    Optional
-    --------
-    alternative (str) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
-    method (str) -- Type of statistic (default "spearman"):
-        "spearman" (`scipy.stats.spearmanr`, scipy.org),
-        "kendall" (`scipy.stats.kendalltau`, scipy.org).
+    Parameters
+    ----------
+    x, y : array_like
+        Test correlation of these two equal-length samples.
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
+    method : {'spearman', 'kendall'}, optional
+        | 'spearman'
+        |   Spearman correlation coefficient.
+            Calls :func:`scipy..spearmanr <scipy.stats.spearmanr>`.
+        | 'kendall'
+        |   Kendall's tau measure.
+            Calls :func:`scipy..kendalltau <scipy.stats.kendalltau>`.
 
     Returns
     -------
-    mqr.hyptest.HypothesisTest
+    :class:`mqr.inference.hyptest.HypothesisTest`
     """
     import numpy as np
     import scipy.stats as st

@@ -1,3 +1,25 @@
+"""
+=================================================
+Measurement system analysis (:mod:`mqr.plot.msa`)
+=================================================
+
+.. currentmodule:: mqr.plot.msa
+
+
+
+.. rubric:: Functions
+.. autosummary::
+    :toctree: generated/
+
+    grr
+    bar_var_pct
+    box_measurement_by_part
+    xbar_operator
+    box_measurement_by_operator
+    r_operator
+    line_part_operator_intn
+"""
+
 import numpy as np
 import seaborn as sns
 
@@ -6,6 +28,19 @@ from mqr.plot.defaults import Defaults
 from mqr.plot.lib.util import set_kws
 
 def bar_var_pct(grr_table, ax, sources=None, bar_kws=None):
+    """
+    Bar graph of percent contributions from `sources` in a GRR study.
+
+    Parameters
+    ----------
+    grr_table : :class:`mqr.msa.VarianceTable`
+        Results from a GRR study.
+    ax : matplotlib.axes.Axes
+        Axes for the plot.
+    sources : list[str], optional
+        Sources to include. Default `["% Contribution", "% StudyVar",
+        "% Tolerance"]`.
+    """
     bar_kws = set_kws(
         bar_kws,
         zorder=1,
@@ -41,6 +76,16 @@ def bar_var_pct(grr_table, ax, sources=None, bar_kws=None):
     ax.grid()
 
 def box_measurement_by_part(grr, ax, box_kws=None, line_kws=None):
+    """
+    Box plot showing spread in a GRR by part.
+
+    Parameters
+    ----------
+    grr : mqr.msa.GRR
+        Results from a GRR study.
+    ax : matplotlib.axes.Axes
+        Axes for the plot.
+    """
     box_kws = set_kws(
         box_kws,
         color='C0',
@@ -69,6 +114,16 @@ def box_measurement_by_part(grr, ax, box_kws=None, line_kws=None):
     ax.grid()
 
 def box_measurement_by_operator(grr, ax, box_kws=None, line_kws=None):
+    """
+    Box plot showing spread in a GRR by operator.
+
+    Parameters
+    ----------
+    grr : mqr.msa.GRR
+        Results from a GRR study.
+    ax : matplotlib.axes.Axes
+        Axes for the plot.
+    """
     box_kws = set_kws(
         box_kws,
         color='C0',
@@ -97,6 +152,16 @@ def box_measurement_by_operator(grr, ax, box_kws=None, line_kws=None):
     ax.grid()
 
 def line_part_operator_intn(grr, ax, line_kws=None):
+    """
+    Interaction plot showing the part-operator interaction in a GRR study.
+
+    Parameters
+    ----------
+    grr : mqr.msa.GRR
+        Results from a GRR study.
+    ax : matplotlib.axes.Axes
+        Axes for the plot.
+    """
     line_kws = set_kws(
         line_kws,
         marker='_',
@@ -129,6 +194,16 @@ def line_part_operator_intn(grr, ax, line_kws=None):
 def xbar_operator(grr, ax,
                   line_kws=None, text_kws=None,
                   target_kws=None, control_kws=None):
+    """
+    XBar-chart for the operator mean in a GRR study.
+
+    Parameters
+    ----------
+    grr : mqr.msa.GRR
+        Results from a GRR study.
+    ax : matplotlib.axes.Axes
+        Axes for the plot.
+    """
     target_kws = set_kws(
         target_kws,
         linewidth=0.5,
@@ -175,6 +250,17 @@ def xbar_operator(grr, ax,
 def r_operator(grr, ax,
                line_kws=None, text_kws=None,
                target_kws=None, control_kws=None):
+    """
+    R chart for the operator range in a GRR study.
+
+    Parameters
+    ----------
+    grr : mqr.msa.GRR
+        Results from a GRR study.
+    ax : matplotlib.axes.Axes
+        Axes for the plot.
+    """
+
     target_kws = set_kws(
         target_kws,
         linewidth=0.5,
@@ -217,6 +303,87 @@ def r_operator(grr, ax,
     ax.set_title(f'Range by {name_o}')
 
 def grr(grr, axs, sources=None):
+    """
+    GRR summary plots.
+
+    A 3 by 2 grid of:
+
+    - bar graph of components of variation,
+    - measurement by part,
+    - R-chart by operator,
+    - measurement by operator,
+    - Xbar-chart by operator, and
+    - part * operator interaction.
+
+    This routine flattens the axes before drawing into them.
+
+    Parameters
+    ----------
+    grr : mqr.msa.GRR
+        GRR study.
+    axs : numpy.ndarray
+        A 3*2 array of matplotlib axes.
+    sources : list[str], optional
+        A list of components of variation to include in the bar graph (optional).
+
+    Examples
+    --------
+    Create plots for a GRR analysis from the NIST silicon wafer resistivity.
+    Data is from `<https://www.itl.nist.gov/div898/software/dataplot/data/MPC61.DAT>`_.
+
+    Before creating the plot, though, there is a bit of data marshalling to do.
+    This loads the data from the CSV file online into a DataFrame. The first 50
+    rows are metadata etc., so skip those. Treat any one or more whitespace
+    characters as a separator. And finally, add a column assigning numbers to
+    repeated measurements, which allows the GRR routines to include repeats in
+    the linear model.
+
+    .. plot::
+        :context: close-figs
+        :nofigs:
+
+        columns = ['RUNID', 'WAFERID', 'PROBE', 'MONTH', 'DAY', 'OPERATOR', 'TEMP', 'AVERAGE', 'STDDEV',]
+        dtype = {
+            'WAFERID': int,
+            'PROBE':int,
+        }
+
+        data = pd.read_csv(
+            'https://www.itl.nist.gov/div898/software/dataplot/data/MPC61.DAT',
+            skiprows=50,
+            header=None,
+            names=columns,
+            sep='\\s+',
+            dtype=dtype,
+        )
+        data['REPEAT'] = np.repeat([1,2,3,4,5,6,7,8,9,10,11,12], 25)
+
+
+    The GRR plots are created from a GRR study object :class:`mqr.msa.GRR`. For
+    this example, use a tolerance of 8 ohm cm, and test for variance contribution
+    from the probe (listed as operator). The name mapping shows the setup. This
+    study uses only the first run `RUNID == 1`.
+
+    .. plot::
+        :context: close-figs
+
+        tol = 2*8.0
+        names = mqr.msa.NameMapping(
+            part='WAFERID',
+            operator='PROBE',
+            replicate='REPEAT',
+            measurement='AVERAGE')
+        grr = mqr.msa.GRR(
+            data.query('RUNID==1'),
+            tolerance=tol,
+            names=names,
+            include_interaction=True)
+
+        fig, axs = plt.subplots(3, 2, figsize=(10, 6), layout='constrained')
+        mqr.plot.msa.grr(grr, axs=axs)
+
+
+    """
     axs = axs.flatten()
     assert len(axs) == 6, 'GRR Tableau requires 6 subplot axes.'
     grr_table = mqr.msa.VarianceTable(grr)

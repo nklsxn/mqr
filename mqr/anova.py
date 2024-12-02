@@ -1,7 +1,22 @@
 """
-Analysis of Variance.
+=======================================
+Analysis of Variance (:mod:`mqr.anova`)
+=======================================
+
+.. :currentmodule:: mqr.anova
 
 Tools for interpreting ANOVA results.
+
+.. rubric:: Functions
+
+.. autosummary::
+    :toctree: generated/
+
+    adequacy
+    summary
+    coeffs
+    groups
+    interactions
 """
 
 from dataclasses import dataclass
@@ -24,20 +39,20 @@ import warnings
 
 def summary(result, typ=2):
     '''
-    The ANOVA table for a regeression.
+    The ANOVA table for a regression.
 
-    Arguments
-    ---------
-    result -- Result of calling `fit` on a statsmodels model.
-
-    Optional
-    --------
-    typ (int or str) -- The ANOVA analysis type. Passed to
-        `statsmodels.api.stats.anova_lm(..., typ=typ)`.
+    Parameters
+    ----------
+    result : statsmodels.regression.linear_model.RegressionResults
+        Result of calling `fit` on a statsmodels linear regression model.
+    typ : {1, 2, 3, 'I', 'II', 'III'}, optional
+        The ANOVA analysis type. Passed to :func:`anova_lm(..., typ=typ) 
+        <statsmodels.stats.anova.anova_lm>`.
 
     Returns
     -------
-    (pd.DataFrame) -- The ANOVA (type 2) table for the regression
+    pandas.DataFrame
+        The ANOVA table for the regression.
     '''
     table = sm.stats.anova_lm(result, typ=typ)
     table.loc['Total'] = table.sum(axis=0, skipna=False)
@@ -49,18 +64,17 @@ def coeffs(result, conf=0.95):
     """
     The coefficients from regression and their confidence intervals.
 
-    Arguments
-    ---------
-    result -- Result of calling `fit` on a statsmodels model.
-
-    Optional
-    --------
-    conf (float) -- Confidence level used to form an interval (decimal).
-        (Default 0.95.)
+    Parameters
+    ----------
+    result : statsmodels.regression.linear_model.RegressionResults
+        Result of calling `fit` on a statsmodels linear regression model.
+    conf: float, optional
+        Confidence level used to form an interval (decimal).
 
     Returns
     -------
-    (pd.DataFrame) -- Coefficients indexed by name from the model.
+    pandas.DataFrame
+        Coefficients indexed by name from the model.
     """
     alpha = 1 - conf
     values = pd.concat(
@@ -81,20 +95,29 @@ def groups(result, *, value: str, factor: str, conf=0.95):
     The `value` column from a dataframe averaged over `factor`, and annotated
     with confidence intervals per level.
 
-    Arguments
-    ---------
-    df (pd.DataFrame) -- A dataframe of measurements and categories.
-    value (str) -- The name of the column to average into groups.
-    factor (str) -- The name of the column (categorical) to group by.
+    See [1]_ (pp. 538-541) for construction of t-statistic.
 
-    Optional
-    --------
-    conf (float) -- The confidence level used to form an interval (decimal).
-        (Default 0.95.)
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        A dataframe of measurements and categories.
+    value : str
+        Name of the column to average into groups.
+    factor : str
+        Name of the column (categorical) to group by.
+    conf : float, optional
+        The confidence level used to form an interval (decimal).
 
     Returns
     -------
-    pd.DataFrame -- Average values per group with confidence intervals.
+    pandas.DataFrame
+        Average values per group with confidence intervals.
+
+    References
+    ----------
+    .. [1] Saville, David J., and Graham R. Wood.
+       Statistical methods: The geometric approach.
+       Springer Science & Business Media, 2012.
     """
     alpha = 1 - conf
     df = result.model.data.frame
@@ -111,15 +134,19 @@ def interactions(df: pd.DataFrame, *, value: str, between: list[str]):
     """
     Interaction table.
 
-    Arguments
-    ---------
-    df (pd.DataFrame) -- A dataframe of measurements and categories.
-    value (str) -- The name of the column of measurements.
-    between (list[str]) -- A list of columns to group over before averaging.
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        Dataframe of measurements and categories.
+    value : str
+        Name of the column of measurements.
+    between : list[str]
+        List of columns to group over before averaging.
 
     Returns
     -------
-    pd.DataFrame -- Average values per pair of columns in between.
+    pandas.DataFrame
+        Average values per pair of columns in between.
     """
     return df.groupby([*between])[value].mean().unstack()
 
@@ -131,21 +158,32 @@ def adequacy(result):
     """
     Table of statistics from a fitted OLS regression (see Returns).
 
-    Arguments
-    ---------
-    result -- The result of calling `fit` on a statsmodels model.
+    Parameters
+    ----------
+    result : statsmodels.regression.linear_model.RegressionResults
+        The result of calling `fit` on a statsmodels linear regression model.
 
     Returns
     -------
-    pd.DataFrame -- A list of statistics from the regression:
-        * S: square-root of the mean-squared error
-        * R-sq: coefficient of determination
-        * R-sq (adj): coefficient of determination, adjusted for degrees of freedom
-          in model
-        * N: number of observations
-        * JB: Jarque-Berra test statistic
-        * p (JB): p-value for JB test (null is zero skewness and zero excess
-          kurtosis -- normality)
+    pandas.DataFrame
+        A list of statistics from the regression with columns:
+
+        S
+            square-root of the mean-squared error
+        R-sq
+            coefficient of determination
+        R-sq (adj)
+            coefficient of determination, adjusted for degrees of freedom in model
+        F
+            F-statistic for the whole model
+        PR(>F)
+            p-value of the F-statistic
+        AIC
+            Akaike information coefficient
+        BIC
+            Bayesian information coefficient
+        N
+            number of observations
     """
     data = {
         'S': np.sqrt(result.mse_resid),

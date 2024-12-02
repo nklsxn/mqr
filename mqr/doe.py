@@ -1,5 +1,9 @@
 """
-Design of experiments.
+======================================
+Design of Experiments (:mod:`mqr.doe`)
+======================================
+
+.. currentmodule:: mqr.doe
 
 Tools for constructing experiments. The routines here are designed to easily
 compose standard experimental designs into more complex designs. The
@@ -7,7 +11,6 @@ construction routines call through to pyDOE3 for convenience, though you can
 construct custom designs and also call that library directly and pass its
 results. If you only need the results of pyDOE3, call it directly. See
 [](pydoe3.readthedocs.io).
-
 
 See `from_fullfact`, `from_fracfact`, `from_ccdesign`, `from_centrepoints` and
 to construct standard components from pyDOE3. Function `from_axial` constructs
@@ -19,6 +22,7 @@ The principle of this library is that many standard designs can be built from
 simple elements. For example, a central composite design is the composition of
 fractional factorial design, centrepoints and axial points. Concatenate runs
 with the `+` operator to a central composite design, in two blocks, like this:
+
 >>> names = ['x1', 'x2', 'x3', 'x4']
 >>> generator = 'a b c abc'
 >>> centre_pts = 3
@@ -27,6 +31,15 @@ with the `+` operator to a central composite design, in two blocks, like this:
 >>> axial = Design.from_axial(names)
 >>> axial_cpts = Design.from_centrepoints(names, centre_pts)
 >>> design = (frac_fact + frac_cpts) + (axial + axial_cpts).as_block(2)
+
+.. rubric:: Classes
+.. autosummary::
+    :toctree: generated/
+
+    Design
+    Transform
+    Affine
+
 """
 
 from dataclasses import dataclass, field
@@ -49,33 +62,35 @@ class Design:
 
     Attributes
     ----------
-    names (list[str]) -- Names of variables.
-    levels (np.ndarray) -- Two-dimensional array containing the levels for each
-        experiment, with a column for each variables and a row for each run.
-    runs (np.ndarray) -- Numerical labels for each run. Useful for tracking
-        runs after randomisation.
-    pttypes (np.ndarray) -- Numerical label for each point type:
-        * 0: centre point
-        * 1: corner point
-        * 2: axial point
-    blocks (np.ndarray) -- Numerical label for each block (default 1).
+    names : list[str]
+        Names of variables.
+    levels : np.ndarray
+        Two-dimensional array containing the levels for each experiment, with a
+        column for each variables and a row for each run.
+    runs : np.ndarray
+        Numerical labels for each run. Useful for tracking runs after randomisation.
+    pttypes : array_like
+        Numerical label for each point type:
+        | 0 : centre point
+        | 1 : corner point
+        | 2 : axial point
 
     Examples
     --------
     >>> Design.from_full_fact(['x1', 'x2', 'x3'], [2, 2, 2])
-       PtType  Block   x1   x2   x3
-    1       1      1 -1.0 -1.0 -1.0
-    2       1      1  1.0 -1.0 -1.0
-    3       1      1 -1.0  1.0 -1.0
-    4       1      1  1.0  1.0 -1.0
-    5       1      1 -1.0 -1.0  1.0
-    6       1      1  1.0 -1.0  1.0
-    7       1      1 -1.0  1.0  1.0
-    8       1      1  1.0  1.0  1.0
+       PtType    x1   x2   x3
+    1       1  -1.0 -1.0 -1.0
+    2       1   1.0 -1.0 -1.0
+    3       1  -1.0  1.0 -1.0
+    4       1   1.0  1.0 -1.0
+    5       1  -1.0 -1.0  1.0
+    6       1   1.0 -1.0  1.0
+    7       1  -1.0  1.0  1.0
+    8       1   1.0  1.0  1.0
 
     >>> d1 = Design.from_fracfact(['x1', 'x2', 'x3', 'x4'], 'a b c abc')
     >>> d2 = Design.from_centrepoints(['x1', 'x2', 'x3', 'x4'], 3)
-    >>> d1 + d2.as_block(2)
+    >>> d1.as_block(1) + d2.as_block(2)
         PtType  Block   x1   x2   x3   x4
     1        1      1 -1.0 -1.0 -1.0 -1.0
     2        1      1  1.0 -1.0 -1.0  1.0
@@ -99,13 +114,21 @@ class Design:
         """
         Create a new design with each run replicated `n` times.
 
-        Arguments
-        ---------
-        n (int) -- The number of replicates to create.
+        Parameters
+        ----------
+        n : int
+            The number of replicates to create.
+        label : str, optional
+            Add a set of blocks with this name, labelling replicates by number.
+
+        Notes
+        -----
+        Resets the `runs` indexing counting from 1.
 
         Returns
         -------
-        Design -- A new design that is a replicated version of this one.
+        :class:`Design`
+            A new design that is a replicated version of this one.
         """
         idx = self.runs.repeat(n)
         new_runs = pd.RangeIndex(1, len(self) * n + 1)
@@ -126,15 +149,15 @@ class Design:
 
     def as_block(self, level, name='Block'):
         """
-        Return the same set of runs with their block label set to `block`.
+        Return the same set of runs with a block label set to `level`.
 
-        Arguments
-        ---------
-        block (int) -- New block label.
-
-        Returns
-        -------
-        Design -- A copy of this design with a new block label.
+        Parameters
+        ----------
+        level : int, str
+            The label/level of this block.
+        name : str
+            The name of this collection of blocks. Useful if more than one level
+            of blocking is required (ie. nested blocks).
         """
         new_blocks = self.blocks.copy()
         new_blocks[name] = level
@@ -151,7 +174,8 @@ class Design:
 
         Returns
         -------
-        pd.DataFrame -- The design.
+        pandas.DataFrame
+            The design.
         """
 
         df = pd.DataFrame(index=self.runs)
@@ -167,19 +191,17 @@ class Design:
         Create a dataframe containing all unique levels in this design for a
         variable, and a reference level for all others.
 
-        Arguments
-        ---------
-        name (str) -- The factor to isolate.
-
-        Optional
-        --------
-        ref_levels (float) -- The reference level assigned to all other
-            variables. (Default 0.)
+        Parameters
+        ----------
+        name : str
+            The factor to isolate.
+        ref_levels : float, optional
+            The reference level assigned to all other variables.
 
         Returns
         -------
-        pd.DataFrame -- A dataframe with levels in `name` as rows and
-            variable names as columns.
+        pandas.DataFrame
+            A dataframe with levels in `name` as rows and variable names as columns.
         """
         df = pd.DataFrame(columns=self.names, dtype=np.float64)
         df[name] = np.sort(np.unique(self.levels[name]))
@@ -190,15 +212,18 @@ class Design:
         """
         Return the same set of runs, randomised over their run labels.
 
-        Optional
-        ---------
-        preserve_blocks (bool) -- When `True`, randomise runs only within
-            blocks, when `False` randomise runs across blocks (blocks will no
-            longer be in order). (Default True.)
+        Parameters
+        ----------
+        order : {'PtType', block_name, factor_name} or list, optional
+            Keep the runs ordered by this group(s). When `order` is a list, the
+            group labelled by the first element is sorted, then the group labelled
+            by the second element is sorted within the groups of the first, and so on.
+            The default `None` fully randomises the runs.
 
         Returns
         -------
-        Design -- A copy of this design, randomised.
+        :class:`Design`
+            A copy of this design, randomised.
         """
         df = self.to_df()
         rnd = np.random.choice(
@@ -219,14 +244,16 @@ class Design:
         """
         Concatenate the runs of another design at the end of this design.
 
-        Arguments
-        ---------
-        other (Design) -- The design to concatenate.
+        Parameters
+        ----------
+        other : :class:`Design`
+            The design to concatenate.
 
         Returns
         -------
-        Design -- This design and `other` concatenated into one, with
-            run labels of `other` offset to continue from the end of this design.
+        :class:`Design`
+            This design and `other` concatenated into one, with run labels of
+            `other` offset to continue from the end of this design.
         """
         if self.names != other.names:
             raise AttributeError('Designs must contain the same variables.')
@@ -251,15 +278,26 @@ class Design:
 
     def transform(self, **transforms):
         """
-        Apply a transform to the levels of this design.
+        Apply transforms to the levels of this design.
 
-        Arguments
-        ---------
-        transform (Transform) -- Transform to apply.
+        Parameters
+        ----------
+        transforms : {`Transform`, callable, dict}
+            Keyword args with keywords corresponding to factor names of the design.
+            Not all factors need to be listed/transformed.
+
+            | :class:`Transform`
+            |   Apply the given transform to the vector of levels.
+            | callable
+            |   Apply the given function to the vector of levels.
+            | dict
+            |   Use each level as a key in this dictionary and replace the level
+            |   with the returned value. Each level must be a key in the dictionary.
 
         Returns
         -------
-        Design -- A copy of this design with new levels.
+        :class:`Design`
+            A copy of this design with new levels.
         """
         new_levels = self.levels.copy()
         for name, tx in transforms.items():
@@ -302,21 +340,20 @@ class Design:
         """
         Construct a design from an array of levels.
 
-        Arguments
-        ---------
-        names (list[str]) -- List of variable names.
-        levels (np.ndarray) -- Two-dimensional array of levels, with runs in
-            rows and variables in columns.
-
-        Optional
-        --------
-        runs (np.ndarray) -- Array of labels for runs. (Default `None` results
-            in labels counting from 1.)
-        block (int) -- Block label for the runs in this design. (Default 1.)
+        Parameters
+        ----------
+        names : list[str]
+            List of variable names.
+        levels : array_like
+            Two-dimensional array of levels, with runs in rows and variables in
+            columns.
+        runs : array_like, optional
+            Array of labels for runs. (Default `None` results in labels counting
+            from 1.)
 
         Returns
         -------
-        Design -- The new design.
+        :class:`Design`
         """
         m, n = levels.shape
         if n != len(names):
@@ -337,22 +374,27 @@ class Design:
     @staticmethod
     def from_fullfact(names, levels, scale_origin=True, pttypes=True):
         """
-        Construct a design from `pyDOE3.fullfact(...)`, and centre the level
-        values on 0.
+        Construct a design from `pyDOE3.fullfact(...)`.
 
-        Arguments
-        ---------
-        names (list[str]) -- List of variable names.
-        levels (list[int]) -- A list of counts of levels, passed directly to
-            pyDOE3.fullfact(...).
+        Parameters
+        ----------
+        names : list[str]
+            List of variable names.
+        levels : list[int]
+            A list of counts of levels, passed directly to `pyDOE3.fullfact(...)`.
+        scale_origin : bool, optional
+            | `True`
+            |   Scales the levels to have integer values centred at the origin.
+            | `False`
+            |   Levels are set directly from the `pyDOE3` output.
 
-        Optional
-        --------
-        block (int) -- Block label for the runs in this design. (Default 1.)
+        Notes
+        -----
+        The point type column is only added when all factors have two levels.
 
         Returns
         -------
-        Design -- The new design.
+        :class:`Design`
         """
         coded_levels = pyDOE3.fullfact(levels)
         design = Design.from_levels(names, coded_levels)
@@ -370,19 +412,17 @@ class Design:
         """
         Construct a design from `pyDOE3.fracfact(...)`.
 
-        Arguments
-        ---------
-        names (list[str]) -- List of variable names.
-        gen (str) -- Yates-labelled generators for each variable, separated by
-            spaces. Passed directly to pyDOE3.fracfact(...).
-
-        Optional
-        --------
-        block (int) -- Block label for the runs in this design. (Default 1.)
+        Parameters
+        ----------
+        names : list[str]
+            List of variable names.
+        gen : str
+            Yates-labelled generators for each variable, separated by spaces.
+            Passed directly to `pyDOE3.fracfact(...)`.
 
         Returns
         -------
-        Design -- The new design.
+        :class:`Design`
         """
         levels = pyDOE3.fracfact(gen)
         design = Design.from_levels(names, levels)
@@ -394,20 +434,20 @@ class Design:
         """
         Construct a design from `pyDOE3.ccdesign(...)`.
 
-        Arguments
-        ---------
-        names (list[str]) -- List of variable names.
-
-        Optional
-        --------
-        block (int) -- Block label for the runs in this design. (Default 1.)
-        alpha (str) -- Passed to `pyDOE3.ccdesign(...)`.
-        face (str) -- Passed to `pyDOE3.ccdesign(...)`.
-        runs (np.ndarray) -- Array of labels for runs. (Default `None` results
+        Parameters
+        ----------
+        names : list[str]
+            List of variable names.
+        center : tuple, optional
+            Passed to `pyDOE3.ccdesign(...)`.
+        alpha : str, optional
+            Passed to `pyDOE3.ccdesign(...)`.
+        face : str, optional
+            Passed to `pyDOE3.ccdesign(...)`.
 
         Returns
         -------
-        Design -- The new design.
+        :class:`Design`
         """
         levels = pyDOE3.ccdesign(len(names), center=center, alpha=alpha, face=face)
         design = Design.from_levels(names, levels)
@@ -419,18 +459,16 @@ class Design:
         """
         Construct a design from runs of centrepoints.
 
-        Arguments
-        ---------
-        names (list[str]) -- List of variable names.
-        n (int) -- Count of runs.
-
-        Optional
-        --------
-        block (int) -- Block label for the runs in this design. (Default 1.)
+        Parameters
+        ----------
+        names : list[str]
+            List of variable names.
+        n : int
+            Count of runs.
 
         Returns
         -------
-        Design -- The new design.
+        :class:`Design`
         """
         levels = np.zeros([n, len(names)])
         design = Design.from_levels(names, levels)
@@ -442,21 +480,19 @@ class Design:
         """
         Construct a design from runs of axial points.
 
-        Arguments
-        ---------
-        names (list[str]) -- List of variable names.
-
-        Optional
-        --------
-        exclude (list[str] or set[str]) -- Iterable of names to exclude from
-            construction (the columns still exist, but no runs are added).
-            (Default None.)
-        magnitude (float) -- Magnitude of axial points. (Default 2.0.)
-        block (int) -- Block label for the runs in this design. (Default 1.)
+        Parameters
+        ----------
+        names : list[str]
+            List of variable names.
+        exclude : list[str] or set[str], optional
+            Iterable of names to exclude from construction (the columns still
+            exist, but no runs are added).
+        magnitude : float, optional
+            Magnitude of axial points.
 
         Returns
         -------
-        Design -- The new design.
+        :class:`Design`
         """
         if exclude is None:
             exclude = {}
@@ -497,7 +533,7 @@ class Design:
             - the origin is a centre point
             - any point that is the same distance from the origin on all axes is a corner point
             - any point with only one non-zero entry is an axial point
-            - all other points cannot be classified
+            - all other points are not classified
         '''
         if Design._is_centre(point):
             return 0
@@ -529,21 +565,21 @@ class Transform:
         """
         Construct an affine transform.
 
-        Arguments
-        ---------
-        level_map (list[dict[float, float]]) -- A list of dictionaries that map
-            from an existing level to a new level. Each dict corresponds to a
-            variable and has two float keys, corresponding to existing levels
-            and mapping to a float that is the new corresponding level. The two
+        Parameters
+        ----------
+        map : dict[float, float]
+            A dictionary that maps from an existing level to a new level.
+            The dict has two float keys, corresponding to existing levels and
+            mapping to a float that is the new corresponding level. The two
             pairs exactly define an affine Transform. For example, the dict
             `{0: 10, 1: 20}` transforms `0` to `10` and `1` to `20`. All other
-            points will be interpolated/extrapolated along a straight line:
-            `0.5` transforms to `15`. As a result, the maps expressed in the
-            dict need not correspond to the levels in the current design.
+            points will be interpolated/extrapolated along a straight line: `0.5`
+            transforms to `15`. As a result, the maps expressed in the dict need
+            not correspond to the levels in the current design.
 
         Returns
         -------
-        Affine(Transform) -- The transform.
+        :class:`Affine`
         """
         [(l, lval), (r, rval)] = map.items()
         scale = (rval - lval) / (r - l)
@@ -561,15 +597,26 @@ class Affine(Transform):
 
     Attributes
     ----------
-    scale (np.ndarray) -- A matrix that multiplies experiment levels on the
-        right to scale them into a new space.
-    translate (np.ndarray) -- A vector with the same dimension as the variable
-        space, that offsets the labels after they are scaled by `scale`.
+    scale : float
+        Multiplies experiment levels.
+    translate : float
+        Offsets the experiment levels after they are scaled by `scale`.
     """
     scale: float
     translate: float
 
     def __call__(self, level):
+        """
+        Applies this transform to level values.
 
+        Parameters
+        ----------
+        levels : array_like
+            Levels to transform, usually a column from :attr:`Design.levels`.
 
+        Returns
+        -------
+        array_like
+            Transformed levels.
+        """
         return level * self.scale + self.translate

@@ -14,30 +14,34 @@ import statsmodels
 import warnings
 
 def power_1sample(ra, H0_rate, nobs, alpha, meas=1.0, alternative='two-sided', method='norm-approx'):
-    """
+    '''
     Calculate power of a test of rate of events.
 
-    Null-hypothesis: `ra / H0_rate == 1`.
+    Null-hypothesis
+        `ra` / `H0_rate` == 1
 
-    Arguments
-    ---------
-    ra (float) -- Alternative hypothesis rate, forming effect size.
-    H0_rate (float) -- Null-hypothesis rate.
-    nobs (int) -- Number of observations.
-    alpha (float) -- Required significance.
-
-    Optional
-    --------
-    meas (float) -- Extent of one period in observation. (Default 1.)
-    alternative (float) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
-    method (str) -- Test method. Only "norm-approx", the normal approximation to
+    Parameters
+    ----------
+    ra : float
+        Alternative hypothesis rate, forming effect size.
+    H0_rate : float
+        Null-hypothesis rate.
+    nobs : int
+        Number of observations.
+    alpha : float
+        Required significance.
+    meas : float, optional
+        Extent of one period in observation.
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
+    method : {'norm-approx'}, optional
+        Test method. Only 'norm-approx', the normal approximation to
         the binomial distribution, is available.
 
     Returns
     -------
-    mqr.power.TestPower
-    """
+    :class:`mqr.inference.power.TestPower`
+    '''
     if method == 'norm-approx':
         dist = scipy.stats.norm()
         var_a = ra / (nobs * meas)
@@ -73,34 +77,45 @@ def power_1sample(ra, H0_rate, nobs, alpha, meas=1.0, alternative='two-sided', m
 
 def power_2sample(r1, r2, nobs, alpha, H0_value=None, meas1=1.0, meas2=1.0,
                   alternative='two-sided', method='score', compare='diff'):
-    """
+    '''
     Calculate power of a test of difference or ratio of two rates of events.
 
-    Null-hypothesis: `r1 - r2 == H0_value` (difference),
-                     `r1 / r2 == H0_value` (ratio).
+    Null-hypothesis by compare
+        | 'diff'
+        |   `r1` - `r2` == `H0_value`
+        | 'ratio'
+        |   `r1` / `r2` == `H0_value`
 
-    Uses `statsmodels.stats.rates.power_poisson_diff_2indep`,
-    and `statsmodels.stats.rates.power_poisson_ratio_2indep` (statsmodels.org).
-
-    Arguments
-    ---------
-    r1 (float) -- First rate.
-    r2 (float) -- Second rate.
-    nobs (int) -- Number of observations.
-    alpha (float) -- Required significance.
-    beta (float) -- Required beta (1 - power).
-
-    Optional
-    --------
-    H0_value (float) -- Null-hypothesis rate. (Default 0 for 'diff', 1 for 'ratio'.)
-    alternative (float) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
-    method (str) -- Test method (default "score"). See statsmodels documentation.
+    Parameters
+    ----------
+    r1 : float
+        First rate.
+    r2 : float
+        Second rate.
+    nobs : int
+        Number of observations.
+    alpha : float
+        Required significance.
+    beta : float
+        Required beta (1 - power).
+    H0_value : float, optional
+        Null-hypothesis rate. Default 0 for 'diff', 1 for 'ratio'.
+    alternative : {'two-sided', 'less', 'greater'}
+        Sense of alternative hypothesis.
+    method : str, optional
+        Test method. See statsmodels documentation.
+    compare : {'diff', 'ratio'}, optional
+        | 'diff'
+        |   Compares the difference between rates.
+            Calls :func:`sm..power_poisson_diff_2indep <statsmodels.stats.rates.power_poisson_diff_2indep>`.
+        | 'ratio'
+        |   Compares the ratio of two rates.
+            Calls :func:`sm..power_poisson_ratio_2indep <statsmodels.stats.rates.power_poisson_ratio_2indep>`.
 
     Returns
     -------
-    mqr.power.TestPower
-    """
+    :class:`mqr.inference.power.TestPower`
+    '''
     alt = interop.alternative(alternative, lib='statsmodels')
     if compare == 'diff':
         desc = 'difference between'
@@ -146,28 +161,36 @@ def power_2sample(r1, r2, nobs, alpha, H0_value=None, meas1=1.0, meas2=1.0,
         sample_size=nobs)
 
 def size_1sample(ra, H0_rate, alpha, beta, meas=1.0, alternative='two-sided', method='norm-approx'):
-    """
+    '''
     Calculate sample size for test of rate of events.
 
-    Null-hypothesis: `ra / H0_rate == 1`.
+    Null-hypothesis
+        `ra` / `H0_rate` == 1
 
-    Arguments
-    ---------
-    ra (float) -- Alternative hypothesis rate, forming effect size.
-    H0_rate (float) -- Null-hypothesis rate.
-    alpha (float) -- Required significance.
-    beta (float) -- Required beta (1 - power).
-
-    Optional
-    --------
-    alternative (float) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
-    method (str) -- Test method (default "norm-approx"): "norm-approx", or "chi2".
+    Parameters
+    ----------
+    ra : float
+        Alternative hypothesis rate, forming effect size.
+    H0_rate : float
+        Null-hypothesis rate.
+    alpha : float
+        Required significance.
+    beta : float
+        Required beta (1 - power).
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
+    method : {'norm-approx', 'chi2'}, optional
+        | 'norm-approx'
+        |   Approximation to the normal distribution. Numerically solves
+            :func:`power_1sample` equal to 1 - `beta` by searching `nobs`.
+        | 'chi2'
+        |   Numerically finds the sample size that produces the requested power
+            using a Chi-squared distribution.
 
     Returns
     -------
-    mqr.power.TestPower
-    """
+    :class:`mqr.inference.power.TestPower`
+    '''
     if method == 'chi2':
         n = 1
         r = ra / H0_rate if ra > H0_rate else H0_rate / ra
@@ -209,36 +232,47 @@ def size_1sample(ra, H0_rate, alpha, beta, meas=1.0, alternative='two-sided', me
         sample_size=nobs_opt,)
 
 def size_2sample(r1, r2, alpha, beta, H0_value=None, alternative='two-sided', method='score', compare='diff'):
-    """
+    '''
     Calculate sample size for difference of two rates of events.
 
-    Null-hypothesis: `r1 - r2 == H0_value` when `compare == 'diff'`,
-                     `r1 / r2 == H0_value` when `compare == 'ratio'`.
+    Null-hypothesis by compare
+        | 'diff'
+        |   `r1` - `r2` == `H0_value`
+        | 'ratio'
+        |   `r1` / `r2` == `H0_value`
 
-    Uses `statsmodels.stats.rates.power_poisson_diff_2indep`,
-    and `statsmodels.stats.rates.power_poisson_ratio_2indep` (statsmodels.org).
-
-    Arguments
-    ---------
-    r1 (float) -- First rate.
-    r2 (float) -- Second rate.
-    alpha (float) -- Required significance.
-    beta (float) -- Required beta (1 - power).
-
-    Optional
-    --------
-    H0_value (float) -- Null-hypothesis rate. (Default 0 for `diff`, 1 for `ratio`.)
-    alternative (float) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
-    method (str) -- Test method (default "score"):
-        "z",
-        otherwise, all other methods are passed to statsmodels.
-    compare (str) -- Form of the null-hypothesis. Either 'diff' (default) or 'ratio'.
+    Parameters
+    ----------
+    r1 : float
+        First rate.
+    r2 : float
+        Second rate.
+    alpha : float
+        Required significance.
+    beta : float
+        Required beta (1 - power).
+    H0_value : float, optional
+        Null-hypothesis rate. Default 0 for 'diff', 1 for 'ratio'.
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
+    method : str, optional
+        | 'z'
+        |   Approximation based a normal approximation. For this method,
+            `compare` must be 'diff' and `H0_value` must be 0.
+        | (other)
+        |   All other methods are passed as parameters to :func:`power_2sample`
+            while that function is solved numerically equal to the requested
+            power by varying `nobs`.
+    compare : {'diff', 'ratio'}, optional
+        | 'diff'
+        |   Compare the difference between rates.
+        | 'ratio'
+        |   Compare the ratio of rates.
 
     Returns
     -------
-    mqr.power.TestPower
-    """
+    :class:`mqr.inference.power.TestPower`
+    '''
     if H0_value is None:
         if compare == 'diff':
             H0_value = 0.0
@@ -293,50 +327,55 @@ def size_2sample(r1, r2, alpha, beta, H0_value=None, alternative='two-sided', me
         sample_size=nobs_opt)
 
 def confint_1sample(count, n, meas=1.0, conf=0.95, bounded='both', method='wald-cc'):
-    """
+    '''
     Confidence interval for rate `count / n / meas`.
 
-    Calls `statsmodels.stats.rates.confint_poisson` (statsmodels.org).
+    Parameters
+    ----------
+    count : int
+        Number of events.
+    n : int
+        Number of periods over which events were counted.
+    meas : float, optional
+        Extent of one period of observation.
+    conf : float, optional
+        Confidence level that determines the width of the interval.
+    method : {'chi2', 'exact', 'wald', 'wald-cc'}, optional
+        | 'chi2'
+        |   Chi2 interval, see [2]_.
+        | 'exact'
+        |   Exact method, recommended for small `count`.
+            Implements method 9 in [3]_.
+        | 'wald-cc'
+        |   Wald method with continuity correction, recommended for small `count`.
+            Implements method 5 in [1]_.
+        | (other)
+        |   Everything else is passed to
+            :func:`sm..confint_poisson <statsmodels.stats.rates.confint_poisson>`,
+            which supports only two-sided intervals.
 
-    Arguments
-    ---------
-    count (int) -- Number of events.
-    n (int) -- Number of periods over which events were counted.
-
-    Optional
-    --------
-    meas (float) -- Extent of one period of observation. (Default 1.0.)
-    conf (float) -- Confidence level that determines the width of the interval.
-        (Default 0.95.)
-    method (str) -- Test method (default "wald-cc"). One of
-        "chi2" the Chi2 interval, see [2], rationale in [1],
-        "exact" the exact method, searches for rates that match the given values
-            at the desired confidence level, see method 9 in [4], recommended
-            for small `count`,
-        "wald-cc" Modified wald method see [1], recommended for small `count`,
-        (other) everything else is passed to `statsmodels.stats.rates.confint_poisson`,
-            which supports only an interval, not one-sided bounds.
+    Notes
+    -----
+    For a discussion on the benefits and disadvantages of various intervals,
+    including these, see [1]_ and [3]_.
 
     Returns
     -------
-    mqr.confint.ConfidenceInterval
+    :class:`mqr.inference.confint.ConfidenceInterval`
 
     References
     ----------
-    [1] Patil, V. V., & Kulkarni, H. V. (2012).
-        Comparison of confidence intervals for the Poisson mean: some new aspects.
-        REVSTAT-Statistical Journal, 10(2), 211-22.
-    [2] Garwood, F. (1936).
-        Fiducial limits for the Poisson distribution.
-        Biometrika, 28(3/4), 437-442.
-    [3] Schwertman, N. C., & Martinez, R. (1994).
-        Approximate confidence intervals for the difference in two Poisson parameters.
-        Journal of statistical computation and simulation, 50(3-4), 235-247.
-    [4] Barker, L. (2002).
-        A comparison of nine confidence intervals for a Poisson parameter when
-        the expected number of events is ≤ 5.
-        The American Statistician, 56(2), 85-89.
-    """
+    .. [1]  Patil, V. V., & Kulkarni, H. V. (2012).
+            Comparison of confidence intervals for the Poisson mean: some new aspects.
+            REVSTAT-Statistical Journal, 10(2), 211-22.
+    .. [2]  Garwood, F. (1936).
+            Fiducial limits for the Poisson distribution.
+            Biometrika, 28(3/4), 437-442.
+    .. [3]  Barker, L. (2002).
+            A comparison of nine confidence intervals for a Poisson parameter when
+            the expected number of events is ≤ 5.
+            The American Statistician, 56(2), 85-89.
+    '''
     value = count / n / meas
     alpha = 1 - conf
     if method == 'chi2':
@@ -367,47 +406,46 @@ def confint_1sample(count, n, meas=1.0, conf=0.95, bounded='both', method='wald-
 
 def confint_2sample(count1, n1, count2, n2, meas1=1.0, meas2=1.0,
                     conf=0.95, bounded='both', method='wald'):
-    """
-    Confidence interval for:
-    - difference of rates `count1 / n1 / meas1 - count2 / n2 / meas2`,
-        if `compare` is "diff", or
-    - ratio of rates `count1 / n1 / meas1 / (count2 / n2 / meas2)`,
-        if `compare` is "ratio".
+    '''
+    Confidence interval for difference of rates `count1 / n1 / meas1 - count2 / n2 / meas2`.
 
-    Calls `statsmodels.stats.rates.confint_poisson_2indep` (statsmodels.org).
-    To compare ratios, call statsmodels directly.
-
-    Arguments
-    ---------
-    count1 (int) -- Number of events in first observation.
-    n1 (int) -- Number of periods over which first events were counted.
-    count2 (int) -- Number of events in second observation.
-    n2 (int) -- Number of periods over which second events were counted.
-
-    Optional
-    --------
-    meas1 (float) -- Extent of one period in first observation. (Default 1.)
-    meas2 (float) -- Extent of one period in second observation. (Default 1.)
-    conf (float) -- Confidence level that determines the width of the interval.
-        (Default 0.95.)
-    method (str) -- Test method, default "wald". One of
-        "wald" Wald's normal approximation, see [1],
-        "wald-moment" a modification to the moment estimates in Wald, use for
-            small/zero counts, different areas (`n1`, `n2`), see [1],
-        (other) everything else is passed to `statsmodels.stats.rates.confint_poisson_2indep`,
+    Parameters
+    ----------
+    count1 : int
+        Number of events in first observation.
+    n1 : int
+        Number of periods over which first events were counted.
+    count2 : int
+        Number of events in second observation.
+    n2 : int
+        Number of periods over which second events were counted.
+    meas1 : float, optional
+        Extent of one period in first observation.
+    meas2 : float, optional
+        Extent of one period in second observation.
+    conf : float, optional
+        Confidence level that determines the width of the interval.
+    method : str, optional
+        | 'wald'
+        |   Wald's normal approximation, equation (9) in [1]_.
+        | 'wald-moment'
+        |   Based on Wald, equation (8) in [1]_. Use for small/zero counts.
+        | (other)
+        |   Everything else is passed to
+            :func:`sm..confint_poisson_2indep <statsmodels.stats.rates.confint_poisson_2indep>`,
             which supports only two-sided intervals.
 
     Returns
     -------
-    mqr.confint.ConfidenceInterval
+    :class:`mqr.inference.confint.ConfidenceInterval`
 
     References
     ----------
-    [1] Krishnamoorthy, K., & Lee, M. (2013).
-        New approximate confidence intervals for the difference between
-        two Poisson means and comparison.
-        Journal of Statistical Computation and Simulation, 83(12), 2232-2243.
-    """
+    .. [1]  Krishnamoorthy, K., & Lee, M. (2013).
+            New approximate confidence intervals for the difference between
+            two Poisson means and comparison.
+            Journal of Statistical Computation and Simulation, 83(12), 2232-2243.
+    '''
     if method == 'wald':
         (lower, upper) = rate.confint_2sample_wald(
             count1, n1, count2, n2,
@@ -445,30 +483,33 @@ def confint_2sample(count1, n1, count2, n2, meas1=1.0, meas2=1.0,
         bounded=bounded)
 
 def test_1sample(count, n, meas=1.0, H0_rate=1.0, alternative='two-sided', method='exact-c'):
-    """
+    '''
     Hypothesis test for the rate of events.
 
-    Null-hypothesis: `count / n / meas == H0_rate`.
+    Null-hypothesis
+        `count` / `n` / `meas` == `H0_rate`
 
-    Calls `statsmodels.stats.rates.test_poisson` (statsmodels.org).
+    Calls :func:`sm..test_poisson <statsmodels.stats.rates.test_poisson>`.
 
-    Arguments
-    ---------
-    count (int) -- Number of events.
-    n (int) -- Number of periods over which events were counted.
-
-    Optional
-    --------
-    meas (float) -- Extent of one period of observation. (Default 1.)
-    H0_rate (float) -- Null-hypothesis rate. (Default 1.)
-    alternative (str) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
-    method (str) -- Test method (default "z"): "z", or "chi2".
+    Parameters
+    ----------
+    count : int
+        Number of events.
+    n : int
+        Number of periods over which events were counted.
+    meas : float, optional
+        Extent of one period of observation.
+    H0_rate : float, optional
+        Null-hypothesis rate.
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
+    method : str, optional
+        Test method. See statsmodels docs.
 
     Returns
     -------
-    mqr.hyptest.HypothesisTest
-    """
+    :class:`mqr.inference.hyptest.HypothesisTest`
+    '''
     alt = interop.alternative(alternative, lib='statsmodels')
     res = statsmodels.stats.rates.test_poisson(
         count=count,
@@ -488,40 +529,49 @@ def test_1sample(count, n, meas=1.0, H0_rate=1.0, alternative='two-sided', metho
         pvalue=res.pvalue,)
 
 def test_2sample(count1, n1, count2, n2, meas1=1.0, meas2=1.0,
-    """
                  H0_value=None, alternative='two-sided', method='score', compare='diff'):
+    '''
     Hypothesis test for equality of rates.
 
-    Null-hypothesis:
-    - `count1 / n1 / meas1 - count2 / n2 / meas2 == H0_value`,
-        if `compare` is "diff", or
-    - `count1 / n1 / meas1 / (count2 / n2 / meas2) == H0_value`,
-        if `compare` is "ratio".
+    Null-hypothesis by compare
+        | 'diff'
+        |   `count1` / `n1` / `meas1` - `count2` / `n2` / `meas2` == `H0_value`
+        | 'ratio'
+        |   `count1` / `n1` / `meas1` / (`count2` / `n2` / `meas2`) == `H0_value`
 
-    Calls `statsmodels.stats.rates.test_poisson_2indep` (statsmodels.org).
+    Calls :func:`sm..test_poisson_2indep <statsmodels.stats.rates.test_poisson_2indep>`.
 
-    Arguments
-    ---------
-    count1 (int) -- Number of events in first observation.
-    n1 (int) -- Number of periods over which first events were counted.
-    count2 (int) -- Number of events in second observation.
-    n2 (int) -- Number of periods over which second events were counted.
-
-    Optional
-    --------
-    meas1 (float) -- Extent of one period in first observation. (Default 1.)
-    meas2 (float) -- Extent of one period in second observation. (Default 1.)
-    H0_value (float) -- Null-hypothesis value. (Default 1 when compare is "ratio",
-        0 when compare is "diff".)
-    alternative (str) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
-    method (str) -- Test method (default "wald"). See statsmodels docs for more.
-    compare (str) -- Null-hypothesis (default "diff"): either "diff" or "ratio".
+    Parameters
+    ----------
+    count1 : int
+        Number of events in first observation.
+    n1 : int
+        Number of periods over which first events were counted.
+    count2 : int
+        Number of events in second observation.
+    n2 : int
+        Number of periods over which second events were counted.
+    meas1 : float, optional
+        Extent of one period in first observation.
+    meas2 : float, optional
+        Extent of one period in second observation.
+    H0_value : float, optional
+        Null-hypothesis value. Default 1 when compare is 'ratio', 0 when compare
+        is 'diff'.
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
+    method : str, optional
+        See statsmodels docs.
+    compare : {'diff', 'ratio'}, optional
+        | 'diff'
+        |   Compare the difference between rates.
+        | 'ratio'
+        |   Compare the rate of ratios.
 
     Returns
     -------
-    mqr.confint.ConfidenceInterval
-    """
+    :class:`mqr.inference.confint.ConfidenceInterval`
+    '''
     alt = interop.alternative(alternative, lib='statsmodels')
     res = statsmodels.stats.rates.test_poisson_2indep(
         count1=count1,

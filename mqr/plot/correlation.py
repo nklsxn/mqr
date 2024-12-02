@@ -1,3 +1,16 @@
+"""
+================================================
+Correlation matrix (:mod:`mqr.plot.correlation`)
+================================================
+
+.. currentmodule:: mqr.plot.correlation
+
+.. rubric:: Functions
+.. autosummary::
+    :toctree: generated/
+
+    matrix
+"""
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -8,6 +21,74 @@ from mqr.plot.lib.util import set_kws
 
 def matrix(data, ax, conf=0.95, fig=None, show_conf=False, cmap='RdBu',
            hist_kws=None, reg_kws=None, scatter_kws=None, line_kws=None, text_kws=None):
+    """
+    Plot a correlation matrix and associated statistics.
+
+    Plots an n by n grid (where n is the number of columns in data). Each column
+    and row corresponds to a column in the dataframe `data`. The lower diagonal
+    shows scatter plots between the corresponding variables. The upper diagonal
+    shows the statistics (1) Pearson correlation coefficient, (2) p-value for
+    the correlation coefficient, and when `show_conf` is true, (3) confidence
+    interval for the correlation coefficient.
+
+    Also:
+
+    - Whenever the p-value is less than the significance level (`1-conf`), the
+        values are printed in bold.
+    - When `show_conf` is true, the upper triangle is also coloured according to
+        the correlation coefficient. Positive correlations are shown in shades
+        of blue while negative correlations are shown in shades of red. The
+        saturation of the shade corresponds to the significance level of the
+        correlation.
+
+    Parameters
+    ----------
+    data : pandas.DataFrame
+        Data with samples in columns. Calculate the correlations between columns.
+    ax : matplotlib.axes.Axes
+        Axes for the plot.
+    conf : float, optional
+        Confidence level of the interval.
+    fig : matplotlib.figure.Figure, optional
+        The figure to which the axes belong. If not provided, the figure will be
+        taken from the first axes.
+    show_conf : bool, optional
+        Shows confidence intervals and colours when true.
+    cmap : str, optional
+        Name of a colormap. Correlation coefficient is mapped to a colour in
+        this colormap and shown in the upper triangle.
+    hist_kws : dict, optional
+        Keyword args for the histogram. Passed to :func:`seaborn.histplot`.
+    reg_kws : dict, optional
+        Keyword args for the regression result.
+        Passed as ``**reg_kws`` to :func:`seaborn.regplot`.
+    scatter_kws : dict, optional
+        Keyword args for the scatter plot.
+        Passed as ``scatter_kws=scatter_kws`` to :func:`seaborn.regplot`.
+    line_kws : dict, optional
+        Keyword args for the line of best fit.
+        Passed as ``line_kws=line_kws`` to :func:`seaborn.regplot`.
+    text_kws : dict, optional
+        Keyword args for the text in the upper-right entries.
+        Passed as ``**text_kws`` to :func:`matplotlib.pyplot.text`.
+
+    Examples
+    --------
+    Load sample data and show correlations, including confidence intervals.
+
+    .. plot::
+
+        data = pd.read_csv(mqr.sample_data('study-random-5x5.csv'))
+
+        fig, ax = plt.subplots(5, 5, figsize=(6, 6))
+        mqr.plot.correlation.matrix(
+            data.loc[:, 'KPI1':'KPO2'],
+            show_conf=True,
+            ax=ax,
+            fig=fig)
+        plt.show()    
+
+    """
     M, N = data.shape
 
     assert ax.shape == (N, N) , f'Tableau shape is ({N},{N}) but ax.shape is {ax.shape}.'

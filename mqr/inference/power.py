@@ -1,7 +1,3 @@
-"""
-Result type and presentation for power calculations.
-"""
-
 from dataclasses import dataclass
 import numbers
 import numpy as np
@@ -11,18 +7,60 @@ class TestPower:
     """
     Result of a sample size calculation for an hypothesis test.
 
-    Arguments
-    ---------
-    name (str) -- Description of the hypothesis test.
-    alpha (np.float64) -- Required significance level.
-    beta (np.float64) -- Complement of the required power: 1 - power.
-    effect (np.float64) -- Required effect size of the test.
-    alternative (str) -- Sense of the test alternative. One of "two-sided",
-        "less" or "greater".
-    method (str) -- Name of the hypothesis test method, if applicable. For
-        example, the t-test.
-    sample_size (int) -- Lower bound on the sample size to achieve the above
-        parameters.
+    Attributes
+    ----------
+    name : str
+        Description of the hypothesis test.
+    alpha : float
+        Required significance level.
+    beta : float
+        Complement of the required power: 1 - power.
+    effect : float
+        Required effect size of the test.
+    alternative : {'two-sided', 'less', 'greater'}
+        Sense of the test alternative.
+    method : str
+        Name of the hypothesis test method, if applicable. For example, 't-test'.
+    sample_size : int
+        Lower bound on the sample size to achieve the above parameters.
+
+    Examples
+    --------
+    Calculations solving for power or sample size produce types like this.
+
+    >>> mqr.inference.power.TestPower(
+    >>>     name="PowerName",
+    >>>     alpha=0.01,
+    >>>     beta=0.10,
+    >>>     effect=1.5,
+    >>>     alternative="greater",
+    >>>     method="TestMethod",
+    >>>     sample_size=45)
+    TestPower(
+        name='PowerName',
+        alpha=0.05, beta=0.1, effect=1.5,
+        alternative='greater', method='TestMethod',
+        sample_size=45)
+
+    In jupyter notebooks, power calculations are rendered as an HTML table:
+
+    +-----------------+------------+
+    | | **Test Power**             |
+    | | PowerName                  |
+    +=================+============+
+    | **alpha**       | 0.05       |
+    +-----------------+------------+
+    | **beta**        | 0.1        |
+    +-----------------+------------+
+    | **effect**      | 1.5        |
+    +-----------------+------------+
+    | **alternative** | greater    |
+    +-----------------+------------+
+    | **method**      | TestMethod |
+    +-----------------+------------+
+    | **sample size** | 45         |
+    +-----------------+------------+
+
     """
     name: str
     alpha: np.float64

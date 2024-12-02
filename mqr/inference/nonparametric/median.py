@@ -1,7 +1,3 @@
-"""
-Hypothesis tests (non-parametric) for the median.
-"""
-
 from mqr.inference.hyptest import HypothesisTest
 import mqr.inference.lib.util as util
 
@@ -9,24 +5,28 @@ def test_1sample(x, H0_median=0.0, alternative='two-sided', method='sign'):
     """
     Hypothesis test for the median of a sample.
 
-    Null-hypothesis: `median(x) == H0_median`.
+    Null-hypothesis
+        median(`x`) == H0_median
 
-    Arguments
-    ---------
-    x (array[float]) -- Test the median of this sample.
-
-    Optional
-    --------
-    H0_median (float) -- Null-hypothesis median. (Default 0.0.)
-    alternative (str) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
-    method (str) -- Type of test (default "sign"):
-        "sign" (`statsmodels.stats.descriptivestats.sign_test`, scipy.org) or
-        "wilcoxon" (`statsmodels.stats.descriptivestats.sign_test`, statsmodels.org).
+    Parameters
+    ----------
+    x : array_like
+        Test the median of this sample.
+    H0_median : float, optional
+        Null-hypothesis median.
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
+    method : {'sign', 'wilcoxon'}, optional
+        | 'sign'
+        |   Sign test.
+            Calls :func:`sm..sign_test <statsmodels.stats.descriptivestats.sign_test>`.
+        | 'wilcoxon'
+        |   Wilcoxon signed-rank test.
+            Calls :func:`scipy..wilcoxon <scipy.stats.wilcoxon>`.
 
     Returns
     -------
-    mqr.hyptest.HypothesisTest
+    :class:`mqr.inference.hyptest.HypothesisTest`
     """
     import mqr, statsmodels
     import numpy as np, scipy.stats as st
@@ -56,23 +56,26 @@ def test_nsample(*x, alternative='two-sided', method='kruskal-wallis'):
     """
     Hypothesis test for equality of medians amongst samples.
 
-    Null-hypothesis: `median(x_i) == median(x_j)` for all `i`, `j`.
+    Null-hypothesis
+        median(`x[i]`) == median(`x[j]`), for all `i`, `j`
 
-    Arguments
-    ---------
-    x (list[array[float]]) -- Test the medians of these samples.
-
-    Optional
-    --------
-    alternative (str) -- Sense of alternative hypothesis. One of "two-sided",
-        "less" or "greater". (Default "two-sided".)
-    method (str) -- Type of test (default "kruskal-wallace"):
-        "kruskal-wallace" (`scipy.stats.kruskal`, scipy.org),
-        "mann-whitney" (`scipy.stats.mannwhitneyu`, scipy.org).
+    Parameters
+    ----------
+    x : array_like
+        Test the medians of these samples.
+    alternative : {'two-sided', 'less', 'greater'}, optional
+        Sense of alternative hypothesis.
+    method : {'kruskal-wallis', 'mann-whitney'}, optional
+        | 'kruskal-wallis'
+        |   Kruskal-Wallis test. A one-way ANOVA based on ranks.
+            Calls :func:`scipy..kruskal <scipy.stats.kruskal>`.
+        | 'mann-whitney'
+        |   Mann-Whitney U test for the differences between two samples.
+            Calls :func:`scipy..mannwhitneyu <scipy.stats.mannwhitneyu>`.
 
     Returns
     -------
-    mqr.hyptest.HypothesisTest
+    :class:`mqr.inference.hyptest.HypothesisTest`
     """
     import mqr, numpy as np, scipy.stats as st
 

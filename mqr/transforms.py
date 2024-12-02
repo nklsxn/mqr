@@ -1,7 +1,42 @@
+"""
+=======================================
+Data transforms (:mod:`mqr.transforms`)
+=======================================
+
+.. rubric:: Functions
+
+.. autosummary::
+    :toctree: generated/
+
+    zscore
+"""
+
 import numpy as np
 import pandas as pd
 
 def zscore(data):
+    '''
+    Create functions that z-score the given data, per-column.
+
+    The returned functions (`z` or `z_inv`) can take as input a DataFrame whose
+    columns are a subset of the columns in `data`, or a Series whose name is one
+    of the columns of `data`.
+
+    Parameters
+    ----------
+    data : pandas.DataFrame
+        Data to z-score. Mean and stddev are calculated for each column.
+
+    Returns
+    -------
+    stats : pandas.DataFrame
+        Mean and standard deviation values for each column in data (where
+        columns are the same as in data).
+    z : callable
+        A transform from data to its z-scored values.
+    z_inv : callable
+        A transform from z-scored values to the original space.
+    '''
     stats = pd.DataFrame(index=['mean', 'std'], columns=data.columns)
     stats.loc['mean'] = data.apply(np.mean)
     stats.loc['std'] = data.apply(np.std, ddof=0)

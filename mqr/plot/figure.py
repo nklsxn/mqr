@@ -14,15 +14,12 @@ class Figure(object):
 
     Convenient in jupyter notebooks for reducing plotting boilerplate.
 
-    For a good guide on getting figures
-
-    https://jwalton.info/Embed-Publication-Matplotlib-Latex/
-
     Examples
     --------
     >>> with Figure(5, 3, m=1, n=2) as (fig, ax):
     >>>     ax[0].plot(...)
     >>>     seaborn.histplot(..., ax=ax[1])
+
     """
 
     def __init__(
@@ -38,17 +35,25 @@ class Figure(object):
         """
         Construct the Figure context manager.
 
-        Optional
-        --------
-        width, height (float) -- Width and height of the figure. (Default 6 and 3.)
-        m, n (int) -- Size of the grid of subplots. (Default 1 and 1.)
-        backend -- A matplotlib backend to switch to for the duration of the
-            context manager. The previous backend is restored when the context
-            manager exits. the default `None` makes no change to the backend.
-        filename -- A filename to save the figure to before closing the figure.
-        gridspec_kw (dict) -- Passed as `subplots(gridspec_kw=gridspec_kw)`.
-        subplot_kw (dict) -- Passed as `subplots(subplot_kw=subplot_kw)`.
-        fig_kw (kwargs) -- Keyword args passed as `subplots(**fig_wk)`.
+        Parameters
+        ----------
+        width, height : float, optional
+            Width and height of the figure.
+        m, n : int, optional
+            Size of the grid of subplots. (Default 1 and 1.)
+        backend : optional
+            A matplotlib backend to switch to for the duration of the context
+            manager. The previous backend is restored when the context manager
+            exits. The default `None` makes no change to the backend.
+        filename : str, optional
+            A filename to save the figure to before closing the figure. The
+            default `None` results in no change.
+        gridspec_kw : dict, optional
+            Passed as ``gridspec_kw=gridspec_kw` to :func:`matplotlib.pyplot.subplots`.
+        subplot_kw : dict, optional
+            Passed as ``subplot_kw=subplot_kw`` to :func:`matplotlib.pyplot.subplots`.
+        fig_kw : kwargs, optional
+            Keyword args passed as ``**fig_wk` to :func:`matplotlib.pyplot.subplots`.
         """
         fig_kw['figsize'] = (width, height)
         if 'layout' not in fig_kw:
