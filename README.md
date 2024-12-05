@@ -1,6 +1,7 @@
 mqr-quality
 -----------
-Tools for learning and practising manufacturing quality with python.
+Tools for learning and practising applied statistics in design and manufacturing
+with python.
 
 Installation
 ------------
@@ -13,11 +14,11 @@ See `examples` directory in the source code for notebooks with sample code.
 
 Introduction
 ------------
-This library is a toolkit for manufacturing quality activities using python.
+This library is a toolkit for applied statistics activities using python.
 Most of the tools are related to quite general statistical methods that are
-commonly used in fields outside manufacturing.
+commonly used in fields outside design and manufacturing.
 
-Most of this library falls into one of three categories:
+The parts of the library fall into one of three categories:
 1. **Code that automates commonly used plots and tables.** These are elementary,
   in that they don't require much special knowledge of the subject area and are
   easy to interpret, but they require an understanding of libraries like numpy,
@@ -47,8 +48,11 @@ Most of this library falls into one of three categories:
   notebook gives examples of calculating useful probabilities using the very
   good scipy library.
 
+Some other code has been implemented directly, including SQC charts, some inference
+functions (particularly for proportions and rates), and elements of GRR studies.
+
 Overall, the code is intended to reduce the burden of understanding python and
-its various libraries, so the user can focus on understanding processes,
+its various libraries, so the user can focus on understanding products and processes,
 designing experiments, and analysing results.
 
 **A note on wrapped code**: excluding a few tests that we implemented (because
@@ -114,8 +118,8 @@ Non-parametric tests have the same form, but are in the `nonparametric` module:
 * etc.
 
 Where:
-* `<statistic>` is the statistic of interest, for example, "mean", "correlation"
-  coefficient, etc.
+* `<statistic>` is the statistic of interest, for example, "mean", "correlation
+  coefficient", etc.
 * `<sample>` is a description of the samples involved in the calculation, for
   example "1sample", "nsample". Some routines don't have a sample description.
 
@@ -135,7 +139,7 @@ manager, which creates figures, shows them, then closes them automatically. The
 `matplotlib.pyplot.subplots(...)`. The context manager reduces the boilerplate
 code required for the user (especially those unfamiliar with matplotlib) to
 show a plot, and helps with a few other activities, like changing backends and
-saving files. It is possilbe, for example, to quickly switch from showing plots
+saving files. It is possible, for example, to quickly switch from showing plots
 in a notebook to writing them into a backend that produces images for Word or
 PGF/TikZ for LaTeX.
 
