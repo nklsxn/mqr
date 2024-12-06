@@ -9,8 +9,8 @@ def method_error_msg(method, available):
     if len(available) == 1:
         msg += f'Use {available[0]}.'
     else:
-        msg += f'Use {", ".join(available[:-1])}, or {available[-1]}.'
+        msg += f'Use {", ".join(available[:-1])} or {available[-1]}.'
     return msg
 
 def alternative_error_msg(alternative):
-    return f'Invalid alternative "{alternative}". Use two-sided, less, or greater.'
+    return f'Invalid alternative "{alternative}". Use two-sided, less or greater.'

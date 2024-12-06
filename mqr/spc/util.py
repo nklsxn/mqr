@@ -182,17 +182,6 @@ def f2(n):
         return 1 - (1 - phi_x)**n - phi_x**n
     return _f2
 
-def f3(n):
-    """
-    Integrand for the integral in the definition of d3.
-    """
-    dist = scipy.stats.norm()
-    def _f3(x, y):
-        phi_x = dist.cdf(x)
-        phi_y = dist.cdf(y)
-        return 1 - phi_y**n - (1-phi_x)**n + (phi_y - phi_x)**n
-    return _f3
-
 def f3_tr(n):
     """
     Integrand for the integral in d3 (transformed version).
@@ -337,6 +326,7 @@ def solve_arl(h4, p, lmda, N=20):
 
     z, w = scipy.special.roots_legendre(N)
     z = z * scale + shift
+    w = w * scale
 
     def eta(alpha):
         return alpha * ((1 - lmda) / lmda)**2
@@ -347,7 +337,7 @@ def solve_arl(h4, p, lmda, N=20):
     def fn_g(s):
         return 1
 
-    c = scale / lmda**2
+    c = 1 / lmda**2
 
     return mqr.utils.fredholm2(0, fn_W, fn_g, c, z, w)
 

@@ -1,3 +1,4 @@
+from collections.abc import Iterable
 import numpy as np
 
 def make_ordinal(n):
@@ -38,13 +39,25 @@ def clip_where(a, a_min, a_max, where):
         Clip when this value or corresponding element evaluates to `True`.
     '''
     aa = np.atleast_1d(a).copy()
-    aa[where] = np.clip(np.atleast_1d(a)[where], a_min, a_max)
-    try:
-        iter(a)
-    except TypeError:
-        return aa[0]
-    else:
+    if not isinstance(a_min, Iterable):
+        a_min = np.full(aa.size, a_min)
+    if not isinstance(a_max, Iterable):
+        a_max = np.full(aa.size, a_max)
+    if not isinstance(where, Iterable):
+        where = np.full(aa.size, where)
+
+    if len(aa) != len(where):
+        raise ValueError('Lengths of `a` and `where` must be equal.')
+    if len(aa) != len(a_min):
+        raise ValueError('Lengths of `a` and `a_min` must be equal.')
+    if len(aa) != len(a_max):
+        raise ValueError('Lengths of `a` and `a_max` must be equal.')
+
+    aa[np.where(where)] = np.clip(aa[np.where(where)], a_min[np.where(where)], a_max[np.where(where)])
+    if isinstance(a, Iterable):
         return aa
+    else:
+        return aa[0]
 
 def fredholm2(t0, fn_K, fn_g, lmda, x, w):
     """
@@ -93,7 +106,7 @@ def fredholm2(t0, fn_K, fn_g, lmda, x, w):
     I = np.eye(N)
 
     for i in range(N):
-        g[i] = fn_g(i)
+        g[i] = fn_g(x[i])
         for j in range(N):
             K[i, j] = w[j] * fn_K(x[i], x[j])
 
