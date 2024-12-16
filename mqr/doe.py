@@ -208,37 +208,43 @@ class Design:
         df.fillna(ref_levels, inplace=True)
         return df
 
-    def randomise_runs(self, order=None):
+    def randomise_runs(self, *order):
         """
         Return the same set of runs, randomised over their run labels.
 
         Parameters
         ----------
-        order : {'PtType', block_name, factor_name} or list, optional
-            Keep the runs ordered by this group(s). When `order` is a list, the
-            group labelled by the first element is sorted, then the group labelled
-            by the second element is sorted within the groups of the first, and so on.
-            The default `None` fully randomises the runs.
+        order : {'PtType', block_name, factor_name}, optional
+            Keep the runs ordered by this group(s). When more than one `order`
+            is specified, the group labelled by the first element is sorted,
+            then the group labelled by the second element is sorted within the
+            groups of the first, and so on. The default `None` fully randomises
+            the runs.
 
         Returns
         -------
         :class:`Design`
             A copy of this design, randomised.
         """
-        df = self.to_df()
         rnd = np.random.choice(
-            a=df.index,
-            size=df.shape[0],
+            a=self.runs,
+            size=len(self.runs),
             replace=False)
-        result = df.loc[rnd]
-        if order is not None:
-            result.sort_values(order, inplace=True, kind='stable')
+        df = self.to_df().loc[rnd]
+        df.sort_values(list(order), inplace=True, kind='stable')
+        new_order = df.index
+        new_levels = self.levels.loc[new_order]
+        if self.pttypes is not None:
+            new_pttypes = self.pttypes.loc[new_order]
+        else:
+            new_pttypes = None
+        new_blocks = self.blocks.loc[new_order]
         return Design(
             names=self.names,
-            levels=result[self.names],
-            runs=result.index,
-            pttypes=result['PtType'],
-            blocks=result[self.blocks.columns])
+            levels=new_levels,
+            runs=new_order,
+            pttypes=new_pttypes,
+            blocks=new_blocks)
 
     def __add__(self, other):
         """
@@ -256,13 +262,25 @@ class Design:
             `other` offset to continue from the end of this design.
         """
         if self.names != other.names:
-            raise AttributeError('Designs must contain the same variables.')
+            raise ValueError('Designs must contain the same variables.')
 
         new_runs = self.runs.append(other.runs + self.runs.max())
-
+        if (self.pttypes is None) and (other.pttypes is None):
+            new_pttypes = None
+        elif (self.pttypes is not None) and (other.pttypes is None):
+            new_pttypes = pd.concat([
+                self.pttypes,
+                pd.Series(np.nan, index=other.runs),
+            ], axis=0).set_axis(new_runs)
+        elif (self.pttypes is None) and (other.pttypes is not None):
+            new_pttypes = pd.concat([
+                pd.Series(np.nan, index=self.runs),
+                other.pttypes
+            ], axis=0).set_axis(new_runs)
+        else:
+            new_pttypes = pd.concat([self.pttypes, other.pttypes], axis=0).set_axis(new_runs)
         new_levels = pd.concat([self.levels, other.levels], axis=0)
         new_levels.set_index(new_runs, inplace=True)
-        new_pttypes = pd.concat([self.pttypes, other.pttypes], axis=0).set_axis(new_runs)
         new_blocks = pd.concat([self.blocks, other.blocks], axis=0)
         new_blocks.set_index(new_runs, inplace=True)
 
@@ -313,27 +331,6 @@ class Design:
             runs=self.runs,
             pttypes=self.pttypes,
             blocks=self.blocks)
-
-    # def __matmul__(self, transform):
-    #     """
-    #     Apply a transform to the levels of this design.
-
-    #     Parameters
-    #     ----------
-    #     transform : :class:`Transform`
-    #         Transform to apply.
-
-    #     Returns
-    #     -------
-    #     :class:`Design`
-    #         A copy of this design with new levels.
-    #     """
-    #     return Design(
-    #         names=self.names,
-    #         levels=transform(self.levels),
-    #         runs=self.runs,
-    #         pttypes=self.pttypes,
-    #         blocks=self.blocks)
 
     @staticmethod
     def from_levels(names, levels, runs=None):
@@ -402,7 +399,7 @@ class Design:
             value_counts = [len(np.unique(design.levels[name])) for name in design.names]
             mapper = lambda x: Design._scale(len(np.unique(x)))(x)
             design.levels = design.levels.apply(mapper)
-        if np.all(np.isclose(levels, 2)):
+        if np.all(np.isclose(levels, 2)) and pttypes:
             design.pttypes = pd.Series(np.ones(len(design), dtype='u1'), design.runs)
 
         return design
@@ -476,7 +473,7 @@ class Design:
         return design
 
     @staticmethod
-    def from_axial(names, exclude=None, magnitude=2.0):
+    def from_axial(names, exclude=None, magnitude=None):
         """
         Construct a design from runs of axial points.
 
@@ -488,7 +485,7 @@ class Design:
             Iterable of names to exclude from construction (the columns still
             exist, but no runs are added).
         magnitude : float, optional
-            Magnitude of axial points.
+            Magnitude of axial points. Default is sqrt(len(names)).
 
         Returns
         -------
@@ -496,6 +493,9 @@ class Design:
         """
         if exclude is None:
             exclude = {}
+
+        if magnitude is None:
+            magnitude = np.sqrt(len(names))
 
         n = len(names)
         n_total = n-len(exclude)
@@ -517,9 +517,9 @@ class Design:
 
     @staticmethod
     def _is_corner(point):
-        # Same distance from the origin on all axes
+        # Same non-zero distance from the origin on all axes
         d = np.abs(point)
-        return np.all(np.isclose(d.iloc[1:], d.iloc[0]))
+        return (d.iloc[0] > 0) and np.all(np.isclose(d.iloc[1:], d.iloc[0]))
 
     @staticmethod
     def _is_axial(point):
