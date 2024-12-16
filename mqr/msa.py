@@ -50,13 +50,11 @@ class NameMapping:
     measurement: str = field(default='measurement')
     part: str = field(default='part')
     operator: str = field(default='operator')
-    replicate: str = field(default='replicate')
     _m: str = field(repr=False, default=None)
     _p: str = field(repr=False, default=None)
     _o: str = field(repr=False, default=None)
-    _r: str = field(repr=False, default=None)
 
-    def __init__(self, *, measurement=None, part=None, operator=None, replicate=None):
+    def __init__(self, *, measurement=None, part=None, operator=None):
         """
         Construct NameMapping.
 
@@ -68,8 +66,6 @@ class NameMapping:
             see Attribute.
         operation : str, optional
             see Attribute.
-        replicate : str, optional
-            see Attribute.
         """
         if measurement:
             self.measurement = self._m = measurement
@@ -77,8 +73,6 @@ class NameMapping:
             self.part = self._p = part
         if operator:
             self.operator = self._o = operator
-        if replicate:
-            self.replicate = self._r = replicate
 
 @dataclass
 class GRR:
@@ -166,8 +160,13 @@ class GRR:
         self._fit_model(data)
 
     def _configure_counts(self):
-        cols = [self.names._p, self.names._o, self.names._r]
-        self.counts = self.data.loc[:, cols].nunique(axis=0)
+        cols = [self.names._p, self.names._o]
+        data = self.data.loc[:, cols]
+        self.counts = data.nunique(axis=0)
+        reps = len(data) / np.prod(self.counts)
+        if reps != int(reps):
+            raise ValueError('Unbalanced designs not supported.')
+        self.replicates = int(reps)
 
     def _configure_formula(self):
         name_m = self.names._m
@@ -205,7 +204,6 @@ class SummaryTable:
                         <th scope='col'>Measurement</td>
                         <th scope='col'>Part</td>
                         <th scope='col'>Operator</td>
-                        <th scope='col'>Replicate</td>
                     </tr>
                 </thead>
                 <tr>
@@ -213,30 +211,33 @@ class SummaryTable:
                     <td>{grr.names.measurement}</td>
                     <td>{grr.names.part}</td>
                     <td>{grr.names.operator}</td>
-                    <td>{grr.names.replicate}</td>
                 </tr>
                 <tr>
                     <th scope='row'>Count</th>
                     <td>{grr.data.shape[0]}</td>
                     <td>{grr.counts[grr.names.part]}</td>
                     <td>{grr.counts[grr.names.operator]}</td>
-                    <td>{grr.counts[grr.names.replicate]}</td>
                 </tr>
                 <thead><tr></tr></thead>
                 <tr>
+                    <th scope='row'>Replicates</th>
+                    <td>{grr.replicates}</td>
+                    <td colspan='2'></td>
+                </tr>
+                <tr>
                     <th scope='row'>Tolerance</th>
                     <td>{grr.tolerance}</td>
-                    <td colspan='3'></td>
+                    <td colspan='2'></td>
                 </tr>
                 <tr>
                     <th scope='row'>N<sub>&#x03C3;</sub></th>
                     <td>{grr.nsigma}</td>
-                    <td colspan='3'></td>
+                    <td colspan='2'></td>
                 </tr>
                 <thead><tr></tr></thead>
                 <tr>
                     <th scope='row'>Formula</th>
-                    <td colspan='4'>{grr.formula}</td>
+                    <td colspan='3'>{grr.formula}</td>
                 </tr>
             </tbody>
             </table>
@@ -267,7 +268,6 @@ class VarianceTable:
     .. [1]  Montgomery, D. C. (2009).
             Statistical quality control (Vol. 7).
             New York: Wiley.
-
     """
     grr: NameMapping
     anova_table: pd.DataFrame
@@ -332,11 +332,10 @@ class VarianceTable:
         self._set_num_distinct_cats()
 
     def _varcomp(self):
-        name_r = self.grr.names._r
         name_p = self.grr.names._p
         name_o = self.grr.names._o
 
-        N_r = self.grr.counts[name_r]
+        N_r = self.grr.replicates
         N_p = self.grr.counts[name_p]
         N_o = self.grr.counts[name_o]
 
@@ -384,12 +383,12 @@ class VarianceTable:
         self.table = table
 
     def _set_discrimination(self):
-        var_p, __, __, __ = self._variance_components
-        self.discrimination = (1 + var_p) / (1 - var_p)
+        rho_p = self.table.loc['Part-to-Part', '% Contribution'] / 100
+        self.discrimination = (1 + rho_p) / (1 - rho_p)
 
     def _set_num_distinct_cats(self):
-        var_p, var_o, var_i, var = self._variance_components
-        self.num_distinct_cats = np.sqrt(2 * var_p / (var_o + var_i + var))
+        rho_p = self.table.loc['Part-to-Part', '% Contribution'] / 100
+        self.num_distinct_cats = np.sqrt(2 * rho_p / (1 - rho_p))
 
     def _repr_html_(self):
         n_cats = int(np.floor(self.num_distinct_cats))

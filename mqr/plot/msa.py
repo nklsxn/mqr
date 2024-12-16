@@ -170,7 +170,6 @@ def line_part_operator_intn(grr, ax, line_kws=None):
     name_p = grr.names.part
     name_o = grr.names.operator
     name_m = grr.names.measurement
-    name_r = grr.names.replicate
 
     intn = mqr.anova.interactions(grr.data, value=name_m, between=[name_p, name_o])
 
@@ -188,7 +187,7 @@ def line_part_operator_intn(grr, ax, line_kws=None):
         loc='center left',
         borderaxespad=0.0)
 
-    ax.set_ylabel(f'{name_m}\n(mean over {name_r})')
+    ax.set_ylabel(f'{name_m}\n(mean over repeats)')
     ax.set_title(f'{name_p} * {name_o} Interaction')
 
 def xbar_operator(grr, ax,
@@ -221,7 +220,6 @@ def xbar_operator(grr, ax,
     name_p = grr.names.part
     name_o = grr.names.operator
     name_m = grr.names.measurement
-    name_r = grr.names.replicate
     grp = grr.data.groupby([name_p, name_o])[name_m]
     mqr.plot.grouped_df(
         grp.mean().unstack(),
@@ -244,7 +242,7 @@ def xbar_operator(grr, ax,
     ax.axhline(params.lcl(N), **control_kws)
 
     ax.set_xlabel(name_p)
-    ax.set_ylabel(f'{name_m}\n(mean over {name_r})')
+    ax.set_ylabel(f'{name_m}\n(mean over repeats)')
     ax.set_title(f'Xbar chart by {name_o}')
 
 def r_operator(grr, ax,
@@ -278,7 +276,6 @@ def r_operator(grr, ax,
     name_p = grr.names.part
     name_o = grr.names.operator
     name_m = grr.names.measurement
-    name_r = grr.names.replicate
     grp = grr.data.groupby([name_p, name_o])[name_m]
     range_r = grp.apply(np.ptp).unstack()
     mqr.plot.grouped_df(
@@ -299,7 +296,7 @@ def r_operator(grr, ax,
     ax.axhline(params.ucl(N), **control_kws)
     ax.axhline(params.lcl(N), **control_kws)
     ax.set_xlabel(name_p)
-    ax.set_ylabel(f'{name_m}\n(mean over {name_r})')
+    ax.set_ylabel(f'{name_m}\n(mean over repeats)')
     ax.set_title(f'Range by {name_o}')
 
 def grr(grr, axs, sources=None):
