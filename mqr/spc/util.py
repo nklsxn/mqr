@@ -281,7 +281,7 @@ def d3_integral(n, d2_fn=None, **dblquad_kws):
 
 def solve_arl(h4, p, lmda, N=20):
     """
-    Find the ARL of an MEWMA chart.
+    Find the in-control ARL of an MEWMA chart.
 
     Follows the modified Gauss-Legendre method in [1]_ to evaluate:
 

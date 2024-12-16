@@ -9,7 +9,7 @@ This module has types for creating control parameters and statistics.
 import abc
 from dataclasses import asdict, dataclass, field
 import matplotlib.pyplot as plt
-from mqr.spc.util import c4, c4_fn, d2, d3
+from mqr.spc.util import c4, d2, d3
 import numpy as np
 import pandas as pd
 import scipy
@@ -422,7 +422,7 @@ class RParams(ShewhartParams):
         nsigma : float
             Number of stderr to set control limits.
         """
-        return RParams(r_bar, r_bar / d2(nobs), nsigma=3)
+        return RParams(r_bar, r_bar / d2(nobs), nsigma)
 
     @staticmethod
     def from_data(samples, nsigma=3):
@@ -605,12 +605,12 @@ class EwmaParams(ControlParams):
         The argument `nobs` must be the size of the samples used to construct
         the statistic at each index.
         """
-        Ns = nobs.index.to_series()
+        idx = nobs.index.to_series()
         stderr = self.sigma / np.sqrt(nobs)
         if self.steady_state:
             sqrt_term = np.sqrt(self.lmda / (2 - self.lmda))
         else:
-            sqrt_term = np.sqrt(self.lmda / (2 - self.lmda) * (1 - (1 - self.lmda)**(2 * Ns)))
+            sqrt_term = np.sqrt(self.lmda / (2 - self.lmda) * (1 - (1 - self.lmda)**(2 * idx)))
         return self.mu_0 - self.L * stderr * sqrt_term
 
     def ucl(self, nobs):
@@ -627,16 +627,43 @@ class EwmaParams(ControlParams):
         The argument `nobs` must be the size of the samples used to construct
         the statistic at each index.
         """
-        Ns = nobs.index.to_series()
+        idx = nobs.index.to_series()
         stderr = self.sigma / np.sqrt(nobs)
         if self.steady_state:
             sqrt_term = np.sqrt(self.lmda / (2 - self.lmda))
         else:
-            sqrt_term = np.sqrt(self.lmda / (2 - self.lmda) * (1 - (1 - self.lmda)**(2 * Ns)))
+            sqrt_term = np.sqrt(self.lmda / (2 - self.lmda) * (1 - (1 - self.lmda)**(2 * idx)))
         return self.mu_0 + self.L * stderr * sqrt_term
 
     @staticmethod
-    def from_data(samples, lmda, L):
+    def from_stddev(mu_0, s_bar, nobs, lmda, L, steady_state=False):
+        """
+        Constructs EwmaParams from an average sample stddev.
+
+        Parameters
+        ----------
+        mu_0 : float
+            Process target mean.
+        s_bar : float
+            Average sample stddev from a reference in-control process.
+        nobs : int
+            Size (fixed) of samples used to calculate (s_bar).
+        lmda : float
+            Smoothing factor.
+        L : float
+            Width of the limits in multiples of the stddev of the smoothed mean.
+        steady_state : bool, optional
+            Whether the process has already decayed to the steady state control limits.
+        """
+        return EwmaParams(
+            mu_0=mu_0,
+            sigma=s_bar/c4(nobs),
+            lmda=lmda,
+            L=L,
+            steady_state=steady_state)
+
+    @staticmethod
+    def from_data(samples, lmda, L, steady_state=False):
         """
         Constructs an instance of `EwmaParams` from reference samples.
 
@@ -651,11 +678,13 @@ class EwmaParams(ControlParams):
             Smoothing factor.
         L : float
             Width of the limits in multiples of the stddev of the smoothed mean.
+        steady_state : bool, optional
+            Whether the process has already decayed to the steady state control limits.
         """
         N, nobs = samples.shape
         mu_0 = samples.mean(axis=1).mean()
-        sigma = np.std(samples.values, ddof=1) / c4_fn(np.prod(samples.shape))
-        return EwmaParams(mu_0, sigma, lmda, L)
+        s_bar = np.std(samples.values, ddof=1, axis=1).mean()
+        return EwmaParams.from_stddev(mu_0, s_bar, nobs, lmda, L, steady_state)
 
 @dataclass
 class MewmaParams(ControlParams):
@@ -705,17 +734,17 @@ class MewmaParams(ControlParams):
         """
         init = pd.DataFrame(self.mu[None, :], columns=samples.columns)
         samples_0 = pd.concat([init, samples])
-        z = samples_0.ewm(alpha=self.lmda, adjust=False).mean().iloc[1:, :]
+        z = (samples_0 - self.mu).ewm(alpha=self.lmda, adjust=False).mean().iloc[1:, :]
         t2 = pd.Series(index=samples.index)
-        for i in range(samples.shape[0]):
-            t2.iloc[i] = self._t2_stat(z.values[i].T, i)
+        for i, idx in enumerate(samples.index):
+            t2.iloc[i] = self._t2_stat(z.values[i].T, idx)
         return ControlStatistic(
             stat=t2,
             nobs=samples.apply(len, axis=1))
 
     def target(self):
         """
-        Desired distance (norm) of the process from `mu`.
+        Desired distance (a function of the norm) of the process from `mu`.
 
         Always zero.
         """
@@ -736,11 +765,10 @@ class MewmaParams(ControlParams):
         return pd.Series(self.limit, index=nobs.index)
 
     def _cov_z(self, i):
-        return self.lmda / (2 - self.lmda) * (1 - (1 - self.lmda)**(2 * i+1)) * self.cov
+        return self.lmda / (2 - self.lmda) * (1 - (1 - self.lmda)**(2 * i)) * self.cov
 
     def _t2_stat(self, z, i):
-        z_0 = (z - self.mu)[:, None]
-        return z_0.T @ np.linalg.inv(self._cov_z(i)) @ z_0
+        return z @ np.linalg.inv(self._cov_z(i)) @ z[:, None]
 
     @staticmethod
     def from_data(samples, limit, lmda):

@@ -113,7 +113,7 @@ def combine(combn_fn, *rules):
         return functools.reduce(combn_fn, alarms)
     return _combine
 
-def limits(control_statistic, control_params):
+def limits():
     """
     Rule monitoring when a process violates control limits.
 
@@ -123,18 +123,11 @@ def limits(control_statistic, control_params):
     This is a rule and can be used directly in :func:`mqr.plot.spc.alarms` or
     :func:`combine`.
 
-    Parameters
-    ----------
-    control_statistic : :mod:`mqr.spc.ControlStatistic`
-        Statistic as returned from :meth:`mqr.spc.ControlParams.statistic`.
-    control_params : :mod:`mqr.spc.ControlParams`
-        Control parameters used to calculate `statistic`.
-
     Returns
     -------
-    pd.Series[bool]
-        Series whose value is True whenever `control_statistic` is outside the
-        control limits in `control_params`.
+    Callable[(ControlStatistic, ControlParams), pandas.Series[bool]]
+        A function taking a control statistic and the params used to create them,
+        and returning a series with `True` marking alarms.
 
     Examples
     --------
@@ -150,19 +143,20 @@ def limits(control_statistic, control_params):
 
         params = mqr.spc.XBarParams(centre=10, sigma=1)
         stat = params.statistic(data)
-        rule = mqr.spc.rules.limits
+        rule = mqr.spc.rules.limits()
 
         fig, ax = plt.subplots(figsize=(7, 3))
         mqr.plot.spc.chart(stat, params, ax=ax)
         mqr.plot.spc.alarms(stat, params, rule, ax=ax)
 
     """
-    stat = control_statistic.stat
-    nobs = control_statistic.nobs
-    lcl = control_params.lcl(nobs)
-    ucl = control_params.ucl(nobs)
-
-    return np.logical_or(stat >= ucl, stat <= lcl)
+    def _rule(control_statistic, control_params):
+        stat = control_statistic.stat
+        nobs = control_statistic.nobs
+        lcl = control_params.lcl(nobs)
+        ucl = control_params.ucl(nobs)
+        return np.logical_or(stat >= ucl, stat <= lcl)
+    return _rule
 
 def aofb_nsigma(a, b, n):
     """
@@ -189,8 +183,9 @@ def aofb_nsigma(a, b, n):
 
     Returns
     -------
-    pandas.Series[bool]
-        Series with `True` marking alarms.
+    Callable[(ControlStatistic, ControlParams), pandas.Series[bool]]
+        A function taking a control statistic and the params used to create them,
+        and returning a series with `True` marking alarms.
 
     Examples
     --------
@@ -250,8 +245,9 @@ def n_1side(n):
 
     Returns
     -------
-    pandas.Series[bool]
-        Series with `True` marking alarms.
+    Callable[(ControlStatistic, ControlParams), pandas.Series[bool]]
+        A function taking a control statistic and the params used to create them,
+        and returning a series with `True` marking alarms.
 
     Examples
     --------
@@ -278,7 +274,8 @@ def n_1side(n):
 
         alarms = pd.Series(False, index=stat.index)
         for seq in np.sign(stat - target).rolling(n):
-            if (len(seq) == n) and (len(set(seq)) == 1):
+            values = set(seq)
+            if (len(seq) == n) and (len(values) == 1) and (values != {0}):
                 alarms[seq.index[-1]] = True
 
         return alarms
@@ -302,8 +299,9 @@ def n_trending(n):
 
     Returns
     -------
-    pandas.Series[bool]
-        Series with `True` marking alarms.
+    Callable[(ControlStatistic, ControlParams), pandas.Series[bool]]
+        A function taking a control statistic and the params used to create them,
+        and returning a series with `True` marking alarms.
 
     Examples
     --------
@@ -330,7 +328,8 @@ def n_trending(n):
 
         alarms = pd.Series(False, index=stat.index)
         for seq in np.sign(stat.diff()).rolling(n-1):
-            if (len(seq) == n-1) and len(set(seq)) == 1:
+            values = set(seq)
+            if (len(seq) == n-1) and (len(values) == 1) and (values != {0}):
                 alarms[seq.index[-1]] = True
 
         return alarms
