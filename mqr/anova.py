@@ -80,7 +80,7 @@ def coeffs(result, conf=0.95):
     values = pd.concat(
         [result.params, result.conf_int(alpha=alpha)],
         axis=1)
-    values.columns = ['Coeff', f'[{alpha/2*100:g}%', f'{(1-alpha/2)*100:g}%]']
+    values.columns = ['Coeff', 'lower', 'upper']
     values['t'] = result.tvalues
     values['PR(>|t|)'] = result.pvalues
     exog = result.model.exog
@@ -115,9 +115,9 @@ def groups(result, *, value: str, factor: str, conf=0.95):
 
     References
     ----------
-    .. [1] Saville, David J., and Graham R. Wood.
-       Statistical methods: The geometric approach.
-       Springer Science & Business Media, 2012.
+    .. [1]  Saville, David J., and Graham R. Wood.
+            Statistical methods: The geometric approach.
+            Springer Science & Business Media, 2012.
     """
     alpha = 1 - conf
     df = result.model.data.frame
@@ -126,7 +126,7 @@ def groups(result, *, value: str, factor: str, conf=0.95):
     groups = groupby.agg(cols)
     groups.columns = cols
     cis = _groups_ci(result, value, factor, conf)
-    groups.loc[:, [f'[{alpha/2*100:g}%', f'{(1-alpha/2)*100:g}%]']] = cis
+    groups.loc[:, ['lower', 'upper']] = cis
     groups = groups.reindex(df.loc[:, factor].unique())
     return groups
 
@@ -179,9 +179,9 @@ def adequacy(result):
         PR(>F)
             p-value of the F-statistic
         AIC
-            Akaike information coefficient
+            Akaike information criterion
         BIC
-            Bayesian information coefficient
+            Bayesian information criterion
         N
             number of observations
     """
