@@ -2,6 +2,7 @@ from mqr.inference.confint import ConfidenceInterval
 from mqr.inference.hyptest import HypothesisTest
 from mqr.inference.power import TestPower
 
+from mqr.inference.lib import util
 import mqr.inference.variance as variance
 
 import numpy as np
@@ -152,7 +153,7 @@ def test_1sample(x, H0_std, alternative='two-sided'):
     :class:`mqr.inference.hyptest.HypothesisTest`
     """
     var = variance.test_1sample(x, np.square(H0_std), alternative)
-    x_name = x.name if hasattr(x, 'name') else 'x'
+    x_name = util.var_name(x, 'x')
     return HypothesisTest(
         description='standard deviation',
         alternative=alternative,
@@ -187,8 +188,8 @@ def test_2sample(x, y, alternative='two-sided'):
     :class:`mqr.inference.hyptest.HypothesisTest`
     """
     var = variance.test_2sample(x, y, alternative, 'f')
-    x_name = x.name if hasattr(x, 'name') else 'x'
-    y_name = y.name if hasattr(y, 'name') else 'y'
+    x_name = util.var_name(x, 'x')
+    y_name = util.var_name(y, 'y')
     return HypothesisTest(
         description='ratio of standard deviations',
         alternative=alternative,

@@ -343,7 +343,7 @@ def test_1sample(x, H0_var, alternative='two-sided', method='chi2'):
     else:
         raise ValueError(util.method_error_msg(method, ['chi2']))
 
-    x_name = x.name if hasattr(x, 'name') else 'x'
+    x_name = util.var_name(x, 'x')
     return HypothesisTest(
         description='variance',
         alternative=alternative,
@@ -414,8 +414,8 @@ def test_2sample(x, y, alternative='two-sided', method='f'):
     else:
         raise ValueError(util.method_error_msg(method, ['f', 'bartlett']))
 
-    x_name = x.name if hasattr(x, 'name') else 'x'
-    y_name = y.name if hasattr(y, 'name') else 'y'
+    x_name = util.var_name(x, 'x')
+    y_name = util.var_name(y, 'y')
     return HypothesisTest(
         description=description,
         alternative=alternative,

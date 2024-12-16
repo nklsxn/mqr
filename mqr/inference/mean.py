@@ -299,7 +299,7 @@ def test_1sample(x, H0_mean=0.0, alternative='two-sided', method='t'):
     else:
         raise ValueError(util.method_error_msg(method, ['t', 'z']))
 
-    x_name = x.name if hasattr(x, 'name') else 'x'
+    x_name = util.var_name(x, 'x')
     return HypothesisTest(
         description='mean',
         alternative=alternative,
@@ -359,8 +359,8 @@ def test_2sample(x, y, H0_diff=0.0, pooled=True, alternative='two-sided', method
     else:
         raise ValueError(util.method_error_msg(method, ['t', 'z']))
     
-    x_name = x.name if hasattr(x, 'name') else 'x'
-    y_name = y.name if hasattr(y, 'name') else 'y'
+    x_name = util.var_name(x, 'x')
+    y_name = util.var_name(y, 'y')
     return HypothesisTest(
         description='difference between means (independent)',
         alternative=alternative,
@@ -397,8 +397,8 @@ def test_paired(x, y, alternative='two-sided', method='t'):
 
     result = scipy.stats.ttest_rel(x, y, alternative=alternative)
 
-    x_name = x.name if hasattr(x, 'name') else 'x'
-    y_name = y.name if hasattr(y, 'name') else 'y'
+    x_name = util.var_name(x, 'x')
+    y_name = util.var_name(y, 'y')
     return HypothesisTest(
         description='difference between means (paired)',
         alternative=alternative,

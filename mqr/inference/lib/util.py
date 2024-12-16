@@ -14,3 +14,9 @@ def method_error_msg(method, available):
 
 def alternative_error_msg(alternative):
     return f'Invalid alternative "{alternative}". Use two-sided, less or greater.'
+
+def var_name(var, default):
+    if hasattr(var, 'name') and (var.name is not None) and (len(var.name) > 0):
+        return var.name
+    else:
+        return default

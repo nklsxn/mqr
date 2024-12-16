@@ -40,7 +40,7 @@ def test_1sample(x, H0_median=0.0, alternative='two-sided', method='sign'):
     else:
         raise ValueError(util.method_error_msg(method, ['sign', 'wilcoxon']))
 
-    x_name = x.name if hasattr(x, 'name') else 'x'
+    x_name = util.var_name(x, 'x')
     return HypothesisTest(
         description='median',
         alternative=alternative,

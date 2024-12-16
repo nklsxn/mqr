@@ -1,6 +1,7 @@
 from mqr.inference.confint import ConfidenceInterval
 from mqr.inference.hyptest import HypothesisTest
 
+from mqr.inference.lib import util
 import mqr.interop.inference as interop
 import mqr.utils
 
@@ -72,7 +73,7 @@ def test_1sample(x, H0_quant=None, q=0.5, alternative='two-sided'):
 
     res = scipy.stats.quantile_test(x, q=H0_quant, p=q, alternative=alternative)
 
-    x_name = x.name if hasattr(x, 'name') else 'x'
+    x_name = util.var_name(x, 'x')
     return HypothesisTest(
         description='quantile',
         alternative=alternative,

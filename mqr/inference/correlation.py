@@ -130,8 +130,8 @@ def test(x, y, H0_corr=0.0, alternative='two-sided'):
     else:
         raise ValueError(util.alternative_error_msg(alternative))
 
-    x_name = x.name if hasattr(x, 'name') else 'x'
-    y_name = y.name if hasattr(y, 'name') else 'y'
+    x_name = util.var_name(x, 'x')
+    y_name = util.var_name(y, 'y')
     return HypothesisTest(
         description='correlation coefficient',
         alternative=alternative,
@@ -220,10 +220,10 @@ def test_diff(x1, y1, x2, y2, H0_corr1=0.0, H0_corr2=0.0, alternative='two-sided
     else:
         raise ValueError(util.alternative_error_msg(alternative))
 
-    x1_name = x1.name if hasattr(x1, 'name') else 'x1'
-    y1_name = y1.name if hasattr(y1, 'name') else 'y1'
-    x2_name = x2.name if hasattr(x2, 'name') else 'x2'
-    y2_name = y2.name if hasattr(y2, 'name') else 'y2'
+    x1_name = util.var_name(x1, 'x1')
+    y1_name = util.var_name(y1, 'y1')
+    x2_name = util.var_name(x2, 'x2')
+    y2_name = util.var_name(y2, 'y2')
     return HypothesisTest(
         description='difference between correlation coefficients',
         alternative=alternative,

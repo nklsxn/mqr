@@ -44,8 +44,8 @@ def test(x, y, alternative='two-sided', method='spearman'):
     else:
         raise ValueError(util.method_error_msg(method, ['spearman', 'kendall']))
 
-    x_name = x.name if hasattr(x, 'name') else 'x'
-    y_name = y.name if hasattr(y, 'name') else 'y'
+    x_name = util.var_name(x, 'x')
+    y_name = util.var_name(y, 'y')
     return HypothesisTest(
         description='correlation coefficient',
         alternative=alternative,
