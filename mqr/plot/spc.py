@@ -165,7 +165,7 @@ def alarms(control_statistic, control_params, control_rule, ax, *,
         # Parameters
         params = mqr.spc.XBarParams(centre=1, sigma=5, nsigma=2)
         stat = params.statistic(x)
-        rule = mqr.spc.rules.limits
+        rule = mqr.spc.rules.limits()
 
         # Charts
         mqr.plot.spc.chart(stat, params, ax=ax)

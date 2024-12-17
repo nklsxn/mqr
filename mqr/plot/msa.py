@@ -350,7 +350,7 @@ def grr(grr, axs, sources=None):
             skiprows=50,
             header=None,
             names=columns,
-            sep='\\s+',
+            sep='\\\\s+',
             dtype=dtype,
         )
         data['REPEAT'] = np.repeat([1,2,3,4,5,6,7,8,9,10,11,12], 25)
@@ -368,7 +368,6 @@ def grr(grr, axs, sources=None):
         names = mqr.msa.NameMapping(
             part='WAFERID',
             operator='PROBE',
-            replicate='REPEAT',
             measurement='AVERAGE')
         grr = mqr.msa.GRR(
             data.query('RUNID==1'),

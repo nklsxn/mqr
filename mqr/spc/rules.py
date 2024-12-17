@@ -71,7 +71,7 @@ def combine(combn_fn, *rules):
     **Using a combination**
 
     Create a rule that alarms when either (1) a process goes outside its control
-    limits using :func:`mqr.spc.rules.limits`, or (2) the process has 3 of 4
+    limits using :func:`mqr.spc.rules.limits()`, or (2) the process has 3 of 4
     observations outside 2 sigmas using :func:`mqr.spc.rules.aofb_nsigma`. To
     make the numbers simple, the process here has standard deviation of 1 and
     samples of size 1 are taken -- a single observation of 1 is then a sample
@@ -89,7 +89,7 @@ def combine(combn_fn, *rules):
         # Make the new rule
         combine_rule = mqr.spc.rules.combine(
             np.logical_or,
-            mqr.spc.rules.limits,
+            mqr.spc.rules.limits(),
             mqr.spc.rules.aofb_nsigma(a=3, b=4, n=2))
 
         # Create violating data for demonstration

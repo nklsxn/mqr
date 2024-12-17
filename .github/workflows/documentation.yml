@@ -1,0 +1,63 @@
+name: documentation
+
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  id-token: write
+  pages: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: False
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          path: mqr
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install sphinx sphinx_rtd_theme myst_parser numpydoc pydata-sphinx-theme
+
+      - name: Install mqr
+        run: |
+          pip install -e mqr
+
+      - name: Sphinx build
+        run: |
+          cd mqr/docs && git fetch --tags --force && make html
+
+      - name: Copy artifacts and version
+        run: |
+          mv mqr/docs/_build/html html
+          cd mqr
+
+          git config --global user.name 'Nikolas Crossan'
+          git config --global user.email 'nikxn@users.noreply.github.com'
+          git fetch && git switch -f gh-pages
+
+          if [ -f "latest/index.html" ]; then
+            OLD_VERSION=$(grep theme_switcher_version_match latest/index.html | cut -d'=' -f2 | cut -d';' -f1 | xargs)
+            git mv latest versions/$OLD_VERSION
+            git add versions
+          fi
+          mv ../html latest
+          git add latest
+          git commit -m "Deploy documentation"
+          git push

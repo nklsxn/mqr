@@ -6,10 +6,13 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
+import importlib
+
 project = 'mqr'
 copyright = '2024, Nikolas Crossan'
 author = 'Nikolas Crossan'
-release = '0.5.1'
+version = importlib.metadata.version('mqr-quality')
+release = version
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -19,6 +22,7 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx.ext.doctest',
     'sphinx.ext.duration',
+    'sphinx.ext.githubpages',
     'sphinx.ext.intersphinx',
     'sphinx.ext.mathjax',
     'sphinx_rtd_theme',
@@ -57,6 +61,10 @@ html_theme_options = {
     "navbar_persistent": [],
     "show_version_warning_banner": True,
     "secondary_sidebar_items": ["page-toc"],
+    "switcher": {
+        "version_match": version,
+        "json_url": "https://raw.githubusercontent.com/nklsxn/mqr/refs/heads/master/docs/switcher.json"
+    }
 }
 html_context = {
     "default_mode": "light",
