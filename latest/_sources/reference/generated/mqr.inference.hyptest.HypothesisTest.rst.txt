@@ -1,0 +1,41 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.inference.hyptest.</div>
+   <div class="empty"></div>
+
+HypothesisTest
+====================================
+
+.. currentmodule:: mqr.inference.hyptest
+
+.. autoclass:: HypothesisTest
+   :no-members:
+   :no-inherited-members:
+   :no-special-members:
+
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+      
+  
+
+  
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         HypothesisTest.alt
+         HypothesisTest.null
+         HypothesisTest.description
+         HypothesisTest.alternative
+         HypothesisTest.method
+         HypothesisTest.sample_stat
+         HypothesisTest.sample_stat_target
+         HypothesisTest.sample_stat_value
+         HypothesisTest.stat
+         HypothesisTest.pvalue
+  
+  

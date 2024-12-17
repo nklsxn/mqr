@@ -1,0 +1,49 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.doe.</div>
+   <div class="empty"></div>
+
+Design
+==============
+
+.. currentmodule:: mqr.doe
+
+.. autoclass:: Design
+   :no-members:
+   :no-inherited-members:
+   :no-special-members:
+
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         Design.__len__
+         Design.as_block
+         Design.from_axial
+         Design.from_ccdesign
+         Design.from_centrepoints
+         Design.from_fracfact
+         Design.from_fullfact
+         Design.from_levels
+         Design.get_factor_df
+         Design.randomise_runs
+         Design.replicate
+         Design.to_df
+         Design.transform
+      
+  
+
+  
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         Design.names
+         Design.levels
+         Design.runs
+         Design.pttypes
+         Design.blocks
+  
+  

@@ -1,0 +1,36 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.msa.</div>
+   <div class="empty"></div>
+
+VarianceTable
+=====================
+
+.. currentmodule:: mqr.msa
+
+.. autoclass:: VarianceTable
+   :no-members:
+   :no-inherited-members:
+   :no-special-members:
+
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+      
+  
+
+  
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         VarianceTable.grr
+         VarianceTable.anova_table
+         VarianceTable.table
+         VarianceTable.num_distinct_cats
+         VarianceTable.discrimination
+  
+  

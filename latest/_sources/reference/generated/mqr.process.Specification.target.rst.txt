@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.process.Specification.</div>
+   <div class="empty"></div>
+
+mqr.process.Specification.target
+================================
+
+.. currentmodule:: mqr.process
+
+.. autoattribute:: Specification.target

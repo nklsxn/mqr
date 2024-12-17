@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.spc.SParams.</div>
+   <div class="empty"></div>
+
+lcl
+===================
+
+.. currentmodule:: mqr.spc
+
+.. automethod:: SParams.lcl

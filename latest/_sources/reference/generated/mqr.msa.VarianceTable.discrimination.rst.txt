@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.msa.VarianceTable.</div>
+   <div class="empty"></div>
+
+mqr.msa.VarianceTable.discrimination
+====================================
+
+.. currentmodule:: mqr.msa
+
+.. autoattribute:: VarianceTable.discrimination

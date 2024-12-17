@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.spc.ShewhartParams.</div>
+   <div class="empty"></div>
+
+statistic
+================================
+
+.. currentmodule:: mqr.spc
+
+.. automethod:: ShewhartParams.statistic

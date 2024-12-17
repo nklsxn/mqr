@@ -1,0 +1,11 @@
+.. raw:: html
+
+   <div class="prename">mqr.inference.rate.</div>
+   <div class="empty"></div>
+
+confint_1sample
+==================================
+
+.. currentmodule:: mqr.inference.rate
+
+.. autofunction:: confint_1sample

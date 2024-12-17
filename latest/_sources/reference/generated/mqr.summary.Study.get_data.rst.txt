@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.summary.Study.</div>
+   <div class="empty"></div>
+
+get_data
+==========================
+
+.. currentmodule:: mqr.summary
+
+.. automethod:: Study.get_data

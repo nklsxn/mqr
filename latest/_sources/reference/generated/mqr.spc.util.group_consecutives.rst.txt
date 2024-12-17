@@ -1,0 +1,11 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.spc.util.</div>
+   <div class="empty"></div>
+
+group_consecutives
+===============================
+
+.. currentmodule:: mqr.spc.util
+
+.. autofunction:: group_consecutives

@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.process.Process.</div>
+   <div class="empty"></div>
+
+mqr.process.Process.capabilities
+================================
+
+.. currentmodule:: mqr.process
+
+.. autoattribute:: Process.capabilities

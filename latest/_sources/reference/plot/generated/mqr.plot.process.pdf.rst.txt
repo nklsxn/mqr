@@ -1,0 +1,11 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.plot.process.</div>
+   <div class="empty"></div>
+
+pdf
+====================
+
+.. currentmodule:: mqr.plot.process
+
+.. autofunction:: pdf

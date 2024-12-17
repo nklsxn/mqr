@@ -1,0 +1,11 @@
+.. raw:: html
+
+   <div class="prename">mqr.inference.variance.</div>
+   <div class="empty"></div>
+
+size_2sample
+===================================
+
+.. currentmodule:: mqr.inference.variance
+
+.. autofunction:: size_2sample

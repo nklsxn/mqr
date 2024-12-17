@@ -1,0 +1,11 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.spc.util.</div>
+   <div class="empty"></div>
+
+d3_integral
+========================
+
+.. currentmodule:: mqr.spc.util
+
+.. autofunction:: d3_integral

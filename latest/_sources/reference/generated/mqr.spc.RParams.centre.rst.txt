@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.spc.RParams.</div>
+   <div class="empty"></div>
+
+mqr.spc.RParams.centre
+======================
+
+.. currentmodule:: mqr.spc
+
+.. autoattribute:: RParams.centre
