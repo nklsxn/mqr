@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.summary.Sample.</div>
+   <div class="empty"></div>
+
+mqr.summary.Sample.ad_pvalue
+============================
+
+.. currentmodule:: mqr.summary
+
+.. autoattribute:: Sample.ad_pvalue

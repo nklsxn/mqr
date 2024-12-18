@@ -1,0 +1,39 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.summary.</div>
+   <div class="empty"></div>
+
+Study
+=================
+
+.. currentmodule:: mqr.summary
+
+.. autoclass:: Study
+   :no-members:
+   :no-inherited-members:
+   :no-special-members:
+
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         Study.__getitem__
+         Study.get_data
+      
+  
+
+  
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         Study.name
+         Study.data
+         Study.measurements
+         Study.samples
+         Study.conf
+         Study.num_display_fmt
+  
+  

@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.doe.Affine.</div>
+   <div class="empty"></div>
+
+__call__
+=======================
+
+.. currentmodule:: mqr.doe
+
+.. automethod:: Affine.__call__

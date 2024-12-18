@@ -1,0 +1,11 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.plot.regression.</div>
+   <div class="empty"></div>
+
+res_v_factor
+================================
+
+.. currentmodule:: mqr.plot.regression
+
+.. autofunction:: res_v_factor

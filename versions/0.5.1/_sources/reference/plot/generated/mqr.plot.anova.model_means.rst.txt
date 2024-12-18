@@ -1,0 +1,11 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.plot.anova.</div>
+   <div class="empty"></div>
+
+model_means
+==========================
+
+.. currentmodule:: mqr.plot.anova
+
+.. autofunction:: model_means

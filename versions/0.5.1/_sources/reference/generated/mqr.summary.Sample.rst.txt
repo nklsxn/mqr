@@ -1,0 +1,59 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.summary.</div>
+   <div class="empty"></div>
+
+Sample
+==================
+
+.. currentmodule:: mqr.summary
+
+.. autoclass:: Sample
+   :no-members:
+   :no-inherited-members:
+   :no-special-members:
+
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+      
+  
+
+  
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         Sample.ad_pvalue
+         Sample.ad_stat
+         Sample.conf
+         Sample.conf_mean
+         Sample.conf_median
+         Sample.conf_quartile1
+         Sample.conf_quartile3
+         Sample.conf_std
+         Sample.conf_var
+         Sample.data
+         Sample.iqr
+         Sample.ks_pvalue
+         Sample.ks_stat
+         Sample.kurtosis
+         Sample.maximum
+         Sample.mean
+         Sample.median
+         Sample.minimum
+         Sample.name
+         Sample.nobs
+         Sample.num_display_fmt
+         Sample.outliers
+         Sample.quartile1
+         Sample.quartile3
+         Sample.sem
+         Sample.skewness
+         Sample.std
+         Sample.var
+  
+  
