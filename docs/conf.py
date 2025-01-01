@@ -3,6 +3,7 @@
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
+
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
@@ -13,6 +14,13 @@ copyright = '2024, Nikolas Crossan'
 author = 'Nikolas Crossan'
 version = importlib.metadata.version('mqr-quality')
 release = version
+
+
+# -- App setup ---------------------------------------------------------------
+
+def setup(app):
+    app.add_css_file('_static/mqr.css')
+
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -32,7 +40,8 @@ extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.ifconfig',
 
-    'myst_parser',
+    # 'myst_parser',
+    'myst_nb',
 ]
 
 autosummary_generate = True
@@ -40,6 +49,43 @@ autosummary_generate = True
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 add_function_parentheses = False
+
+
+# -- Options for myst-parser and myst-nb -------------------------------------
+# https://myst-parser.readthedocs.io/en/latest/syntax/optional.html
+
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.ipynb': 'myst-nb',
+    '.myst': 'myst-nb',
+}
+
+myst_enable_extensions = [
+    "amsmath", #
+    "attrs_block", #
+    "attrs_inline", #
+    "colon_fence", #
+    "deflist", #
+    "dollarmath", #
+    "fieldlist", #
+    "html_admonition", #
+    # "html_image",
+    # "linkify",
+    "replacements", #
+    "smartquotes", #
+    # "strikethrough",
+    # "substitution",
+    "tasklist", #
+]
+myst_footnote_transition = False
+myst_heading_anchors = 3
+myst_links_external_new_tab = True
+myst_url_schemes = {
+    "doi": "https://doi.org/{{path}}",
+    "http": None,
+    "https": None,
+}
+
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
@@ -76,12 +122,16 @@ html_context = {
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = []
+html_css_files = [
+    'mqr.css',
+]
+html_static_path = ['_static']
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = "project-templatedoc"
 
 # mathjax_path = "scipy-mathjax/MathJax.js?config=scipy-mathjax"
+
 
 # -- Intersphinx configuration -------------------------------------------------
 
@@ -93,6 +143,7 @@ intersphinx_mapping = {
     'scipy': ('https://docs.scipy.org/doc/scipy', None),
     'statsmodels': ('https://www.statsmodels.org/stable', None),
 }
+
 
 # -- matplotlib configuration --------------------------------------------------
 

@@ -54,3 +54,5 @@ import mqr.plot.process as process
 import mqr.plot.regression as regression
 import mqr.plot.spc as spc
 import mqr.plot.tools as tools
+
+from mqr.plot.lib.util import grouped_df
