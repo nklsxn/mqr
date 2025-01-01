@@ -248,6 +248,8 @@ class VarianceTable:
     """
     GRR variance components
 
+    Variance components are calculated using the method in [1]_.
+
     Attributes
     ----------
     grr : :class:`GRR`
@@ -275,8 +277,7 @@ class VarianceTable:
     num_distinct_cats: np.float64
     discrimination: np.float64
 
-    @staticmethod
-    def _table_index():
+    def _table_index(self):
         return [
             'Gauge RR',
             'Repeatability',
@@ -286,19 +287,17 @@ class VarianceTable:
             'Part-to-Part',
             'Total']
 
-    @staticmethod
-    def _table_columns(nsigma):
+    def _table_columns(self):
         return [
             'VarComp',
             '% Contribution',
             'StdDev',
-            f'StudyVar ({nsigma}*SD)',
+            f'StudyVar ({self.grr.nsigma}*SD)',
             '% StudyVar',
             '% Tolerance']
 
-    @staticmethod
-    def _table_styles(include_interaction):
-        if include_interaction:
+    def _table_styles(self):
+        if self.grr.include_interaction:
             reprod_indent = 'th.row3,th.row4'
         else:
             reprod_indent = 'th.row3'
@@ -325,7 +324,10 @@ class VarianceTable:
 
     def __init__(self, grr: GRR, typ=2):
         self.grr = grr
-        self.anova_table = mqr.anova.summary(grr.regression_result, typ)
+        self.anova_table = mqr.anova.summary(
+            grr.regression_result,
+            typ,
+            formatted=False)
         self._varcomp()
         self._calculate_table()
         self._set_discrimination()
@@ -360,7 +362,7 @@ class VarianceTable:
 
         table = pd.DataFrame(
             index=self._table_index(),
-            columns=self._table_columns(self.grr.nsigma),
+            columns=self._table_columns(),
             dtype=np.float64)
         table.iloc[:, 0] = [
             var_o + var_i + var,         # GRR
@@ -393,7 +395,11 @@ class VarianceTable:
     def _repr_html_(self):
         n_cats = int(np.floor(self.num_distinct_cats))
         html = '<div style="display:flex; flex-direction:column; align-items:flex-start;">'
-        html += self.table.style.set_table_styles(self._table_styles(self.grr.include_interaction))._repr_html_()
+        html += (
+            self.table.style
+            .format(formatter='{:.4g}')
+            .set_table_styles(self._table_styles())
+            ._repr_html_())
         html += f'<div><b>Number of distinct categories:</b> {n_cats:d}</div>'
         html += '</div>'
         return html
