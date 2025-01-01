@@ -17,8 +17,9 @@ Tools for presenting results in notebooks.
 
 from base64 import b64encode
 from enum import Enum
+import IPython
 from IPython.core.pylabtools import print_figure
-from IPython.display import HTML
+from IPython.display import display, HTML
 import markdown
 from matplotlib._pylab_helpers import Gcf
 
@@ -150,6 +151,7 @@ def vstack(*args, margin='5px 10px 5px 10px',
     return HTML(raw_html)
 
 def _to_html(arg, margin):
+    fmt = IPython.get_ipython().display_formatter.formatters['text/html']
     def div(elem):
         return f'<div style="margin:{margin};">' + elem + '</div>'
 
@@ -158,12 +160,23 @@ def _to_html(arg, margin):
             return f'<div style="border-top:solid 1px #AAAAAA;margin:5px;align-self:stretch;"></div>'
         elif arg is Line.VERTICAL:
             return f'<div style="border-left:solid 1px #AAAAAA;margin:5px;align-self:stretch;"></div>'
-    elif type(arg) is str:
+
+    if type(arg) is str:
         return div(markdown.markdown(arg, extensions=['tables']))
-    elif hasattr(arg, '_repr_html_'):
-        return div(arg._repr_html_())
-    elif hasattr(arg, '__repr__'):
-        raw = '<pre>' + repr(arg) + '</pre>'
-        return div(raw)
+
+    if fmt is not None:
+        result = fmt(arg)
+        if result is None:
+            result = '<pre>' + repr(arg) + '</pre>'
+        return div(result)
+
+    if (fmt is None) or (result is None):
+        if hasattr(arg, '_repr_html_'):
+            return div(arg._repr_html_())
+        elif hasattr(arg, '__repr__'):
+            raw = '<pre>' + repr(arg) + '</pre>'
+            return div(raw)
+        else:
+            return div(str(arg))
     else:
-        return div(str(arg))
+        return result

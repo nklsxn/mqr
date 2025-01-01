@@ -20,7 +20,7 @@ def test_summary():
     mod = ols('z ~ x + y', data)
     res = mod.fit()
 
-    summary = mqr.anova.summary(res)
+    summary = mqr.anova.summary(res, formatted=False)
 
     assert (
         summary.loc['Total', 'df'] ==
@@ -52,7 +52,7 @@ def test_groups():
     mod = ols('x ~ C(a) + C(b)', data)
     res = mod.fit()
 
-    groups = mqr.anova.groups(res, value='x', factor='a', conf=0.99)
+    groups = mqr.anova.groups(res, value='x', factor='a', conf=0.99, formatted=False)
     assert np.all(np.isclose(
         (groups['upper'] - groups['lower']) / 2,
         scipy.stats.t(18).ppf(0.995) * np.std(xs, ddof=2) / np.sqrt(10)))
@@ -64,7 +64,7 @@ def test_interactions():
         'c': [0, 1, 0, 1, 0, 1, 0, 1],
         'z': [1.0, 1.2, 1.4, 1.8, 0.75, 0.85, 1.0, 1.6],
     })
-    intn = mqr.anova.interactions(data, value='z', between=['a', 'b'])
+    intn = mqr.anova.interactions(data, value='z', between=['a', 'b'], formatted=False)
 
     assert list(intn.values.flatten()) == [1.1, 1.6, 0.8, 1.3]
 
@@ -83,7 +83,7 @@ def test_adequacy():
     res = mod.fit()
     res = mod.fit()
 
-    adeq = mqr.anova.adequacy(res)
+    adeq = mqr.anova.adequacy(res, formatted=False)
     adeq.loc['', 'R-sq'] == pytest.approx(res.rsquared)
     adeq.loc['', 'R-sq (adj)'] == pytest.approx(res.rsquared_adj)
     adeq.loc['', 'F'] == pytest.approx(res.fvalue)

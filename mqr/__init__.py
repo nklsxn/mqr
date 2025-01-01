@@ -15,3 +15,6 @@ import mqr.transforms
 def sample_data(name):
     import importlib
     return importlib.resources.files('mqr.data')/name
+
+# Notebook formatters
+import mqr.notebook
