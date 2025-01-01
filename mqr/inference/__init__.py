@@ -5,6 +5,12 @@ Basic statistical inference (:mod:`mqr.inference`)
 
 .. :currentmodule:`mqr.inference`
 
+User guide
+    :doc:`/user_guide/inference`
+
+Detailed examples
+    https://github.com/nklsxn/mqrpy-guide
+
 This package contains wrappers and functions for basic inference on statistics
 calculated from samples of data. Many routines call either :mod:`scipy` or
 :mod:`statsmodels` (see function docs).

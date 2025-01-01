@@ -5,6 +5,12 @@ Analysis of Variance (:mod:`mqr.anova`)
 
 .. :currentmodule:: mqr.anova
 
+User guide
+    :doc:`/user_guide/regression-anova`
+
+Detailed examples
+    https://github.com/nklsxn/mqrpy-guide
+
 Tools for interpreting ANOVA results.
 
 .. rubric:: Functions

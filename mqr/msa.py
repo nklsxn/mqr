@@ -5,6 +5,12 @@ Measurement system analysis (:mod:`mqr.msa`)
 
 .. currentmodule:: mqr.msa
 
+User guide
+    :doc:`/user_guide/measurement-system-analysis`
+
+Detailed examples
+    https://github.com/nklsxn/mqrpy-guide
+
 Construction and presentation of gauge repeatability and reproducibility study.
 
 .. rubric:: Construction

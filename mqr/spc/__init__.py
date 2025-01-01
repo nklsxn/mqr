@@ -5,6 +5,13 @@ Statistical Process Control (:mod:`mqr.spc`)
 
 .. :currentmodule: mqr.spc
 
+User guide
+    :doc:`/user_guide/statistical-process-control`
+
+Detailed examples
+    https://github.com/nklsxn/mqrpy-guide
+
+
 This module provides classes for statistical process control. It is designed for
 use with :mod:`mqr.plot.spc`, which provides plotting routines for the types
 defined in this module. The module can also be used independently of control

@@ -5,7 +5,11 @@ SPC alarm rules (:mod:`mqr.spc.rules`)
 
 .. currentmodule:: mqr.spc.rules
 
-Control rules.
+User guide
+    :doc:`/user_guide/statistical-process-control`
+
+Detailed examples
+    https://github.com/nklsxn/mqrpy-guide
 
 .. rubric:: Functions
 

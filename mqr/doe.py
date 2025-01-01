@@ -5,6 +5,12 @@ Design of Experiments (:mod:`mqr.doe`)
 
 .. currentmodule:: mqr.doe
 
+User guide
+    :doc:`/user_guide/design-of-experiments`
+
+Detailed examples
+    https://github.com/nklsxn/mqrpy-guide
+
 .. rubric:: Classes
 .. autosummary::
     :toctree: generated/
