@@ -3,6 +3,12 @@
 Data transforms (:mod:`mqr.transforms`)
 =======================================
 
+User guide
+    :doc:`/user_guide/data-analysis`
+
+Detailed examples
+    https://github.com/nklsxn/mqrpy-guide
+
 .. rubric:: Functions
 
 .. autosummary::
