@@ -9,60 +9,35 @@ Process and capability (:mod:`mqr.plot.process`)
 .. autosummary::
     :toctree: generated/
 
-    capability
+    summary
     pdf
     tolerance
-
-Examples
---------
-Since `pdf` and `tolerance` are elements used to show `capability`, this example
-just shows the final capability. Capability is constructed from a
-:class:`mqr.process.Process` object.
-
-.. plot::
-
-    fig, ax = plt.subplots(figsize=(7, 3))
-
-    # Raw data
-    data = pd.read_csv(mqr.sample_data('study-random-5x5.csv'))
-
-    # Prepare data
-    study = mqr.summary.Study(data, measurements=['KPO1'])
-    specs = {
-        'KPO1': mqr.process.Specification(160, 150, 170),
-    }
-    process = mqr.process.Process(study, specs)
-
-    # Plot capability
-    mqr.plot.process.capability(process, 'KPO1', ax)
-
+    capability
 """
 
 import mqr
-from mqr.process import Specification, Capability, Process
-from mqr.summary import Sample
+from mqr.process import Sample, Specification, Capability, Summary
 from mqr.plot.defaults import Defaults
 from mqr.plot.lib.util import set_kws
 
+from matplotlib import pyplot as plt
 import matplotlib.transforms as transforms
 import numpy as np
 import scipy.stats as st
 import seaborn as sns
 
-def pdf(sample: Sample, spec: Specification, capability: Capability, ax,
+def pdf(sample: Sample, ax,
         nsigma=None, cp=None, bins='auto', show_long_term=False,
         short_kws=None, long_kws=None):
     """
-    Plots a Gaussian PDF of the given data.
+    Plots a Gaussian PDF for the given sample.
+
+    The PDF is truncated at six sigmas on each side.
 
     Parameters
     ----------
-    sample : mqr.summary.Sample
+    sample : mqr.process.Sample
         Sample to plot.
-    spec : mqr.process.Specification
-        Specification for the process sample.
-    capability : mqr.process.Capability
-        Capability of the process.
     ax : matplotlib.axes.Axes
         Axes for the plot.
     nsigma : float, optional
@@ -81,6 +56,10 @@ def pdf(sample: Sample, spec: Specification, capability: Capability, ax,
     long_kws : dict, optional
         Keyword arguments passed to `matplotlib.pyplot.fill_between` for
         long-term densities.
+
+    Examples
+    --------
+    See example in :mod:`mqr.plot.process`.
     """
     if (nsigma is not None) and (cp is not None):
         raise ValueError(f'Only one of `nsigma` or `cp` can be specified.')
@@ -113,7 +92,7 @@ def pdf(sample: Sample, spec: Specification, capability: Capability, ax,
 
     line_kws = {k:v for k, v in short_kws.items() if k != 'marker'}
     ax.plot(xs, ys, **line_kws, label='Fitted density')
-    ax.plot(xs[0], ys[0], **short_kws, label=f'$\\pm {nsigma/2} \\sigma$')
+    ax.plot(xs[0], ys[0], **short_kws, label=f'$\\pm {nsigma:.2f} \\sigma$; $c_p={nsigma/3:.2f}$')
     ax.plot(xs[-1], ys[-1], **short_kws)
 
     if show_long_term:
@@ -126,10 +105,8 @@ def pdf(sample: Sample, spec: Specification, capability: Capability, ax,
         ax.fill_between(xs, ys_l, **fill_kws, label='Long-term densities')
         ax.fill_between(xs, ys_r, **fill_kws)
 
-    ax.set_xlabel(f'{sample.name} (cp={capability.cp:#.3g}, cpk={capability.cpk:#.3g})')
-
-def tolerance(spec: Specification, ax, prec=3,
-              line_kws=None, tol_kws=None):
+def tolerance(spec: Specification, ax,
+              prec=3, line_kws=None, tol_kws=None):
     """
     Plots tolerance region.
 
@@ -147,6 +124,10 @@ def tolerance(spec: Specification, ax, prec=3,
     tol_kws : dict, optional
         Keyword arguments for the shading over the tolerance region. Passed
         to `matplotlib.pyplot.axvspan`.
+
+    Examples
+    --------
+    See example in :mod:`mqr.plot.process`.
     """
     line_kws = set_kws(
         line_kws,
@@ -169,17 +150,17 @@ def tolerance(spec: Specification, ax, prec=3,
     sec.tick_params(axis='x', which='major', direction='out',
                     top=True, labeltop=True, bottom=False, labelbottom=False)
 
-def capability(process: Process, name: str, ax, nsigma=None, cp=None, show_long_term=False):
+def capability(summary: Summary, name: str, ax, nsigma=None, cp=None, show_long_term=False):
     """
     Plots all three of the process histogram, fitted normal distribution, and
-    tolerance region for the sample called `name` in `process`.
+    tolerance region for the sample called `name` in `summary`.
 
     Parameters
     ----------
-    process : mqr.process.Process
-        Process to plot.
+    summary : mqr.process.Summary
+        Summary containing sample with `name`.
     name : str
-        Name of the process.
+        Name of process whose capability will be shown.
     ax : matplotlib.axes.Axes
         Axes for the plot.
     nsigma : float, optional
@@ -194,9 +175,12 @@ def capability(process: Process, name: str, ax, nsigma=None, cp=None, show_long_
     --------
     See example in :mod:`mqr.plot.process`.
     """
-    sample = process.study[name]
-    specification = process.specifications[name]
-    capability = process.capabilities[name]
+    if name not in summary.capabilities:
+        raise ValueError(f'Summary has no specification/capability defined for {name}.')
+
+    sample = summary[name]
+    capability = summary.capabilities[name]
+    specification = capability.spec
 
     sns.histplot(
         sample.data,
@@ -207,8 +191,6 @@ def capability(process: Process, name: str, ax, nsigma=None, cp=None, show_long_
         label='Sample histogram')
     tolerance(specification, ax=ax)
     pdf(sample=sample,
-        spec=specification,
-        capability=capability,
         show_long_term=show_long_term,
         nsigma=nsigma,
         cp=cp,
@@ -221,3 +203,54 @@ def capability(process: Process, name: str, ax, nsigma=None, cp=None, show_long_
         f'cpk={capability.cpk:#.3g}'
         ')')
     ax.set_ylabel('count')
+
+def summary(sample: Sample, ax, hyp_mean=None,
+            hist_kws=None, box_kws=None, conf_kws=None):
+    '''
+    Histogram, boxplot and confidence interval for a sample.
+
+    Best plotted on axes arranged vertically.
+
+    Parameters
+    ----------
+    sample : mqr.process.Sample
+        Sample to use for all three plots.
+    ax : matplotlib.axes.Axes
+        Axes for plot.
+    hyp_mean: float, optional
+        Hypothesised mean to plot on a confidence interval.
+
+    Examples
+    --------
+    See example in :mod:`mqr.plot.process`.
+    '''
+    hist_kws = set_kws(
+        hist_kws,
+        color='C0',
+    )
+    box_kws = set_kws(
+        box_kws,
+        orient='h',
+        color='C0',
+    )
+    conf_kws = set_kws(
+        conf_kws,
+    )
+
+    ax = ax.flatten()
+    if ax.shape != (3,):
+        raise ValueError(f'Axes shape must be (3,) but is {ax.shape}.')
+
+    sns.histplot(sample.data, ax=ax[0], **hist_kws)
+    sns.boxplot(sample.data, ax=ax[1], **box_kws)
+    mqr.plot.confint(sample.conf_mean, ax=ax[2], hyp_value=hyp_mean, **conf_kws)
+
+    ax[1].sharex(ax[0])
+    ax[2].sharex(ax[0])
+    plt.setp(ax[0].get_xticklabels(), visible=False)
+    plt.setp(ax[1].get_xticklabels(), visible=False)
+    ax[1].tick_params(axis='y', left=False)
+    ax[2].set_title('')
+    ax[0].set_xlabel('')
+    ax[1].set_xlabel('')
+    ax[2].set_xlabel(sample.name)

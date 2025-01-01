@@ -12,7 +12,6 @@ Plots (:mod:`mqr.plot`)
     Figure
     confint
     ishikawa
-    summary
 
 .. rubric:: Modules
 .. autosummary::
@@ -46,7 +45,6 @@ from mqr.plot.figure import Figure
 
 from mqr.plot.confint import confint
 from mqr.plot.ishikawa import ishikawa
-from mqr.plot.summary import summary
 from mqr.plot.lib.util import grouped_df
 
 import mqr.plot.anova as anova
