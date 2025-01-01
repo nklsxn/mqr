@@ -185,7 +185,7 @@ def interactions(data, response, group, factors, *, axs, line_kws=None, mean_kws
 
 def model_means(result, response, factors, axs, ci_kws=None):
     """
-    Plot the means of factor levels in an ANOVA result.
+    Plot the means of each combination of factor levels in an ANOVA result.
 
     Parameters
     ----------
@@ -230,6 +230,6 @@ def model_means(result, response, factors, axs, ci_kws=None):
         raise ValueError('Length of `axs` must equal length of `factors`.')
 
     for ax, factor in zip(axs, factors):
-        df_grp = mqr.anova.groups(result, value=response, factor=factor)
+        df_grp = mqr.anova.groups(result, value=response, factor=factor, formatted=False)
         mqr.plot.anova.groups(df_grp, ax, ci_kws)
         ax.set_xlabel(factor)

@@ -171,7 +171,11 @@ def line_part_operator_intn(grr, ax, line_kws=None):
     name_o = grr.names.operator
     name_m = grr.names.measurement
 
-    intn = mqr.anova.interactions(grr.data, value=name_m, between=[name_p, name_o])
+    intn = mqr.anova.interactions(
+        grr.data,
+        value=name_m,
+        between=[name_p, name_o],
+        formatted=False)
 
     ax.plot(intn, **line_kws)
     ax.set_xticks(intn.index)

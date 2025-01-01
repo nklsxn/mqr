@@ -37,7 +37,7 @@ import warnings
 ## Tools
 ################################################################################
 
-def summary(result, typ=2):
+def summary(result, typ=2, formatted=True):
     '''
     The ANOVA table for a regression.
 
@@ -48,19 +48,34 @@ def summary(result, typ=2):
     typ : {1, 2, 3, 'I', 'II', 'III'}, optional
         The ANOVA analysis type. Passed to :func:`anova_lm(..., typ=typ) 
         <statsmodels.stats.anova.anova_lm>`.
+    formatted : bool, optional
+        When True, returns a formatted DataFrame. Set this to False to access
+        the calculated values.
 
     Returns
     -------
-    pandas.DataFrame
-        The ANOVA table for the regression.
+    pandas.DataFrame or pandas.io.formats.style.Styler
+        The ANOVA table for the regression. A DataFrame when `formatted` is False
+        and a `Styler` when True.
     '''
     table = sm.stats.anova_lm(result, typ=typ)
     table.loc['Total'] = table.sum(axis=0, skipna=False)
     table['mean_sq'] = table['sum_sq'] / table['df']
     table = table[['df', 'sum_sq', 'mean_sq', 'F', 'PR(>F)']]
-    return table
 
-def coeffs(result, conf=0.95):
+    if formatted:
+        format_map = {
+            'df': '{:.0f}',
+            'sum_sq': '{:,.4g}',
+            'mean_sq': '{:.4g}',
+            'F': '{:.2f}',
+            'PR(>F)': '{:.3f}',
+        }
+        return table.style.format(format_map)
+    else:
+        return table
+
+def coeffs(result, conf=0.95, formatted=True):
     """
     The coefficients from regression and their confidence intervals.
 
@@ -70,11 +85,15 @@ def coeffs(result, conf=0.95):
         Result of calling `fit` on a statsmodels linear regression model.
     conf: float, optional
         Confidence level used to form an interval (decimal).
+    formatted : bool, optional
+        When True, returns a formatted DataFrame. Set this to False to access
+        the calculated values.
 
     Returns
     -------
-    pandas.DataFrame
-        Coefficients indexed by name from the model.
+    pandas.DataFrame or pandas.io.formats.style.Styler
+        Coefficients indexed by name from the model. A DataFrame when `formatted`
+        is True, a Styler otherwise.
     """
     alpha = 1 - conf
     values = pd.concat(
@@ -88,9 +107,21 @@ def coeffs(result, conf=0.95):
         values['VIF'] = np.nan
         for i in np.arange(exog.shape[1]):
             values.iloc[i, -1] = variance_inflation_factor(exog, i)
-    return values
 
-def groups(result, *, value: str, factor: str, conf=0.95):
+    if formatted:
+        format_map = {
+            'Coeff': '{:.4g}',
+            'lower': '{:,.4g}',
+            'upper': '{:.4g}',
+            't': '{:.2f}',
+            'PR(>|t|)': '{:.3f}',
+            'VIF': '{:.3g}',
+        }
+        return values.style.format(format_map)
+    else:
+        return values
+
+def groups(result, *, value: str, factor: str, conf=0.95, formatted=True):
     """
     The `value` column from a dataframe averaged over `factor`, and annotated
     with confidence intervals per level.
@@ -107,11 +138,15 @@ def groups(result, *, value: str, factor: str, conf=0.95):
         Name of the column (categorical) to group by.
     conf : float, optional
         The confidence level used to form an interval (decimal).
+    formatted : bool, optional
+        When True, returns a formatted DataFrame. Set this to False to access
+        the calculated values.
 
     Returns
     -------
-    pandas.DataFrame
-        Average values per group with confidence intervals.
+    pandas.DataFrame or pandas.io.formats.style.Styler
+        Average values per group with confidence intervals. A DataFrame when
+        `formatted` is True, a Styler otherwise.
 
     References
     ----------
@@ -128,9 +163,19 @@ def groups(result, *, value: str, factor: str, conf=0.95):
     cis = _groups_ci(result, value, factor, conf)
     groups.loc[:, ['lower', 'upper']] = cis
     groups = groups.reindex(df.loc[:, factor].unique())
-    return groups
 
-def interactions(df: pd.DataFrame, *, value: str, between: list[str]):
+    if formatted:
+        format_map = {
+            'count': '{:.0f}',
+            'mean': '{:,.4g}',
+            'lower': '{:.4g}',
+            'upper': '{:.4g}',
+        }
+        return groups.style.format(format_map)
+    else:
+        return groups
+
+def interactions(df: pd.DataFrame, *, value: str, between: list[str], formatted=True):
     """
     Interaction table.
 
@@ -142,19 +187,28 @@ def interactions(df: pd.DataFrame, *, value: str, between: list[str]):
         Name of the column of measurements.
     between : list[str]
         List of columns to group over before averaging.
+    formatted : bool, optional
+        When True, returns a formatted DataFrame. Set this to False to access
+        the calculated values.
 
     Returns
     -------
-    pandas.DataFrame
-        Average values per pair of columns in between.
+    pandas.DataFrame or pandas.io.formats.style.Styler
+        Average values per pair of columns in between. A DataFrame when `formatted`
+        is True, a Styler otherwise.
     """
-    return df.groupby([*between])[value].mean().unstack()
+    result = df.groupby([*between])[value].mean().unstack()
+
+    if formatted:
+        return result.style.format(precision=4)
+    else:
+        return result
 
 ################################################################################
 ## Residual analysis
 ################################################################################
 
-def adequacy(result):
+def adequacy(result, formatted=True):
     """
     Table of statistics from a fitted OLS regression (see Returns).
 
@@ -162,11 +216,15 @@ def adequacy(result):
     ----------
     result : statsmodels.regression.linear_model.RegressionResults
         The result of calling `fit` on a statsmodels linear regression model.
+    formatted : bool, optional
+        When True, returns a formatted DataFrame. Set this to False to access
+        the calculated values.
 
     Returns
     -------
-    pandas.DataFrame
-        A list of statistics from the regression with columns:
+    pandas.DataFrame or pandas.io.formats.style.Styler
+        A DataFrame when `formatted` is True, a Styler otherwise. A list of
+        statistics from the regression with columns:
 
         S
             square-root of the mean-squared error
@@ -195,9 +253,24 @@ def adequacy(result):
         'BIC': result.bic,
         'N': int(result.nobs),
     }
-    return pd.DataFrame(
+    df = pd.DataFrame(
         data,
         index=[''])
+
+    if formatted:
+        format_map = {
+            'S': '{:.4g}',
+            'R-sq': '{:.4g}',
+            'R-sq (adj)': '{:.4g}',
+            'F': '{:.2f}',
+            'PR(>F)': '{:.3f}',
+            'AIC': '{:.4g}',
+            'BIC': '{:.4g}',
+            'N': '{:.0f}',
+        }
+        return df.style.format(format_map)
+    else:
+        return df
 
 ################################################################################
 ## Confidence intervals
