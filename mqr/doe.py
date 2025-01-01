@@ -5,33 +5,6 @@ Design of Experiments (:mod:`mqr.doe`)
 
 .. currentmodule:: mqr.doe
 
-Tools for constructing experiments. The routines here are designed to easily
-compose standard experimental designs into more complex designs. The
-construction routines call through to pyDOE3 for convenience, though you can
-construct custom designs and also call that library directly and pass its
-results. If you only need the results of pyDOE3, call it directly. See
-[](pydoe3.readthedocs.io).
-
-See `from_fullfact`, `from_fracfact`, `from_ccdesign`, `from_centrepoints` and
-to construct standard components from pyDOE3. Function `from_axial` constructs
-axial points. Use `from_levels` to construct others (or the ones above
-directly), for example to construct a Box-Behnken design (with edge points):
->>> bbdesign = Design.from_levels(['a', 'b', 'c'], pyDOE3.bbdesign(3, 2))
-
-The principle of this library is that many standard designs can be built from
-simple elements. For example, a central composite design is the composition of
-fractional factorial design, centrepoints and axial points. Concatenate runs
-with the `+` operator to a central composite design, in two blocks, like this:
-
->>> names = ['x1', 'x2', 'x3', 'x4']
->>> generator = 'a b c abc'
->>> centre_pts = 3
->>> frac_fact = Design.from_fracfact(names, generator)
->>> frac_cpts = Design.from_centrepoints(names, centre_pts)
->>> axial = Design.from_axial(names)
->>> axial_cpts = Design.from_centrepoints(names, centre_pts)
->>> design = (frac_fact + frac_cpts) + (axial + axial_cpts).as_block(2)
-
 .. rubric:: Classes
 .. autosummary::
     :toctree: generated/
@@ -53,10 +26,10 @@ class Design:
     """
     An experimental design.
 
-    Designs should normally be constructed using the from_* methods (see
-    examples), which wrap calls to the pyDOE3 library. Designs can also be
-    constructed manually, either from pyDOE3 or any other method, including
-    directly from numpy arrays. See examples below.
+    Designs should normally be constructed using the from_* methods, which wrap
+    calls to the pyDOE3 library. Designs can also be constructed manually,
+    either from pyDOE3 or any other method, including directly from numpy arrays.
+    See :doc:`/user_guide/design-of-experiments`.
 
     Designs are composable by concatenation with the `+` operator.
 
@@ -171,6 +144,10 @@ class Design:
     def to_df(self):
         """
         Construct a dataframe representation of the design.
+
+        The resulting DataFrame is indexed with runs, has a column for point types
+        if they have been defined, has columns for blocks if they are defined,
+        and then columns for the inputs levels corresponding to each run/row.
 
         Returns
         -------
@@ -565,6 +542,8 @@ class Transform:
         """
         Construct an affine transform.
 
+        See :doc:`/user_guide/design-of-experiments` for examples.
+
         Parameters
         ----------
         map : dict[float, float]
@@ -594,6 +573,7 @@ class Affine(Transform):
     An Affine transform for transforming the levels in a Design.
 
     The scale is applied first, then the translation.
+    See :doc:`/user_guide/design-of-experiments` for examples.
 
     Attributes
     ----------
