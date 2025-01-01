@@ -12,7 +12,7 @@ authors = [
 maintainers = [
     { name = "mqr developers", email="mqr.python@gmail.com" },
 ]
-description = "Manufacturing quality improvement toolkit"
+description = "Design and manufacturing quality improvement toolkit"
 readme = "README.md"
 requires-python = ">=3.11"
 classifiers = [
@@ -39,6 +39,10 @@ dependencies = [
     "seaborn==0.13.2",
     "statsmodels==0.14.1",
 ]
+
+[project.urls]
+Documentation = "https://nklsxn.github.io/mqr/latest/"
+Repository = "https://github.com/nklsxn/mqr"
 
 [tool.setuptools.packages]
 find = {}
