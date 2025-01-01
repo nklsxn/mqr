@@ -19,7 +19,7 @@ def grouped_df(data, ax,
     line_kws : dict
         Keyword args for lines, passed to :func:`matplotlib..plot <matplotlib.pyplot.plot>`.
     text_kws : dict
-        Keyword args for text, passed to :func:`matplotlib..text <matplitlib.pyplot.text>`.
+        Keyword args for text, passed to :func:`matplotlib..text <matplotlib.pyplot.text>`.
     """
     line_kws = set_kws(
         line_kws,
