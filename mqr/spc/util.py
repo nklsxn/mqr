@@ -5,8 +5,6 @@ SPC utilities (:mod:`mqr.spc.util`)
 
 .. currentmodule: mqr.spc.util
 
-SPC utiliy functions.
-
 .. rubric:: Functions
 
 .. autosummary::
@@ -151,7 +149,7 @@ def d3(n):
 
 def c4_fn(n):
     """
-    Direct calculation of the c4 unbiasing constant from from gamma function.
+    Direct calculation of the c4 unbiasing constant from the gamma function.
 
     Evaluates:
 

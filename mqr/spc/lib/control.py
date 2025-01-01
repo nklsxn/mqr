@@ -372,7 +372,7 @@ class RParams(ShewhartParams):
     """
     centre: float = field(repr=True)
     sigma: float = field(repr=True)
-    nsigma: float = field(repr=False)
+    nsigma: float = field(repr=False, default=3)
 
     name: str = field(default='R', repr=False)
 

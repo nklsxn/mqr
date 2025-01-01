@@ -80,7 +80,7 @@ def combine(combn_fn, *rules):
     1. The data first violates the UCL of 3, with an average observation 3.5.
     2. The data then violates the 3/4 outside 2sigma limit, with the four sample
        averages 2.5, 1, 2.5, 2.5 (three of which are bigger than 2).
-       The last of these three observations is labelled as violating the limit.
+       The last of these four observations is labelled as violating the limit.
 
     .. plot::
 
