@@ -1,0 +1,11 @@
+.. raw:: html
+
+   <div class="prename">mqr.inference.stddev.</div>
+   <div class="empty"></div>
+
+size_1sample
+=================================
+
+.. currentmodule:: mqr.inference.stddev
+
+.. autofunction:: size_1sample

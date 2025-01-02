@@ -11,5 +11,6 @@ data = pd.read_csv(
     names=columns,
     sep='\\s+',
     dtype=dtype,
+    storage_options={'user-agent': 'github:nklsxn/mqr'}
 )
 data['REPEAT'] = np.repeat([1,2,3,4,5,6,7,8,9,10,11,12], 25)

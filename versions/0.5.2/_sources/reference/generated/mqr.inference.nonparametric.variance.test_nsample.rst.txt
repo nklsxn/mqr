@@ -1,0 +1,11 @@
+.. raw:: html
+
+   <div class="prename">mqr.inference.nonparametric.variance.</div>
+   <div class="empty"></div>
+
+test_nsample
+=================================================
+
+.. currentmodule:: mqr.inference.nonparametric.variance
+
+.. autofunction:: test_nsample

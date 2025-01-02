@@ -1,0 +1,11 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.anova.</div>
+   <div class="empty"></div>
+
+groups
+================
+
+.. currentmodule:: mqr.anova
+
+.. autofunction:: groups

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Efficieny of estimates of process standard deviation &#8212; mqr 0.5.2 documentation</title>
+    <title>Efficieny of estimates of process standard deviation &#8212; mqr 0.5.3 documentation</title>
   
   
   
@@ -32,6 +32,9 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/_static/mqr.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mqr.css?v=394250bc" />
   
   <!-- So that users can add custom icons -->
   <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
@@ -41,14 +44,14 @@
 
     <script src="../_static/jquery.js?v=5d32c60e"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../_static/documentation_options.js?v=8e576371"></script>
+    <script src="../_static/documentation_options.js?v=2a2fe768"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notes/stddev-efficiency';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/nklsxn/mqr/refs/heads/master/docs/switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.2';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.3';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -57,7 +60,7 @@
     <link rel="prev" title="Notes" href="notes.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.5.2" />
+  <meta name="docsearch:version" content="0.5.3" />
   </head>
   
   
@@ -133,6 +136,20 @@
 <nav>
   <ul class="bd-navbar-elements navbar-nav">
     
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting-started.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user-guide.html">
+    User Guide
+  </a>
+</li>
+
+
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../api-ref.html">
     API Reference
@@ -236,6 +253,20 @@
 <nav>
   <ul class="bd-navbar-elements navbar-nav">
     
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting-started.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user-guide.html">
+    User Guide
+  </a>
+</li>
+
+
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../api-ref.html">
     API Reference
@@ -381,23 +412,27 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="efficieny-of-estimates-of-process-standard-deviation">
+  <section class="tex2jax_ignore mathjax_ignore" id="efficieny-of-estimates-of-process-standard-deviation">
 <h1>Efficieny of estimates of process standard deviation<a class="headerlink" href="#efficieny-of-estimates-of-process-standard-deviation" title="Link to this heading">#</a></h1>
 <p>Both R-charts and XBar-charts based on range use sample range to estimate process
 standard deviation. Estimates of process standard deviation from sample range are
 less efficient than estimates from sample standard deviation when sample size is
 greater tha two, and those estimates are equal in efficiency when sample size is
-exactly two (see <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>). Therefore, routines using sample standard deviation are
-usually preferable.</p>
+exactly two (see <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>). Therefore, routines using sample standard deviation might
+be preferable.</p>
 <p>The routines using sample range were written for teaching/learning, for times
-when the simplicity of working with ranges is more important than the loss in
-efficiency, and when trying to reproduce older range-based calculations.</p>
+when interpretation of range is easier than standard deviation, when the
+simplicity of working with ranges is more important than the loss in efficiency
+(ie. when drawing charts by hand), and when trying to reproduce older range-based
+calculations.</p>
 <section id="related-classes">
 <h2>Related classes<a class="headerlink" href="#related-classes" title="Link to this heading">#</a></h2>
-<p><a class="reference internal" href="../reference/generated/mqr.spc.XBarParams.html#mqr.spc.XBarParams" title="mqr.spc.XBarParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">mqr.spc.XBarParams</span></code></a>, <a class="reference internal" href="../reference/generated/mqr.spc.RParams.html#mqr.spc.RParams" title="mqr.spc.RParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">mqr.spc.RParams</span></code></a>, <a class="reference internal" href="../reference/generated/mqr.spc.SParams.html#mqr.spc.SParams" title="mqr.spc.SParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">mqr.spc.SParams</span></code></a>.</p>
+<p><a class="reference internal" href="../reference/generated/mqr.spc.XBarParams.html#mqr.spc.XBarParams" title="mqr.spc.XBarParams"><code class="xref myst py py-class docutils literal notranslate"><span class="pre">mqr.spc.XBarParams</span></code></a>, <a class="reference internal" href="../reference/generated/mqr.spc.RParams.html#mqr.spc.RParams" title="mqr.spc.RParams"><code class="xref myst py py-class docutils literal notranslate"><span class="pre">mqr.spc.RParams</span></code></a>, <a class="reference internal" href="../reference/generated/mqr.spc.SParams.html#mqr.spc.SParams" title="mqr.spc.SParams"><code class="xref myst py py-class docutils literal notranslate"><span class="pre">mqr.spc.SParams</span></code></a>.</p>
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+</section>
+</section>
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="id2" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
@@ -406,8 +441,6 @@ Estimating the standard deviation in quality-control applications.
 Journal of Quality Technology, 42(4), 348-357.</p>
 </aside>
 </aside>
-</section>
-</section>
 
 
                 </article>

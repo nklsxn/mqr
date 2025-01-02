@@ -1,0 +1,11 @@
+.. raw:: html
+
+   <div class="prename">mqr.inference.nonparametric.correlation.</div>
+   <div class="empty"></div>
+
+test
+============================================
+
+.. currentmodule:: mqr.inference.nonparametric.correlation
+
+.. autofunction:: test

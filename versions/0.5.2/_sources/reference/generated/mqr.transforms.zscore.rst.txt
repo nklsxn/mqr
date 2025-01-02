@@ -1,0 +1,11 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.transforms.</div>
+   <div class="empty"></div>
+
+zscore
+=====================
+
+.. currentmodule:: mqr.transforms
+
+.. autofunction:: zscore

@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.spc.ControlStatistic.</div>
+   <div class="empty"></div>
+
+mqr.spc.ControlStatistic.stat
+=============================
+
+.. currentmodule:: mqr.spc
+
+.. autoattribute:: ControlStatistic.stat

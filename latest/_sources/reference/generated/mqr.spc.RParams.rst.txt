@@ -36,8 +36,8 @@ RParams
          :toctree:
       
          RParams.name
+         RParams.nsigma
          RParams.centre
          RParams.sigma
-         RParams.nsigma
   
   

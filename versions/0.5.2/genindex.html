@@ -1,0 +1,1622 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Index &#8212; mqr 0.5.2 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/jquery.js?v=5d32c60e"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="_static/documentation_options.js?v=8e576371"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'genindex';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/nklsxn/mqr/refs/heads/master/docs/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.2';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.5.2" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">MQR</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api-ref.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="notes/notes.html">
+    Notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/nklsxn/mqr" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api-ref.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="notes/notes.html">
+    Notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/nklsxn/mqr" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none"></div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#_"><strong>_</strong></a>
+ | <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#K"><strong>K</strong></a>
+ | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#Q"><strong>Q</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
+ | <a href="#V"><strong>V</strong></a>
+ | <a href="#X"><strong>X</strong></a>
+ | <a href="#Z"><strong>Z</strong></a>
+ 
+</div>
+<h2 id="_">_</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.doe.Affine.__call__.html#mqr.doe.Affine.__call__">__call__() (mqr.doe.Affine method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.summary.Study.__getitem__.html#mqr.summary.Study.__getitem__">__getitem__() (mqr.summary.Study method)</a>
+</li>
+      <li><a href="reference/generated/mqr.doe.Design.__len__.html#mqr.doe.Design.__len__">__len__() (mqr.doe.Design method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.summary.Sample.ad_pvalue.html#mqr.summary.Sample.ad_pvalue">ad_pvalue (mqr.summary.Sample attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.summary.Sample.ad_stat.html#mqr.summary.Sample.ad_stat">ad_stat (mqr.summary.Sample attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.anova.adequacy.html#mqr.anova.adequacy">adequacy() (in module mqr.anova)</a>
+</li>
+      <li><a href="reference/generated/mqr.doe.Affine.html#mqr.doe.Affine">Affine (class in mqr.doe)</a>
+</li>
+      <li><a href="reference/generated/mqr.spc.util.alarm_subsets.html#mqr.spc.util.alarm_subsets">alarm_subsets() (in module mqr.spc.util)</a>
+</li>
+      <li><a href="reference/plot/generated/mqr.plot.spc.alarms.html#mqr.plot.spc.alarms">alarms() (in module mqr.plot.spc)</a>
+</li>
+      <li><a href="reference/generated/mqr.inference.power.TestPower.alpha.html#mqr.inference.power.TestPower.alpha">alpha (mqr.inference.power.TestPower attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.inference.hyptest.HypothesisTest.alt.html#mqr.inference.hyptest.HypothesisTest.alt">alt (mqr.inference.hyptest.HypothesisTest attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.inference.hyptest.HypothesisTest.alternative.html#mqr.inference.hyptest.HypothesisTest.alternative">alternative (mqr.inference.hyptest.HypothesisTest attribute)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.inference.power.TestPower.alternative.html#mqr.inference.power.TestPower.alternative">(mqr.inference.power.TestPower attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.msa.VarianceTable.anova_table.html#mqr.msa.VarianceTable.anova_table">anova_table (mqr.msa.VarianceTable attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.spc.rules.aofb_nsigma.html#mqr.spc.rules.aofb_nsigma">aofb_nsigma() (in module mqr.spc.rules)</a>
+</li>
+      <li><a href="reference/generated/mqr.doe.Design.as_block.html#mqr.doe.Design.as_block">as_block() (mqr.doe.Design method)</a>
+</li>
+      <li><a href="reference/generated/mqr.spc.ControlParams.asdict.html#mqr.spc.ControlParams.asdict">asdict() (mqr.spc.ControlParams method)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.spc.EwmaParams.asdict.html#mqr.spc.EwmaParams.asdict">(mqr.spc.EwmaParams method)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.MewmaParams.asdict.html#mqr.spc.MewmaParams.asdict">(mqr.spc.MewmaParams method)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.RParams.asdict.html#mqr.spc.RParams.asdict">(mqr.spc.RParams method)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.ShewhartParams.asdict.html#mqr.spc.ShewhartParams.asdict">(mqr.spc.ShewhartParams method)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.SParams.asdict.html#mqr.spc.SParams.asdict">(mqr.spc.SParams method)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.XBarParams.asdict.html#mqr.spc.XBarParams.asdict">(mqr.spc.XBarParams method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/plot/generated/mqr.plot.msa.bar_var_pct.html#mqr.plot.msa.bar_var_pct">bar_var_pct() (in module mqr.plot.msa)</a>
+</li>
+      <li><a href="reference/generated/mqr.inference.power.TestPower.beta.html#mqr.inference.power.TestPower.beta">beta (mqr.inference.power.TestPower attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.doe.Design.blocks.html#mqr.doe.Design.blocks">blocks (mqr.doe.Design attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.inference.confint.ConfidenceInterval.bounded.html#mqr.inference.confint.ConfidenceInterval.bounded">bounded (mqr.inference.confint.ConfidenceInterval attribute)</a>
+</li>
+      <li><a href="reference/plot/generated/mqr.plot.msa.box_measurement_by_operator.html#mqr.plot.msa.box_measurement_by_operator">box_measurement_by_operator() (in module mqr.plot.msa)</a>
+</li>
+      <li><a href="reference/plot/generated/mqr.plot.msa.box_measurement_by_part.html#mqr.plot.msa.box_measurement_by_part">box_measurement_by_part() (in module mqr.plot.msa)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.spc.util.c4.html#mqr.spc.util.c4">c4() (in module mqr.spc.util)</a>
+</li>
+      <li><a href="reference/generated/mqr.spc.util.c4_fn.html#mqr.spc.util.c4_fn">c4_fn() (in module mqr.spc.util)</a>
+</li>
+      <li><a href="reference/generated/mqr.process.Process.capabilities.html#mqr.process.Process.capabilities">capabilities (mqr.process.Process attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.process.Capability.html#mqr.process.Capability">Capability (class in mqr.process)</a>
+</li>
+      <li><a href="reference/plot/generated/mqr.plot.process.capability.html#mqr.plot.process.capability">capability() (in module mqr.plot.process)</a>
+</li>
+      <li><a href="reference/generated/mqr.spc.RParams.centre.html#mqr.spc.RParams.centre">centre (mqr.spc.RParams attribute)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.spc.SParams.centre.html#mqr.spc.SParams.centre">(mqr.spc.SParams attribute)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.XBarParams.centre.html#mqr.spc.XBarParams.centre">(mqr.spc.XBarParams attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/plot/generated/mqr.plot.spc.chart.html#mqr.plot.spc.chart">chart() (in module mqr.plot.spc)</a>
+</li>
+      <li><a href="reference/generated/mqr.anova.coeffs.html#mqr.anova.coeffs">coeffs() (in module mqr.anova)</a>
+</li>
+      <li><a href="reference/generated/mqr.spc.rules.combine.html#mqr.spc.rules.combine">combine() (in module mqr.spc.rules)</a>
+</li>
+      <li><a href="reference/generated/mqr.inference.confint.ConfidenceInterval.conf.html#mqr.inference.confint.ConfidenceInterval.conf">conf (mqr.inference.confint.ConfidenceInterval attribute)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.summary.Sample.conf.html#mqr.summary.Sample.conf">(mqr.summary.Sample attribute)</a>
+</li>
+        <li><a href="reference/generated/mqr.summary.Study.conf.html#mqr.summary.Study.conf">(mqr.summary.Study attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/generated/mqr.summary.Sample.conf_mean.html#mqr.summary.Sample.conf_mean">conf_mean (mqr.summary.Sample attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.summary.Sample.conf_median.html#mqr.summary.Sample.conf_median">conf_median (mqr.summary.Sample attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.summary.Sample.conf_quartile1.html#mqr.summary.Sample.conf_quartile1">conf_quartile1 (mqr.summary.Sample attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.summary.Sample.conf_quartile3.html#mqr.summary.Sample.conf_quartile3">conf_quartile3 (mqr.summary.Sample attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.summary.Sample.conf_std.html#mqr.summary.Sample.conf_std">conf_std (mqr.summary.Sample attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.summary.Sample.conf_var.html#mqr.summary.Sample.conf_var">conf_var (mqr.summary.Sample attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.inference.confint.ConfidenceInterval.html#mqr.inference.confint.ConfidenceInterval">ConfidenceInterval (class in mqr.inference.confint)</a>
+</li>
+      <li><a href="reference/generated/mqr.inference.correlation.confint.html#mqr.inference.correlation.confint">confint() (in module mqr.inference.correlation)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.plot.confint.html#mqr.plot.confint">(in module mqr.plot)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/generated/mqr.inference.mean.confint_1sample.html#mqr.inference.mean.confint_1sample">confint_1sample() (in module mqr.inference.mean)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.inference.nonparametric.quantile.confint_1sample.html#mqr.inference.nonparametric.quantile.confint_1sample">(in module mqr.inference.nonparametric.quantile)</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.proportion.confint_1sample.html#mqr.inference.proportion.confint_1sample">(in module mqr.inference.proportion)</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.rate.confint_1sample.html#mqr.inference.rate.confint_1sample">(in module mqr.inference.rate)</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.stddev.confint_1sample.html#mqr.inference.stddev.confint_1sample">(in module mqr.inference.stddev)</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.variance.confint_1sample.html#mqr.inference.variance.confint_1sample">(in module mqr.inference.variance)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/generated/mqr.inference.mean.confint_2sample.html#mqr.inference.mean.confint_2sample">confint_2sample() (in module mqr.inference.mean)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.inference.proportion.confint_2sample.html#mqr.inference.proportion.confint_2sample">(in module mqr.inference.proportion)</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.rate.confint_2sample.html#mqr.inference.rate.confint_2sample">(in module mqr.inference.rate)</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.stddev.confint_2sample.html#mqr.inference.stddev.confint_2sample">(in module mqr.inference.stddev)</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.variance.confint_2sample.html#mqr.inference.variance.confint_2sample">(in module mqr.inference.variance)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/generated/mqr.inference.mean.confint_paired.html#mqr.inference.mean.confint_paired">confint_paired() (in module mqr.inference.mean)</a>
+</li>
+      <li><a href="reference/generated/mqr.spc.ControlParams.html#mqr.spc.ControlParams">ControlParams (class in mqr.spc)</a>
+</li>
+      <li><a href="reference/generated/mqr.spc.ControlStatistic.html#mqr.spc.ControlStatistic">ControlStatistic (class in mqr.spc)</a>
+</li>
+      <li><a href="reference/generated/mqr.msa.GRR.counts.html#mqr.msa.GRR.counts">counts (mqr.msa.GRR attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.spc.MewmaParams.cov.html#mqr.spc.MewmaParams.cov">cov (mqr.spc.MewmaParams attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.process.Capability.cp.html#mqr.process.Capability.cp">cp (mqr.process.Capability attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.process.Capability.cpk.html#mqr.process.Capability.cpk">cpk (mqr.process.Capability attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.spc.util.d2.html#mqr.spc.util.d2">d2() (in module mqr.spc.util)</a>
+</li>
+      <li><a href="reference/generated/mqr.spc.util.d2_integral.html#mqr.spc.util.d2_integral">d2_integral() (in module mqr.spc.util)</a>
+</li>
+      <li><a href="reference/generated/mqr.spc.util.d3.html#mqr.spc.util.d3">d3() (in module mqr.spc.util)</a>
+</li>
+      <li><a href="reference/generated/mqr.spc.util.d3_integral.html#mqr.spc.util.d3_integral">d3_integral() (in module mqr.spc.util)</a>
+</li>
+      <li><a href="reference/generated/mqr.msa.GRR.data.html#mqr.msa.GRR.data">data (mqr.msa.GRR attribute)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.summary.Sample.data.html#mqr.summary.Sample.data">(mqr.summary.Sample attribute)</a>
+</li>
+        <li><a href="reference/generated/mqr.summary.Study.data.html#mqr.summary.Study.data">(mqr.summary.Study attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.process.Capability.defects_lt.html#mqr.process.Capability.defects_lt">defects_lt (mqr.process.Capability attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.process.Capability.defects_st.html#mqr.process.Capability.defects_st">defects_st (mqr.process.Capability attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.inference.hyptest.HypothesisTest.description.html#mqr.inference.hyptest.HypothesisTest.description">description (mqr.inference.hyptest.HypothesisTest attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.doe.Design.html#mqr.doe.Design">Design (class in mqr.doe)</a>
+</li>
+      <li><a href="reference/generated/mqr.msa.VarianceTable.discrimination.html#mqr.msa.VarianceTable.discrimination">discrimination (mqr.msa.VarianceTable attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.inference.power.TestPower.effect.html#mqr.inference.power.TestPower.effect">effect (mqr.inference.power.TestPower attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.spc.EwmaParams.html#mqr.spc.EwmaParams">EwmaParams (class in mqr.spc)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.plot.Figure.html#mqr.plot.Figure">Figure (class in mqr.plot)</a>
+</li>
+      <li><a href="reference/generated/mqr.msa.GRR.formula.html#mqr.msa.GRR.formula">formula (mqr.msa.GRR attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.doe.Design.from_axial.html#mqr.doe.Design.from_axial">from_axial() (mqr.doe.Design static method)</a>
+</li>
+      <li><a href="reference/generated/mqr.doe.Design.from_ccdesign.html#mqr.doe.Design.from_ccdesign">from_ccdesign() (mqr.doe.Design static method)</a>
+</li>
+      <li><a href="reference/generated/mqr.doe.Design.from_centrepoints.html#mqr.doe.Design.from_centrepoints">from_centrepoints() (mqr.doe.Design static method)</a>
+</li>
+      <li><a href="reference/generated/mqr.spc.EwmaParams.from_data.html#mqr.spc.EwmaParams.from_data">from_data() (mqr.spc.EwmaParams static method)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.spc.MewmaParams.from_data.html#mqr.spc.MewmaParams.from_data">(mqr.spc.MewmaParams static method)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.RParams.from_data.html#mqr.spc.RParams.from_data">(mqr.spc.RParams static method)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.SParams.from_data.html#mqr.spc.SParams.from_data">(mqr.spc.SParams static method)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.XBarParams.from_data.html#mqr.spc.XBarParams.from_data">(mqr.spc.XBarParams static method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.doe.Design.from_fracfact.html#mqr.doe.Design.from_fracfact">from_fracfact() (mqr.doe.Design static method)</a>
+</li>
+      <li><a href="reference/generated/mqr.doe.Design.from_fullfact.html#mqr.doe.Design.from_fullfact">from_fullfact() (mqr.doe.Design static method)</a>
+</li>
+      <li><a href="reference/generated/mqr.doe.Design.from_levels.html#mqr.doe.Design.from_levels">from_levels() (mqr.doe.Design static method)</a>
+</li>
+      <li><a href="reference/generated/mqr.doe.Affine.from_map.html#mqr.doe.Affine.from_map">from_map() (mqr.doe.Affine static method)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.doe.Transform.from_map.html#mqr.doe.Transform.from_map">(mqr.doe.Transform static method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/generated/mqr.spc.RParams.from_range.html#mqr.spc.RParams.from_range">from_range() (mqr.spc.RParams static method)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.spc.XBarParams.from_range.html#mqr.spc.XBarParams.from_range">(mqr.spc.XBarParams static method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/generated/mqr.spc.EwmaParams.from_stddev.html#mqr.spc.EwmaParams.from_stddev">from_stddev() (mqr.spc.EwmaParams static method)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.spc.XBarParams.from_stddev.html#mqr.spc.XBarParams.from_stddev">(mqr.spc.XBarParams static method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.summary.Study.get_data.html#mqr.summary.Study.get_data">get_data() (mqr.summary.Study method)</a>
+</li>
+      <li><a href="reference/generated/mqr.doe.Design.get_factor_df.html#mqr.doe.Design.get_factor_df">get_factor_df() (mqr.doe.Design method)</a>
+</li>
+      <li><a href="reference/generated/mqr.nbtools.grab_figure.html#mqr.nbtools.grab_figure">grab_figure() (in module mqr.nbtools)</a>
+</li>
+      <li><a href="reference/generated/mqr.spc.util.group_consecutives.html#mqr.spc.util.group_consecutives">group_consecutives() (in module mqr.spc.util)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.anova.groups.html#mqr.anova.groups">groups() (in module mqr.anova)</a>
+</li>
+      <li><a href="reference/generated/mqr.msa.GRR.html#mqr.msa.GRR">GRR (class in mqr.msa)</a>
+</li>
+      <li><a href="reference/generated/mqr.msa.VarianceTable.grr.html#mqr.msa.VarianceTable.grr">grr (mqr.msa.VarianceTable attribute)</a>
+</li>
+      <li><a href="reference/plot/generated/mqr.plot.msa.grr.html#mqr.plot.msa.grr">grr() (in module mqr.plot.msa)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.nbtools.hstack.html#mqr.nbtools.hstack">hstack() (in module mqr.nbtools)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.inference.hyptest.HypothesisTest.html#mqr.inference.hyptest.HypothesisTest">HypothesisTest (class in mqr.inference.hyptest)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.msa.GRR.include_interaction.html#mqr.msa.GRR.include_interaction">include_interaction (mqr.msa.GRR attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.msa.GRR.include_intercept.html#mqr.msa.GRR.include_intercept">include_intercept (mqr.msa.GRR attribute)</a>
+</li>
+      <li><a href="reference/plot/generated/mqr.plot.regression.influence.html#mqr.plot.regression.influence">influence() (in module mqr.plot.regression)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.anova.interactions.html#mqr.anova.interactions">interactions() (in module mqr.anova)</a>
+
+      <ul>
+        <li><a href="reference/plot/generated/mqr.plot.anova.interactions.html#mqr.plot.anova.interactions">(in module mqr.plot.anova)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/generated/mqr.summary.Sample.iqr.html#mqr.summary.Sample.iqr">iqr (mqr.summary.Sample attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.plot.ishikawa.html#mqr.plot.ishikawa">ishikawa() (in module mqr.plot)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="K">K</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.summary.Sample.ks_pvalue.html#mqr.summary.Sample.ks_pvalue">ks_pvalue (mqr.summary.Sample attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.summary.Sample.ks_stat.html#mqr.summary.Sample.ks_stat">ks_stat (mqr.summary.Sample attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.summary.Sample.kurtosis.html#mqr.summary.Sample.kurtosis">kurtosis (mqr.summary.Sample attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.spc.EwmaParams.L.html#mqr.spc.EwmaParams.L">L (mqr.spc.EwmaParams attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.spc.ControlParams.lcl.html#mqr.spc.ControlParams.lcl">lcl() (mqr.spc.ControlParams method)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.spc.EwmaParams.lcl.html#mqr.spc.EwmaParams.lcl">(mqr.spc.EwmaParams method)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.MewmaParams.lcl.html#mqr.spc.MewmaParams.lcl">(mqr.spc.MewmaParams method)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.RParams.lcl.html#mqr.spc.RParams.lcl">(mqr.spc.RParams method)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.ShewhartParams.lcl.html#mqr.spc.ShewhartParams.lcl">(mqr.spc.ShewhartParams method)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.SParams.lcl.html#mqr.spc.SParams.lcl">(mqr.spc.SParams method)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.XBarParams.lcl.html#mqr.spc.XBarParams.lcl">(mqr.spc.XBarParams method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.doe.Design.levels.html#mqr.doe.Design.levels">levels (mqr.doe.Design attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.spc.MewmaParams.limit.html#mqr.spc.MewmaParams.limit">limit (mqr.spc.MewmaParams attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.spc.rules.limits.html#mqr.spc.rules.limits">limits() (in module mqr.spc.rules)</a>
+</li>
+      <li><a href="reference/plot/generated/mqr.plot.msa.line_part_operator_intn.html#mqr.plot.msa.line_part_operator_intn">line_part_operator_intn() (in module mqr.plot.msa)</a>
+</li>
+      <li><a href="reference/generated/mqr.spc.EwmaParams.lmda.html#mqr.spc.EwmaParams.lmda">lmda (mqr.spc.EwmaParams attribute)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.spc.MewmaParams.lmda.html#mqr.spc.MewmaParams.lmda">(mqr.spc.MewmaParams attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/generated/mqr.inference.confint.ConfidenceInterval.lower.html#mqr.inference.confint.ConfidenceInterval.lower">lower (mqr.inference.confint.ConfidenceInterval attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.process.Specification.lsl.html#mqr.process.Specification.lsl">lsl (mqr.process.Specification attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/plot/generated/mqr.plot.anova.main_effects.html#mqr.plot.anova.main_effects">main_effects() (in module mqr.plot.anova)</a>
+</li>
+      <li><a href="reference/plot/generated/mqr.plot.correlation.matrix.html#mqr.plot.correlation.matrix">matrix() (in module mqr.plot.correlation)</a>
+</li>
+      <li><a href="reference/generated/mqr.summary.Sample.maximum.html#mqr.summary.Sample.maximum">maximum (mqr.summary.Sample attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.summary.Sample.mean.html#mqr.summary.Sample.mean">mean (mqr.summary.Sample attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.msa.NameMapping.measurement.html#mqr.msa.NameMapping.measurement">measurement (mqr.msa.NameMapping attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.summary.Study.measurements.html#mqr.summary.Study.measurements">measurements (mqr.summary.Study attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.summary.Sample.median.html#mqr.summary.Sample.median">median (mqr.summary.Sample attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.inference.confint.ConfidenceInterval.method.html#mqr.inference.confint.ConfidenceInterval.method">method (mqr.inference.confint.ConfidenceInterval attribute)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.inference.hyptest.HypothesisTest.method.html#mqr.inference.hyptest.HypothesisTest.method">(mqr.inference.hyptest.HypothesisTest attribute)</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.power.TestPower.method.html#mqr.inference.power.TestPower.method">(mqr.inference.power.TestPower attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/generated/mqr.spc.MewmaParams.html#mqr.spc.MewmaParams">MewmaParams (class in mqr.spc)</a>
+</li>
+      <li><a href="reference/generated/mqr.summary.Sample.minimum.html#mqr.summary.Sample.minimum">minimum (mqr.summary.Sample attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.msa.GRR.model.html#mqr.msa.GRR.model">model (mqr.msa.GRR attribute)</a>
+</li>
+      <li><a href="reference/plot/generated/mqr.plot.anova.model_means.html#mqr.plot.anova.model_means">model_means() (in module mqr.plot.anova)</a>
+</li>
+      <li>
+    module
+
+      <ul>
+        <li><a href="reference/mqr.anova.html#module-mqr.anova">mqr.anova</a>
+</li>
+        <li><a href="reference/mqr.doe.html#module-mqr.doe">mqr.doe</a>
+</li>
+        <li><a href="reference/mqr.inference.html#module-mqr.inference">mqr.inference</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.correlation.html#module-mqr.inference.correlation">mqr.inference.correlation</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.dist.html#module-mqr.inference.dist">mqr.inference.dist</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.mean.html#module-mqr.inference.mean">mqr.inference.mean</a>
+</li>
+        <li><a href="reference/mqr.inference.nonparametric.html#module-mqr.inference.nonparametric">mqr.inference.nonparametric</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.nonparametric.correlation.html#module-mqr.inference.nonparametric.correlation">mqr.inference.nonparametric.correlation</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.nonparametric.dist.html#module-mqr.inference.nonparametric.dist">mqr.inference.nonparametric.dist</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.nonparametric.median.html#module-mqr.inference.nonparametric.median">mqr.inference.nonparametric.median</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.nonparametric.quantile.html#module-mqr.inference.nonparametric.quantile">mqr.inference.nonparametric.quantile</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.nonparametric.variance.html#module-mqr.inference.nonparametric.variance">mqr.inference.nonparametric.variance</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.proportion.html#module-mqr.inference.proportion">mqr.inference.proportion</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.rate.html#module-mqr.inference.rate">mqr.inference.rate</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.stddev.html#module-mqr.inference.stddev">mqr.inference.stddev</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.variance.html#module-mqr.inference.variance">mqr.inference.variance</a>
+</li>
+        <li><a href="reference/mqr.msa.html#module-mqr.msa">mqr.msa</a>
+</li>
+        <li><a href="reference/mqr.nbtools.html#module-mqr.nbtools">mqr.nbtools</a>
+</li>
+        <li><a href="reference/mqr.plot.html#module-mqr.plot">mqr.plot</a>
+</li>
+        <li><a href="reference/plot/mqr.plot.anova.html#module-mqr.plot.anova">mqr.plot.anova</a>
+</li>
+        <li><a href="reference/plot/mqr.plot.correlation.html#module-mqr.plot.correlation">mqr.plot.correlation</a>
+</li>
+        <li><a href="reference/plot/mqr.plot.msa.html#module-mqr.plot.msa">mqr.plot.msa</a>
+</li>
+        <li><a href="reference/plot/mqr.plot.process.html#module-mqr.plot.process">mqr.plot.process</a>
+</li>
+        <li><a href="reference/plot/mqr.plot.regression.html#module-mqr.plot.regression">mqr.plot.regression</a>
+</li>
+        <li><a href="reference/plot/mqr.plot.spc.html#module-mqr.plot.spc">mqr.plot.spc</a>
+</li>
+        <li><a href="reference/plot/mqr.plot.tools.html#module-mqr.plot.tools">mqr.plot.tools</a>
+</li>
+        <li><a href="reference/mqr.process.html#module-mqr.process">mqr.process</a>
+</li>
+        <li><a href="reference/mqr.spc.html#module-mqr.spc">mqr.spc</a>
+</li>
+        <li><a href="reference/mqr.spc.rules.html#module-mqr.spc.rules">mqr.spc.rules</a>
+</li>
+        <li><a href="reference/mqr.spc.util.html#module-mqr.spc.util">mqr.spc.util</a>
+</li>
+        <li><a href="reference/mqr.summary.html#module-mqr.summary">mqr.summary</a>
+</li>
+        <li><a href="reference/mqr.transforms.html#module-mqr.transforms">mqr.transforms</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.anova
+
+      <ul>
+        <li><a href="reference/mqr.anova.html#module-mqr.anova">module</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.doe
+
+      <ul>
+        <li><a href="reference/mqr.doe.html#module-mqr.doe">module</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.inference
+
+      <ul>
+        <li><a href="reference/mqr.inference.html#module-mqr.inference">module</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.inference.correlation
+
+      <ul>
+        <li><a href="reference/generated/mqr.inference.correlation.html#module-mqr.inference.correlation">module</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.inference.dist
+
+      <ul>
+        <li><a href="reference/generated/mqr.inference.dist.html#module-mqr.inference.dist">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    mqr.inference.mean
+
+      <ul>
+        <li><a href="reference/generated/mqr.inference.mean.html#module-mqr.inference.mean">module</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.inference.nonparametric
+
+      <ul>
+        <li><a href="reference/mqr.inference.nonparametric.html#module-mqr.inference.nonparametric">module</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.inference.nonparametric.correlation
+
+      <ul>
+        <li><a href="reference/generated/mqr.inference.nonparametric.correlation.html#module-mqr.inference.nonparametric.correlation">module</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.inference.nonparametric.dist
+
+      <ul>
+        <li><a href="reference/generated/mqr.inference.nonparametric.dist.html#module-mqr.inference.nonparametric.dist">module</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.inference.nonparametric.median
+
+      <ul>
+        <li><a href="reference/generated/mqr.inference.nonparametric.median.html#module-mqr.inference.nonparametric.median">module</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.inference.nonparametric.quantile
+
+      <ul>
+        <li><a href="reference/generated/mqr.inference.nonparametric.quantile.html#module-mqr.inference.nonparametric.quantile">module</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.inference.nonparametric.variance
+
+      <ul>
+        <li><a href="reference/generated/mqr.inference.nonparametric.variance.html#module-mqr.inference.nonparametric.variance">module</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.inference.proportion
+
+      <ul>
+        <li><a href="reference/generated/mqr.inference.proportion.html#module-mqr.inference.proportion">module</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.inference.rate
+
+      <ul>
+        <li><a href="reference/generated/mqr.inference.rate.html#module-mqr.inference.rate">module</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.inference.stddev
+
+      <ul>
+        <li><a href="reference/generated/mqr.inference.stddev.html#module-mqr.inference.stddev">module</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.inference.variance
+
+      <ul>
+        <li><a href="reference/generated/mqr.inference.variance.html#module-mqr.inference.variance">module</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.msa
+
+      <ul>
+        <li><a href="reference/mqr.msa.html#module-mqr.msa">module</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.nbtools
+
+      <ul>
+        <li><a href="reference/mqr.nbtools.html#module-mqr.nbtools">module</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.plot
+
+      <ul>
+        <li><a href="reference/mqr.plot.html#module-mqr.plot">module</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.plot.anova
+
+      <ul>
+        <li><a href="reference/plot/mqr.plot.anova.html#module-mqr.plot.anova">module</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.plot.correlation
+
+      <ul>
+        <li><a href="reference/plot/mqr.plot.correlation.html#module-mqr.plot.correlation">module</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.plot.msa
+
+      <ul>
+        <li><a href="reference/plot/mqr.plot.msa.html#module-mqr.plot.msa">module</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.plot.process
+
+      <ul>
+        <li><a href="reference/plot/mqr.plot.process.html#module-mqr.plot.process">module</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.plot.regression
+
+      <ul>
+        <li><a href="reference/plot/mqr.plot.regression.html#module-mqr.plot.regression">module</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.plot.spc
+
+      <ul>
+        <li><a href="reference/plot/mqr.plot.spc.html#module-mqr.plot.spc">module</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.plot.tools
+
+      <ul>
+        <li><a href="reference/plot/mqr.plot.tools.html#module-mqr.plot.tools">module</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.process
+
+      <ul>
+        <li><a href="reference/mqr.process.html#module-mqr.process">module</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.spc
+
+      <ul>
+        <li><a href="reference/mqr.spc.html#module-mqr.spc">module</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.spc.rules
+
+      <ul>
+        <li><a href="reference/mqr.spc.rules.html#module-mqr.spc.rules">module</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.spc.util
+
+      <ul>
+        <li><a href="reference/mqr.spc.util.html#module-mqr.spc.util">module</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.summary
+
+      <ul>
+        <li><a href="reference/mqr.summary.html#module-mqr.summary">module</a>
+</li>
+      </ul></li>
+      <li>
+    mqr.transforms
+
+      <ul>
+        <li><a href="reference/mqr.transforms.html#module-mqr.transforms">module</a>
+</li>
+      </ul></li>
+      <li><a href="reference/generated/mqr.spc.MewmaParams.mu.html#mqr.spc.MewmaParams.mu">mu (mqr.spc.MewmaParams attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.spc.EwmaParams.mu_0.html#mqr.spc.EwmaParams.mu_0">mu_0 (mqr.spc.EwmaParams attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.spc.rules.n_1side.html#mqr.spc.rules.n_1side">n_1side() (in module mqr.spc.rules)</a>
+</li>
+      <li><a href="reference/generated/mqr.spc.rules.n_trending.html#mqr.spc.rules.n_trending">n_trending() (in module mqr.spc.rules)</a>
+</li>
+      <li><a href="reference/generated/mqr.inference.confint.ConfidenceInterval.name.html#mqr.inference.confint.ConfidenceInterval.name">name (mqr.inference.confint.ConfidenceInterval attribute)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.inference.power.TestPower.name.html#mqr.inference.power.TestPower.name">(mqr.inference.power.TestPower attribute)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.EwmaParams.name.html#mqr.spc.EwmaParams.name">(mqr.spc.EwmaParams attribute)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.MewmaParams.name.html#mqr.spc.MewmaParams.name">(mqr.spc.MewmaParams attribute)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.RParams.name.html#mqr.spc.RParams.name">(mqr.spc.RParams attribute)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.SParams.name.html#mqr.spc.SParams.name">(mqr.spc.SParams attribute)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.XBarParams.name.html#mqr.spc.XBarParams.name">(mqr.spc.XBarParams attribute)</a>
+</li>
+        <li><a href="reference/generated/mqr.summary.Sample.name.html#mqr.summary.Sample.name">(mqr.summary.Sample attribute)</a>
+</li>
+        <li><a href="reference/generated/mqr.summary.Study.name.html#mqr.summary.Study.name">(mqr.summary.Study attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/generated/mqr.msa.NameMapping.html#mqr.msa.NameMapping">NameMapping (class in mqr.msa)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.doe.Design.names.html#mqr.doe.Design.names">names (mqr.doe.Design attribute)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.msa.GRR.names.html#mqr.msa.GRR.names">(mqr.msa.GRR attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/generated/mqr.spc.ControlStatistic.nobs.html#mqr.spc.ControlStatistic.nobs">nobs (mqr.spc.ControlStatistic attribute)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.summary.Sample.nobs.html#mqr.summary.Sample.nobs">(mqr.summary.Sample attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/generated/mqr.msa.GRR.nsigma.html#mqr.msa.GRR.nsigma">nsigma (mqr.msa.GRR attribute)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.spc.RParams.nsigma.html#mqr.spc.RParams.nsigma">(mqr.spc.RParams attribute)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.SParams.nsigma.html#mqr.spc.SParams.nsigma">(mqr.spc.SParams attribute)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.XBarParams.nsigma.html#mqr.spc.XBarParams.nsigma">(mqr.spc.XBarParams attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/generated/mqr.inference.hyptest.HypothesisTest.null.html#mqr.inference.hyptest.HypothesisTest.null">null (mqr.inference.hyptest.HypothesisTest attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.summary.Sample.num_display_fmt.html#mqr.summary.Sample.num_display_fmt">num_display_fmt (mqr.summary.Sample attribute)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.summary.Study.num_display_fmt.html#mqr.summary.Study.num_display_fmt">(mqr.summary.Study attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/generated/mqr.msa.VarianceTable.num_distinct_cats.html#mqr.msa.VarianceTable.num_distinct_cats">num_distinct_cats (mqr.msa.VarianceTable attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/plot/generated/mqr.plot.spc.oc.html#mqr.plot.spc.oc">oc() (in module mqr.plot.spc)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.msa.NameMapping.operator.html#mqr.msa.NameMapping.operator">operator (mqr.msa.NameMapping attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.summary.Sample.outliers.html#mqr.summary.Sample.outliers">outliers (mqr.summary.Sample attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.msa.NameMapping.part.html#mqr.msa.NameMapping.part">part (mqr.msa.NameMapping attribute)</a>
+</li>
+      <li><a href="reference/plot/generated/mqr.plot.process.pdf.html#mqr.plot.process.pdf">pdf() (in module mqr.plot.process)</a>
+</li>
+      <li><a href="reference/generated/mqr.inference.proportion.power_1sample.html#mqr.inference.proportion.power_1sample">power_1sample() (in module mqr.inference.proportion)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.inference.rate.power_1sample.html#mqr.inference.rate.power_1sample">(in module mqr.inference.rate)</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.variance.power_1sample.html#mqr.inference.variance.power_1sample">(in module mqr.inference.variance)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.inference.proportion.power_2sample.html#mqr.inference.proportion.power_2sample">power_2sample() (in module mqr.inference.proportion)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.inference.rate.power_2sample.html#mqr.inference.rate.power_2sample">(in module mqr.inference.rate)</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.variance.power_2sample.html#mqr.inference.variance.power_2sample">(in module mqr.inference.variance)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/generated/mqr.process.Process.html#mqr.process.Process">Process (class in mqr.process)</a>
+</li>
+      <li><a href="reference/generated/mqr.doe.Design.pttypes.html#mqr.doe.Design.pttypes">pttypes (mqr.doe.Design attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.inference.hyptest.HypothesisTest.pvalue.html#mqr.inference.hyptest.HypothesisTest.pvalue">pvalue (mqr.inference.hyptest.HypothesisTest attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Q">Q</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.summary.Sample.quartile1.html#mqr.summary.Sample.quartile1">quartile1 (mqr.summary.Sample attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.summary.Sample.quartile3.html#mqr.summary.Sample.quartile3">quartile3 (mqr.summary.Sample attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/plot/generated/mqr.plot.msa.r_operator.html#mqr.plot.msa.r_operator">r_operator() (in module mqr.plot.msa)</a>
+</li>
+      <li><a href="reference/generated/mqr.doe.Design.randomise_runs.html#mqr.doe.Design.randomise_runs">randomise_runs() (mqr.doe.Design method)</a>
+</li>
+      <li><a href="reference/generated/mqr.msa.GRR.regression_result.html#mqr.msa.GRR.regression_result">regression_result (mqr.msa.GRR attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.doe.Design.replicate.html#mqr.doe.Design.replicate">replicate() (mqr.doe.Design method)</a>
+</li>
+      <li><a href="reference/plot/generated/mqr.plot.regression.res_histogram.html#mqr.plot.regression.res_histogram">res_histogram() (in module mqr.plot.regression)</a>
+</li>
+      <li><a href="reference/plot/generated/mqr.plot.regression.res_probplot.html#mqr.plot.regression.res_probplot">res_probplot() (in module mqr.plot.regression)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/plot/generated/mqr.plot.regression.res_v_factor.html#mqr.plot.regression.res_v_factor">res_v_factor() (in module mqr.plot.regression)</a>
+</li>
+      <li><a href="reference/plot/generated/mqr.plot.regression.res_v_fit.html#mqr.plot.regression.res_v_fit">res_v_fit() (in module mqr.plot.regression)</a>
+</li>
+      <li><a href="reference/plot/generated/mqr.plot.regression.res_v_obs.html#mqr.plot.regression.res_v_obs">res_v_obs() (in module mqr.plot.regression)</a>
+</li>
+      <li><a href="reference/plot/generated/mqr.plot.regression.residuals.html#mqr.plot.regression.residuals">residuals() (in module mqr.plot.regression)</a>
+</li>
+      <li><a href="reference/generated/mqr.spc.RParams.html#mqr.spc.RParams">RParams (class in mqr.spc)</a>
+</li>
+      <li><a href="reference/generated/mqr.doe.Design.runs.html#mqr.doe.Design.runs">runs (mqr.doe.Design attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.summary.Sample.html#mqr.summary.Sample">Sample (class in mqr.summary)</a>
+</li>
+      <li><a href="reference/generated/mqr.inference.power.TestPower.sample_size.html#mqr.inference.power.TestPower.sample_size">sample_size (mqr.inference.power.TestPower attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.inference.hyptest.HypothesisTest.sample_stat.html#mqr.inference.hyptest.HypothesisTest.sample_stat">sample_stat (mqr.inference.hyptest.HypothesisTest attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.inference.hyptest.HypothesisTest.sample_stat_target.html#mqr.inference.hyptest.HypothesisTest.sample_stat_target">sample_stat_target (mqr.inference.hyptest.HypothesisTest attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.inference.hyptest.HypothesisTest.sample_stat_value.html#mqr.inference.hyptest.HypothesisTest.sample_stat_value">sample_stat_value (mqr.inference.hyptest.HypothesisTest attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.summary.Study.samples.html#mqr.summary.Study.samples">samples (mqr.summary.Study attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.doe.Affine.scale.html#mqr.doe.Affine.scale">scale (mqr.doe.Affine attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.spc.RParams.se.html#mqr.spc.RParams.se">se() (mqr.spc.RParams method)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.spc.ShewhartParams.se.html#mqr.spc.ShewhartParams.se">(mqr.spc.ShewhartParams method)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.SParams.se.html#mqr.spc.SParams.se">(mqr.spc.SParams method)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.XBarParams.se.html#mqr.spc.XBarParams.se">(mqr.spc.XBarParams method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/generated/mqr.summary.Sample.sem.html#mqr.summary.Sample.sem">sem (mqr.summary.Sample attribute)</a>
+</li>
+      <li><a href="reference/plot/generated/mqr.plot.tools.sharex.html#mqr.plot.tools.sharex">sharex() (in module mqr.plot.tools)</a>
+</li>
+      <li><a href="reference/plot/generated/mqr.plot.tools.sharey.html#mqr.plot.tools.sharey">sharey() (in module mqr.plot.tools)</a>
+</li>
+      <li><a href="reference/generated/mqr.spc.ShewhartParams.html#mqr.spc.ShewhartParams">ShewhartParams (class in mqr.spc)</a>
+</li>
+      <li><a href="reference/generated/mqr.spc.EwmaParams.sigma.html#mqr.spc.EwmaParams.sigma">sigma (mqr.spc.EwmaParams attribute)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.spc.RParams.sigma.html#mqr.spc.RParams.sigma">(mqr.spc.RParams attribute)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.XBarParams.sigma.html#mqr.spc.XBarParams.sigma">(mqr.spc.XBarParams attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/generated/mqr.inference.mean.size_1sample.html#mqr.inference.mean.size_1sample">size_1sample() (in module mqr.inference.mean)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.inference.proportion.size_1sample.html#mqr.inference.proportion.size_1sample">(in module mqr.inference.proportion)</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.rate.size_1sample.html#mqr.inference.rate.size_1sample">(in module mqr.inference.rate)</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.stddev.size_1sample.html#mqr.inference.stddev.size_1sample">(in module mqr.inference.stddev)</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.variance.size_1sample.html#mqr.inference.variance.size_1sample">(in module mqr.inference.variance)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/generated/mqr.inference.mean.size_2sample.html#mqr.inference.mean.size_2sample">size_2sample() (in module mqr.inference.mean)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.inference.proportion.size_2sample.html#mqr.inference.proportion.size_2sample">(in module mqr.inference.proportion)</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.rate.size_2sample.html#mqr.inference.rate.size_2sample">(in module mqr.inference.rate)</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.stddev.size_2sample.html#mqr.inference.stddev.size_2sample">(in module mqr.inference.stddev)</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.variance.size_2sample.html#mqr.inference.variance.size_2sample">(in module mqr.inference.variance)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.inference.mean.size_paired.html#mqr.inference.mean.size_paired">size_paired() (in module mqr.inference.mean)</a>
+</li>
+      <li><a href="reference/generated/mqr.summary.Sample.skewness.html#mqr.summary.Sample.skewness">skewness (mqr.summary.Sample attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.spc.util.solve_arl.html#mqr.spc.util.solve_arl">solve_arl() (in module mqr.spc.util)</a>
+</li>
+      <li><a href="reference/generated/mqr.spc.util.solve_h4.html#mqr.spc.util.solve_h4">solve_h4() (in module mqr.spc.util)</a>
+</li>
+      <li><a href="reference/generated/mqr.spc.SParams.html#mqr.spc.SParams">SParams (class in mqr.spc)</a>
+</li>
+      <li><a href="reference/generated/mqr.process.Specification.html#mqr.process.Specification">Specification (class in mqr.process)</a>
+</li>
+      <li><a href="reference/generated/mqr.process.Process.specifications.html#mqr.process.Process.specifications">specifications (mqr.process.Process attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.inference.hyptest.HypothesisTest.stat.html#mqr.inference.hyptest.HypothesisTest.stat">stat (mqr.inference.hyptest.HypothesisTest attribute)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.spc.ControlStatistic.stat.html#mqr.spc.ControlStatistic.stat">(mqr.spc.ControlStatistic attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/generated/mqr.spc.ControlParams.statistic.html#mqr.spc.ControlParams.statistic">statistic() (mqr.spc.ControlParams method)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.spc.EwmaParams.statistic.html#mqr.spc.EwmaParams.statistic">(mqr.spc.EwmaParams method)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.MewmaParams.statistic.html#mqr.spc.MewmaParams.statistic">(mqr.spc.MewmaParams method)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.RParams.statistic.html#mqr.spc.RParams.statistic">(mqr.spc.RParams method)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.ShewhartParams.statistic.html#mqr.spc.ShewhartParams.statistic">(mqr.spc.ShewhartParams method)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.SParams.statistic.html#mqr.spc.SParams.statistic">(mqr.spc.SParams method)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.XBarParams.statistic.html#mqr.spc.XBarParams.statistic">(mqr.spc.XBarParams method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/generated/mqr.summary.Sample.std.html#mqr.summary.Sample.std">std (mqr.summary.Sample attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.spc.EwmaParams.steady_state.html#mqr.spc.EwmaParams.steady_state">steady_state (mqr.spc.EwmaParams attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.summary.Study.html#mqr.summary.Study">Study (class in mqr.summary)</a>
+</li>
+      <li><a href="reference/generated/mqr.process.Process.study.html#mqr.process.Process.study">study (mqr.process.Process attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.anova.summary.html#mqr.anova.summary">summary() (in module mqr.anova)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.plot.summary.html#mqr.plot.summary">(in module mqr.plot)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.msa.VarianceTable.table.html#mqr.msa.VarianceTable.table">table (mqr.msa.VarianceTable attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.process.Specification.target.html#mqr.process.Specification.target">target (mqr.process.Specification attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.spc.ControlParams.target.html#mqr.spc.ControlParams.target">target() (mqr.spc.ControlParams method)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.spc.EwmaParams.target.html#mqr.spc.EwmaParams.target">(mqr.spc.EwmaParams method)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.MewmaParams.target.html#mqr.spc.MewmaParams.target">(mqr.spc.MewmaParams method)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.RParams.target.html#mqr.spc.RParams.target">(mqr.spc.RParams method)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.ShewhartParams.target.html#mqr.spc.ShewhartParams.target">(mqr.spc.ShewhartParams method)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.SParams.target.html#mqr.spc.SParams.target">(mqr.spc.SParams method)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.XBarParams.target.html#mqr.spc.XBarParams.target">(mqr.spc.XBarParams method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/generated/mqr.inference.correlation.test.html#mqr.inference.correlation.test">test() (in module mqr.inference.correlation)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.inference.nonparametric.correlation.test.html#mqr.inference.nonparametric.correlation.test">(in module mqr.inference.nonparametric.correlation)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/generated/mqr.inference.dist.test_1sample.html#mqr.inference.dist.test_1sample">test_1sample() (in module mqr.inference.dist)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.inference.mean.test_1sample.html#mqr.inference.mean.test_1sample">(in module mqr.inference.mean)</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.nonparametric.dist.test_1sample.html#mqr.inference.nonparametric.dist.test_1sample">(in module mqr.inference.nonparametric.dist)</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.nonparametric.median.test_1sample.html#mqr.inference.nonparametric.median.test_1sample">(in module mqr.inference.nonparametric.median)</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.nonparametric.quantile.test_1sample.html#mqr.inference.nonparametric.quantile.test_1sample">(in module mqr.inference.nonparametric.quantile)</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.proportion.test_1sample.html#mqr.inference.proportion.test_1sample">(in module mqr.inference.proportion)</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.rate.test_1sample.html#mqr.inference.rate.test_1sample">(in module mqr.inference.rate)</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.stddev.test_1sample.html#mqr.inference.stddev.test_1sample">(in module mqr.inference.stddev)</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.variance.test_1sample.html#mqr.inference.variance.test_1sample">(in module mqr.inference.variance)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.inference.mean.test_2sample.html#mqr.inference.mean.test_2sample">test_2sample() (in module mqr.inference.mean)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.inference.nonparametric.dist.test_2sample.html#mqr.inference.nonparametric.dist.test_2sample">(in module mqr.inference.nonparametric.dist)</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.proportion.test_2sample.html#mqr.inference.proportion.test_2sample">(in module mqr.inference.proportion)</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.rate.test_2sample.html#mqr.inference.rate.test_2sample">(in module mqr.inference.rate)</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.stddev.test_2sample.html#mqr.inference.stddev.test_2sample">(in module mqr.inference.stddev)</a>
+</li>
+        <li><a href="reference/generated/mqr.inference.variance.test_2sample.html#mqr.inference.variance.test_2sample">(in module mqr.inference.variance)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/generated/mqr.inference.correlation.test_diff.html#mqr.inference.correlation.test_diff">test_diff() (in module mqr.inference.correlation)</a>
+</li>
+      <li><a href="reference/generated/mqr.inference.nonparametric.median.test_nsample.html#mqr.inference.nonparametric.median.test_nsample">test_nsample() (in module mqr.inference.nonparametric.median)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.inference.nonparametric.variance.test_nsample.html#mqr.inference.nonparametric.variance.test_nsample">(in module mqr.inference.nonparametric.variance)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/generated/mqr.inference.mean.test_paired.html#mqr.inference.mean.test_paired">test_paired() (in module mqr.inference.mean)</a>
+</li>
+      <li><a href="reference/generated/mqr.inference.power.TestPower.html#mqr.inference.power.TestPower">TestPower (class in mqr.inference.power)</a>
+</li>
+      <li><a href="reference/generated/mqr.doe.Design.to_df.html#mqr.doe.Design.to_df">to_df() (mqr.doe.Design method)</a>
+</li>
+      <li><a href="reference/generated/mqr.msa.GRR.tolerance.html#mqr.msa.GRR.tolerance">tolerance (mqr.msa.GRR attribute)</a>
+</li>
+      <li><a href="reference/plot/generated/mqr.plot.process.tolerance.html#mqr.plot.process.tolerance">tolerance() (in module mqr.plot.process)</a>
+</li>
+      <li><a href="reference/generated/mqr.doe.Transform.html#mqr.doe.Transform">Transform (class in mqr.doe)</a>
+</li>
+      <li><a href="reference/generated/mqr.doe.Design.transform.html#mqr.doe.Design.transform">transform() (mqr.doe.Design method)</a>
+</li>
+      <li><a href="reference/generated/mqr.doe.Affine.translate.html#mqr.doe.Affine.translate">translate (mqr.doe.Affine attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.spc.ControlParams.ucl.html#mqr.spc.ControlParams.ucl">ucl() (mqr.spc.ControlParams method)</a>
+
+      <ul>
+        <li><a href="reference/generated/mqr.spc.EwmaParams.ucl.html#mqr.spc.EwmaParams.ucl">(mqr.spc.EwmaParams method)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.MewmaParams.ucl.html#mqr.spc.MewmaParams.ucl">(mqr.spc.MewmaParams method)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.RParams.ucl.html#mqr.spc.RParams.ucl">(mqr.spc.RParams method)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.ShewhartParams.ucl.html#mqr.spc.ShewhartParams.ucl">(mqr.spc.ShewhartParams method)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.SParams.ucl.html#mqr.spc.SParams.ucl">(mqr.spc.SParams method)</a>
+</li>
+        <li><a href="reference/generated/mqr.spc.XBarParams.ucl.html#mqr.spc.XBarParams.ucl">(mqr.spc.XBarParams method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.inference.confint.ConfidenceInterval.upper.html#mqr.inference.confint.ConfidenceInterval.upper">upper (mqr.inference.confint.ConfidenceInterval attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.process.Specification.usl.html#mqr.process.Specification.usl">usl (mqr.process.Specification attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.inference.confint.ConfidenceInterval.value.html#mqr.inference.confint.ConfidenceInterval.value">value (mqr.inference.confint.ConfidenceInterval attribute)</a>
+</li>
+      <li><a href="reference/generated/mqr.summary.Sample.var.html#mqr.summary.Sample.var">var (mqr.summary.Sample attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.msa.VarianceTable.html#mqr.msa.VarianceTable">VarianceTable (class in mqr.msa)</a>
+</li>
+      <li><a href="reference/generated/mqr.nbtools.vstack.html#mqr.nbtools.vstack">vstack() (in module mqr.nbtools)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="X">X</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/plot/generated/mqr.plot.msa.xbar_operator.html#mqr.plot.msa.xbar_operator">xbar_operator() (in module mqr.plot.msa)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.spc.XBarParams.html#mqr.spc.XBarParams">XBarParams (class in mqr.spc)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Z">Z</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/mqr.transforms.zscore.html#mqr.transforms.zscore">zscore() (in module mqr.transforms)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Nikolas Crossan.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

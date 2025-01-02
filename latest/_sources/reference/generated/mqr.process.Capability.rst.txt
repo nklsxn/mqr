@@ -27,6 +27,8 @@ Capability
       .. autosummary::
          :toctree:
       
+         Capability.sample
+         Capability.spec
          Capability.cp
          Capability.cpk
          Capability.defects_st

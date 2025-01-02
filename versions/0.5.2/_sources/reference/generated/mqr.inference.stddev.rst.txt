@@ -1,0 +1,31 @@
+﻿.. py:module:: mqr.inference.stddev
+
+.. raw:: html
+
+   <div class="prename">mqr.inference.</div>
+   <div class="empty"></div>
+
+stddev
+====================
+
+.. currentmodule:: mqr.inference.stddev
+
+
+
+
+
+
+.. rubric:: Functions
+.. autosummary::
+   :toctree:
+
+
+   confint_1sample
+   confint_2sample
+   size_1sample
+   size_2sample
+   test_1sample
+   test_2sample
+
+
+

@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.spc.RParams.</div>
+   <div class="empty"></div>
+
+from_data
+=========================
+
+.. currentmodule:: mqr.spc
+
+.. automethod:: RParams.from_data
