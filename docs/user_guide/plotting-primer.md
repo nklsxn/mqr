@@ -29,7 +29,7 @@ Plotting primer
 
 Additional imports
 : In addition to the user-guide [imports](/user-guide.md#imports),
-  the plotting pages also requires the following imports.
+  the pages (Plots, Plotting Primer and Customising MQR plots) also require the following imports.
 ```{code-cell} ipython3
 from matplotlib import pyplot as plt
 import seaborn as sns
@@ -47,8 +47,7 @@ or the axes object is passed to the plotting function explicitly.
 ### Lines
 The function `numpy.linspace(...)` creates evenly spaced points over an interval.
 It is useful for plotting an equation, like the example below.
-
-But, the same technique can plot any series of points.
+The same technique can plot any series of points.
 For example, the points could be measurements from an experiment.
 
 ```{code-cell} ipython3
@@ -62,22 +61,24 @@ with Figure() as (fig, ax):
 ### Histograms
 Both matplotlib and seaborn can plot histograms.
 The libraries have similar interfaces, and can generate bins and corresponding bars automatically.
+Note the libraries use different bin width algorithms by default.
+See their documentation to adjust bin widths.
 
 ```{code-cell} ipython3
 xs = st.norm(3, 0.4).rvs(400)
 ```
 
-**maplotlib**
-```
+**maplotlib**: example uses `subplots` directly.
+```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(6, 3))
 ax.hist(xs)
 plt.show(fig)
 plt.close(fig)
 ```
 
-**seaborn**
+**seaborn**: example uses `Figure` context manager instead.
 ```{code-cell} ipython3
-with Figure() as (fig, ax):
+with Figure(6, 3) as (fig, ax):
     sns.histplot(xs, ax=ax)
 ```
 
@@ -95,7 +96,7 @@ xs = pd.DataFrame(st.t(4).rvs([300, 3]))
 xs.iloc[4, 1] = np.nan
 ```
 
-**matplotlib**
+**matplotlib**: note that the whole series at index 1 (value 2) is omitted
 ```{code-cell} ipython3
 with Figure(6, 3) as (fig, ax):
     ax.boxplot(xs)
@@ -107,7 +108,7 @@ with Figure(6, 3) as (fig, ax):
     sns.boxplot(xs, ax=ax)
 ```
 
-**pandas**
+**pandas**: produces the same data points as seaborn with different default styling
 ```{code-cell} ipython3
 with Figure(6, 3) as (fig, ax):
     xs.boxplot(ax=ax)
@@ -129,7 +130,7 @@ with Figure() as (fig, ax):
 
 ### Scales
 Set the scale on an axis by calling `set_xscale` or `set_yscale`.
-Read more about scales, including built-in scales, at https://matplotlib.org/stable/users/explain/axes/axes_scales.html.
+Read more about scales, including built-in scales, at [](inv:matplotlib:std#user_axes_scales).
 ```{code-cell} ipython3
 xs = np.linspace(0, 4*np.pi)
 ys = np.sin(xs)
@@ -146,8 +147,8 @@ with Figure(n=2) as (fig, ax):
 ### Others
 There are many other types of plots.
 
-**Matplotlib** has a gallery of plot types here: https://matplotlib.org/stable/plot_types/index.html.<br>
-**Seaborn** has a similar gallery here: https://seaborn.pydata.org/examples/index.html.
+**Matplotlib** has a gallery of plot types here: [](inv:matplotlib:std#plot_types).<br>
+**Seaborn** has a similar gallery here: [](inv:seaborn:std#examples/index).
 
 
 ## Combining Elements
@@ -214,13 +215,19 @@ with Figure(3, 4, 2, 1, sharex=True) as (fig, ax):
 
 ### Titles, labels, ticks, limits and grids
 
-This example show how to include:
-* a title using `ax.set_title`,
-* axis labels using `ax.set_xlabel` and `ax.set_ylabel`,
-* tick values and labels using `ax.set_xticks` and `ax.set_xticklabels`
+This example shows how to include:
+* a title using [ax.set_title](inv:matplotlib#matplotlib.axes.Axes.set_title),
+* axis labels using
+  [ax.set_xlabel](inv:matplotlib#matplotlib.axes.Axes.set_xlabel) and
+  [ax.set_ylabel](inv:matplotlib#matplotlib.axes.Axes.set_ylabel),
+* tick values and labels using
+  [ax.set_xticks](inv:matplotlib#matplotlib.axes.Axes.set_xticks) and
+  [ax.set_xticklabels](inv:matplotlib#matplotlib.axes.Axes.set_xticklabels)
   (and the corresponding functions for the y-axis),
-* grids using `ax.grid`, and
-* limits using `ax.set_xlim` and `ax.set_ylim`.
+* grids using [ax.grid](inv:matplotlib#matplotlib.axes.Axes.grid), and
+* limits using
+  [ax.set_xlim](inv:matplotlib#matplotlib.axes.Axes.set_xlim) and
+  [ax.set_ylim](inv:matplotlib#matplotlib.axes.Axes.set_ylim).
 
 ```{code-cell} ipython3
 xs = np.linspace(0, 5*np.pi)
@@ -264,7 +271,7 @@ with Figure() as (fig, ax):
 
 ### Colours
 
-In the `Figure` context manager, we redefine the standard colours to a similar palette.
+In the `Figure` context manager, we redefine the standard colours to a palette that is similar to the matplotlib default.
 The standard colour palette is what matplotlib calls a "cycler".
 There are ten colours, and the shortcut for each is `CN` where N is an index starting from 0.
 
@@ -272,7 +279,7 @@ Usually you don't need to specify colour.
 As you add plots to a set of axes, many plots in matplotlib will automatically cycle through these colours.
 (`axhline`, which plots a horizontal line, does not cycle, so the colours are specified in order for illustration below.)
 
-There are lots of colour options outside of the cyclers: https://matplotlib.org/stable/gallery/color/index.html
+There are lots of colour options outside of the cyclers: [](inv:matplotlib:std#gallery/color/index).
 
 ```{code-cell} ipython3
 with Figure() as (fig, ax):
@@ -295,7 +302,7 @@ with Figure() as (fig, ax):
 
 ### Markers
 Markers can be drawn at each data point.
-See [matplotlib.markers](https://matplotlib.org/stable/api/markers_api.html) for details.
+See [](inv:matplotlib:std#api/markers_api) for details.
 
 ```{code-cell} ipython3
 x = np.linspace(0, 10, 20)

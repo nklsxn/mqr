@@ -142,6 +142,8 @@ intersphinx_mapping = {
     'pandas': ('https://pandas.pydata.org/pandas-docs/stable', None),
     'scipy': ('https://docs.scipy.org/doc/scipy', None),
     'statsmodels': ('https://www.statsmodels.org/stable', None),
+    'reliability': ('https://reliability.readthedocs.io/en/latest', None),
+    'pyDOE3': ('https://pydoe3.readthedocs.io/en/latest', None),
 }
 
 

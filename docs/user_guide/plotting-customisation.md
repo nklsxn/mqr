@@ -30,7 +30,7 @@ Customising MQR plots
 
 Additional imports
 : In addition to the user-guide [imports](/user-guide.md#imports),
-  the plotting pages also requires the following imports.
+  the pages (Plots, Plotting Primer and Customising MQR plots) also require the following imports.
 ```{code-cell} ipython3
 from matplotlib import pyplot as plt
 import seaborn as sns
@@ -43,7 +43,7 @@ Most plots in `mqr` can be customised. There are three main methods.
 
 
 ## 1. Changing `rc_params` and stylesheets
-See: https://matplotlib.org/stable/users/explain/customizing.html
+See: [](inv:matplotlib:std#customizing).
 
 The options in `rc_params` globally change the way that matplotlib renders plots.
 Currently, `mqr` creates a set of rc_params in a context manager and uses that context at the same time as the `Figure` context.
@@ -52,7 +52,7 @@ You can change the defaults used in `Figure` by changing or replacing `mqr.plot.
 You can revert to the matplotlib defaults by setting `mqr.plot.defaults.Defaults.rc_params = {}`.
 
 ## 2. Changing `mqr.plot.defaults.Defaults`
-Some specific defaults that are used several places have names in `Defaults`.
+Some specific defaults that are used in several places have names in `Defaults`.
 For example, the colour of the targets and control limit lines on control charts are taken from, eg.
 `mqr.plot.defaults.Defaults.target_color`.
 

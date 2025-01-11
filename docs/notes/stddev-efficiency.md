@@ -1,18 +1,17 @@
 Efficieny of estimates of process standard deviation
 ====================================================
 
-Both R-charts and XBar-charts based on range use sample range to estimate process
-standard deviation. Estimates of process standard deviation from sample range are
-less efficient than estimates from sample standard deviation when sample size is
-greater tha two, and those estimates are equal in efficiency when sample size is
+Both R-charts and XBar-charts can use sample range to estimate process standard
+deviation. Estimates of process standard deviation from sample range are less
+efficient than estimates from sample standard deviation when sample size is
+greater than two, and those estimates are equal in efficiency when sample size is
 exactly two (see [^1]). Therefore, routines using sample standard deviation might
 be preferable.
 
 The routines using sample range were written for teaching/learning, for times
 when interpretation of range is easier than standard deviation, when the
 simplicity of working with ranges is more important than the loss in efficiency
-(ie. when drawing charts by hand), and when trying to reproduce older range-based
-calculations.
+(ie. when drawing charts by hand), and when reproducing older range-based calculations.
 
 
 ## Related classes

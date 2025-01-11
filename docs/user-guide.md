@@ -66,7 +66,11 @@ the tools MQR provides for displaying plots in notebooks.
 
 ## Imports
 
-The pages in this user guide import the following module before running code examples.
+The pages in this user guide include example code.
+To ensure that the examples are up to date,
+they are automatically executed and their output is shown in a cell below the code.
+All pages that include code make the following imports before any code is run.
+(The plotting pages make a few further imports; see _Additional imports_ at the top of <project:/user_guide/plots.md>.)
 
 ```
 import numpy as np

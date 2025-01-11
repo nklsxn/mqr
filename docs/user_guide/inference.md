@@ -40,7 +40,7 @@ The inference module is largely an interface to other libraries.
 The module contains functions that calculate **sample size**,
 **confidence intervals** and **hypothesis tests**.
 Where a function calls another library to calculate a result,
-the function's docstring shows the library and functions that is called.
+the function's docstring shows the library and function that is called.
 
 ## Structure of the <tt>inference</tt> module
 
@@ -59,11 +59,11 @@ mqr.inference
 │   ├── size_2sample
 │   ├── size_paired
 │   ├── confint_1sample
-│   ├── ...
+│   ...
 │   └── test_paired
 └── stddev, variance, proportion, rate
     ├── size_1sample
-    ├── ...
+    ...
     └── test_2sample
 ```
 

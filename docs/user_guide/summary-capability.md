@@ -90,6 +90,7 @@ mqr.plot.defaults.Defaults.ishikawa
 ```
 For this diagram,
 split the long lines and increase the bone-space and cause-space.
+To split a line, insert a new-line character "\\n" (backslash-n).
 ```{code-cell} ipython3
 causes = {
     'method': [
@@ -110,6 +111,7 @@ with Figure(8, 5) as (fig, ax):
     mqr.plot.ishikawa(problem, causes, ax, ishikawa_kws)
 ```
 
+
 ## Summary statistics
 
 Summary statistics are organised into the following types.
@@ -126,7 +128,8 @@ Summary statistics are organised into the following types.
   common descriptive statistics.
 
 <project:#mqr.process.Capability>
-: Formed from a sample and a specification, contains process potential and capability.
+: Formed from a sample and a specification, contains process potential, capability,
+  and expected defect rates.
 
 
 ### Summary
@@ -186,7 +189,7 @@ with Figure(5, 5, 3, 1, height_ratios=(4, 1, 1)) as (fig, axs):
 If a summary was created with specifications, MQR can show sample capabilities graphically.
 If the target capability is different from 2.0 (the default), pass the target as `cp`,
 which truncates the tails of the fitted density function so that if it fits in the tolerance region,
-then the sample has the specified capability.
+then the sample has at least the specified capability.
 ```{code-cell} ipython3
 with Figure(6, 10, 5) as (fig, axs):
     for ax, name in zip(axs, ['KPI1', 'KPI2', 'KPI3', 'KPO1', 'KPO2']):

@@ -68,9 +68,10 @@ For details on those traditional parameters, see [^1].
 
 ## Data Handling
 
-The routines in `mqr.spc` expect sample data to be passed in a specific way.
+The routines in `mqr.spc` expect sample data to be passed in a particular way.
 For now, all sample sizes must be the same, though the sample sizes used to construct parameters
-need not match the size of the samples used to monitor a process in production.
+need not match the size of the samples used to monitor a process in production ---
+their standard errors are calculated separately.
 Data should be formatted into pandas DataFrames with sample labels in the index.
 That is, if a process is sampled twice per day, then the first sample on the first day
 would be in the first row, the second sample that afternoon would be in the second row,
@@ -90,11 +91,37 @@ pd.read_csv(mqr.sample_data('spc.csv'))
 
 ## Control parameters
 
-The main type for statistical quality control in MQR is [ControlParams](#mqr.spc.ControlParams).
+The main type for statistical process control in MQR is [ControlParams](#mqr.spc.ControlParams).
 ControlParams represent the target and limits of a process,
 and also contain enough information to calculate the monitored statistic from a set of samples.
-All control chart functions, therefore, required control parameters
-corresponding to the chart.
+
+:::{tip}
+The actual class `ControlParams` is a "superclass" in object-oriented terminology.
+All chart parameters like `XBarParams` are "derived" or "subclassed" from this type.
+Those derived classes have an "is-a" relationship with `ControlParams`:
+`XBarParams` is a `ControlParams`.
+In practise, this means that each of `XBarParams`, `RParams`, `SParams`, `EwmaParams` and `MewmaParams`
+can be used anywhere `ControlParams` are expected.
+
+Since the charting functions expect to be called with `ControlParams`,
+they can be called with, say, `SParams`.
+This is the signature of the charting function:
+```
+mqr.plot.spc.chart(
+    control_statistic: ControlStatistic,
+    control_params: ControlParams,
+    ...)
+```
+Since `SParams` is a `ControlParams`, the charting function is called like this:
+```
+params = mqr.spc.SParams(5.3)
+statistic = params.statistic(samples)
+mqr.plot.spc.chart(statistic, params, ...)
+```
+:::
+
+All control chart functions require control parameters corresponding to the chart:
+the statistic should be calculated from the same object that will be passed to the plotting function.
 The class [XBarParams](#mqr.spc.XBarParams) is an example of ControlParams and
 represents the parameters required to monitor the sample mean (x-bar) of a process.
 
@@ -157,7 +184,7 @@ These are the instances of [ControlParams](#mqr.spc.ControlParams):<br>
 New control parameters can be defined by subclassing
 [ControlParams](#mqr.spc.ControlParams) or
 [ShewhartParams](#mqr.spc.ShewhartParams).
-New control parameters defined this was are supported by the plotting and alarming routines below.
+New control parameters defined this way are supported by the plotting and alarming routines below.
 
 
 ## Alarm rules
@@ -168,7 +195,7 @@ in order to be considered out-of-control, and therefore warrant corrective actio
 Alarm rules are not a special type in MQR, but instead are simple functions/Callables
 with the signature:
 ```
-(ControlStatistic, ControlParams) -> pandas.Series[bool]
+Callable(ControlStatistic, ControlParams) -> pandas.Series[bool]
 ```
 where `Callable` is any object that can be called like a function,
 ie. with arguments between parentheses.
@@ -181,7 +208,7 @@ The alarms do not, on the other hand, mark all the points that contributed to th
 
 The pre-defined alarms are all functions that return rules,
 which means they are functions that create functions.
-This can be confusing if you haven't seen it before, but their use is straigh-forward;
+This can be confusing if you haven't seen it before, but their use is straight-forward;
 see the examples below and in the [API Reference](#mqr.spc.rules).
 The pre-defined alarms are as follows:
 [](#mqr.spc.rules.limits),
@@ -190,7 +217,7 @@ The pre-defined alarms are as follows:
 [](#mqr.spc.rules.n_trending).
 
 This example shows a point that violates the limit of an XBar chart
-(the data is here, the chart is shown in the next section).
+(the data is here, the chart is shown in the section [](#control-charts) below).
 ```{code-cell} ipython3
 
 mean_hist = 10.0
@@ -215,7 +242,7 @@ MQR provides a mechanism ([](#mqr.spc.rules.combine)) to build more complex alar
 Any number of alarms can be combined with a logical operator to produce a new alarm.
 More information and examples are in the [API Reference](#mqr.spc.rules.combine).
 
-For example, this example creates a rule that triggers an alarm when
+This example creates a rule that triggers an alarm when
 * the statistic is less that the LCL or greater than the UCL, or
 * the statistic has 3 of 4 consecutive points greater than 2 standard deviations from the target, or
 * the statistic has 5 values either monotonic increasing or monotonic decreasing.
@@ -244,14 +271,14 @@ rule = mqr.spc.rules.combine(
 
 Any function that has the signature
 ```
-(ControlStatistic, ControlParams) -> pandas.Series[bool]
+Callable(ControlStatistic, ControlParams) -> pandas.Series[bool]
 ```
 can be used as an alarm rule.
 All custom defined rules with this signature will work with the combination functions,
 and will work with the plotting routines.
 All pre-defined control rules are defined as functions.
 The control rules are defined here, for reference:
-<https://github.com/nklsxn/mqr/blob/master/mqr/spc/rules.py>.
+[](https://github.com/nklsxn/mqr/blob/master/mqr/spc/rules.py).
 
 Note that the index of the output series must match the index of the ControlStatistic argument.
 
