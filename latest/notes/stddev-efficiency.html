@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Efficieny of estimates of process standard deviation &#8212; mqr 0.5.3 documentation</title>
+    <title>Efficieny of estimates of process standard deviation &#8212; mqr 0.5.4 documentation</title>
   
   
   
@@ -30,7 +30,7 @@
   <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/_static/mqr.css" />
@@ -44,14 +44,14 @@
 
     <script src="../_static/jquery.js?v=5d32c60e"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../_static/documentation_options.js?v=2a2fe768"></script>
+    <script src="../_static/documentation_options.js?v=e1a677a5"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notes/stddev-efficiency';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/nklsxn/mqr/refs/heads/master/docs/switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.4';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -60,7 +60,7 @@
     <link rel="prev" title="Notes" href="notes.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.5.3" />
+  <meta name="docsearch:version" content="0.5.4" />
   </head>
   
   
@@ -414,17 +414,16 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="efficieny-of-estimates-of-process-standard-deviation">
 <h1>Efficieny of estimates of process standard deviation<a class="headerlink" href="#efficieny-of-estimates-of-process-standard-deviation" title="Link to this heading">#</a></h1>
-<p>Both R-charts and XBar-charts based on range use sample range to estimate process
-standard deviation. Estimates of process standard deviation from sample range are
-less efficient than estimates from sample standard deviation when sample size is
-greater tha two, and those estimates are equal in efficiency when sample size is
+<p>Both R-charts and XBar-charts can use sample range to estimate process standard
+deviation. Estimates of process standard deviation from sample range are less
+efficient than estimates from sample standard deviation when sample size is
+greater than two, and those estimates are equal in efficiency when sample size is
 exactly two (see <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>). Therefore, routines using sample standard deviation might
 be preferable.</p>
 <p>The routines using sample range were written for teaching/learning, for times
 when interpretation of range is easier than standard deviation, when the
 simplicity of working with ranges is more important than the loss in efficiency
-(ie. when drawing charts by hand), and when trying to reproduce older range-based
-calculations.</p>
+(ie. when drawing charts by hand), and when reproducing older range-based calculations.</p>
 <section id="related-classes">
 <h2>Related classes<a class="headerlink" href="#related-classes" title="Link to this heading">#</a></h2>
 <p><a class="reference internal" href="../reference/generated/mqr.spc.XBarParams.html#mqr.spc.XBarParams" title="mqr.spc.XBarParams"><code class="xref myst py py-class docutils literal notranslate"><span class="pre">mqr.spc.XBarParams</span></code></a>, <a class="reference internal" href="../reference/generated/mqr.spc.RParams.html#mqr.spc.RParams" title="mqr.spc.RParams"><code class="xref myst py py-class docutils literal notranslate"><span class="pre">mqr.spc.RParams</span></code></a>, <a class="reference internal" href="../reference/generated/mqr.spc.SParams.html#mqr.spc.SParams" title="mqr.spc.SParams"><code class="xref myst py py-class docutils literal notranslate"><span class="pre">mqr.spc.SParams</span></code></a>.</p>

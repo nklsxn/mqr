@@ -3,8 +3,7 @@ MQR
 ===
 
 This library is a python toolkit for manufacturing and design statistics.
-Most of the tools are statistical methods that are commonly used in fields
-outside engineering. This document is a reference for the library.
+This document is a reference for the library.
 
 .. toctree::
     :maxdepth: 1
@@ -24,5 +23,5 @@ Credit
 ------
 Copyright (c) 2024 Nikolas Crossan, Kevin Otto
 
-Supported by the University of Melbourne  
+Supported by the University of Melbourne<br>
 Department of Mechanical Engineering

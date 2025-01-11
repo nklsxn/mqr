@@ -24,17 +24,18 @@ comparisons between two populations, and simple non-parametric comparisons betwe
 More detailed structues like data from factorial experiments, split-plots designs, etc.
 are handled with ANOVA and regression techniques.
 
-## ANOVA and regression
+## Regression and ANOVA
 Section
 : <project:regression-anova.md><br>
 
 Describes how to create linear models that explain the effect of many factors on a measurable response,
 including factors that are quantitative/continuous and also factors that are categorical (eg. one tool vs. another).
 MQR does not perform regression itself, but presents results in a consistent way.
-There are several tools in python to run regression; this guide uses `statsmodels` in examples.
-Also describes the analysis of how well a model explains the observations from which it was created.
-The mathematical tools are *ordinary least squares* (OLS) and *analysis of variance* (ANOVA),
-which can be viewed as a particular setup of an OLS problem.
+There are several tools in python that do regression; examples here are shown with statsmodels,
+and some tools in MQR rely on the output from statsmodels.
+This section also describes the analysis of how well a model explains the observations from which it was created.
+The mathematical tools are *ordinary least squares* (OLS) and *analysis of variance* (ANOVA).
+ANOVA can be viewed as a particular setup of an OLS problem.
 This section shows how to organise data ready for regression,
 and also describes the tools that MQR provides to analyse regression results.
 

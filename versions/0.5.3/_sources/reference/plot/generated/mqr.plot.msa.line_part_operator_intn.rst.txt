@@ -1,0 +1,11 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.plot.msa.</div>
+   <div class="empty"></div>
+
+line_part_operator_intn
+====================================
+
+.. currentmodule:: mqr.plot.msa
+
+.. autofunction:: line_part_operator_intn

@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.doe.Transform.</div>
+   <div class="empty"></div>
+
+from_map
+==========================
+
+.. currentmodule:: mqr.doe
+
+.. automethod:: Transform.from_map

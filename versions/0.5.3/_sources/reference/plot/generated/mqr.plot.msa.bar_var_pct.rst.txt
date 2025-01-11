@@ -1,0 +1,11 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.plot.msa.</div>
+   <div class="empty"></div>
+
+bar_var_pct
+========================
+
+.. currentmodule:: mqr.plot.msa
+
+.. autofunction:: bar_var_pct

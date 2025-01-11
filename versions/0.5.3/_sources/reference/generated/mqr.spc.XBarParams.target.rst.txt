@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.spc.XBarParams.</div>
+   <div class="empty"></div>
+
+target
+=========================
+
+.. currentmodule:: mqr.spc
+
+.. automethod:: XBarParams.target

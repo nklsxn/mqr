@@ -36,10 +36,10 @@ Detailed examples
 
 
 MQR provides tools to analyse the results of ordinary least squares (OLS) and analysis of variance (ANOVA).
-The examples in this guide and example notebooks use [statsmodels](https://www.statsmodels.org)
-to compute the regressions.
+The examples in this guide and example notebooks use [statsmodels](inv:statsmodels:std#index) to compute the regressions.
 
-The examples below use the `formula` API in statsmodels, which extracts data from a DataFrame by name.
+The examples below use the [formula](inv:#statsmodels.formula.api.ols) API in statsmodels,
+which extracts data from a DataFrame by name.
 In all OLS and ANOVA cases below, the problem is eventually represented (internally, by statsmodels)
 as the matrix equation
 ```{math}
@@ -47,7 +47,7 @@ as the matrix equation
 ```
 where $x$ is unknown and the problem is overdetermined ($A$ is full-rank and has more rows than columns).
 But, statsmodels also provides an interface to create models by passing the $y$ and $A$ directly;
-see [statsmodels.regression.linear_model.OLS](https://www.statsmodels.org/dev/generated/statsmodels.regression.linear_model.OLS.html).
+see [](inv:#statsmodels.regression.linear_model.OLS).
 
 The following examples rely on this initial data, constructed like a $2^2$ full-factorial experiment with 5 replicates.
 ```{code-cell} ipython3
@@ -66,8 +66,8 @@ interact['Z'] += st.norm(0, 0.5).rvs(len(levels))
 
 That data looks like this, in 3D.
 The blue mesh is the actual function,
-the orange dots are the samples from the function with added noise, and
-the blue dots are the means for each experimental configuration.
+the blue dots are the real values at each experimental configuration, and
+the orange dots are the samples from the function with added noise.
 The black dots mark the four corner points of the experiment, projected onto the bottom of the plot.
 The contours on the bottom plane are contour lines of the blue mesh.
 ```{code-cell} ipython3
@@ -124,14 +124,14 @@ result = model.fit()
 with Figure(5, 4, 2, 2) as (fig, axs):
     mqr.plot.regression.residuals(result.resid, result.fittedvalues, axs=axs)
 ```
-In this case
+In this case the residuals don't look at all normal/Gaussian:
 * the normal probability plot shows the data has a heavy right tail,
-* the histogram looks bi-modal,
+* the histogram looks bi-modal and the heavy right tail is obvious,
 * the residual versus observation index seems to show high and low grouping, and
 * the residual versus fitted value shows at least two groups,
   a high group (first and last fitted value) and a low group (inner two fitted values).
 
-This is caused by the interaction which could be captured with the model "Z ~ X + Y + X:Y".
+This poor fit is the result of omitting the significant interaction term from the model.
 
 Plots for residual-versus-factor can be shown with:
 ```{code-cell} ipython3
@@ -141,6 +141,9 @@ with Figure(5, 2, 1, 2) as (fig, axs):
 ```
 
 ## Analysing categorical data
+
+In addition to these plots, seaborn's [catplot](https://seaborn.pydata.org/generated/seaborn.catplot.html)
+and the plots used to construct it are excellent for visualising categorical data.
 
 ### Main effects
 To show main effects, use <project:#mqr.plot.anova.main_effects>.
@@ -230,13 +233,13 @@ MQR collects statistics about the fitted model into three tables.
 
 ```{code-cell} ipython3
 vstack(
-    'Adequacy',
+    '### Adequacy',
     mqr.anova.adequacy(result),
     mqr.nbtools.Line.HORIZONTAL,
-    'Summary',
+    '### Summary',
     mqr.anova.summary(result),
     mqr.nbtools.Line.HORIZONTAL,
-    'Coefficients',
+    '### Coefficients',
     mqr.anova.coeffs(result)
 )
 ```

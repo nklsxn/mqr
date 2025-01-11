@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Plots &#8212; mqr 0.5.3 documentation</title>
+    <title>Plots &#8212; mqr 0.5.4 documentation</title>
   
   
   
@@ -30,7 +30,7 @@
   <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/_static/mqr.css" />
@@ -44,14 +44,14 @@
 
     <script src="../_static/jquery.js?v=5d32c60e"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../_static/documentation_options.js?v=2a2fe768"></script>
+    <script src="../_static/documentation_options.js?v=e1a677a5"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/plots';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/nklsxn/mqr/refs/heads/master/docs/switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.4';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -61,7 +61,7 @@
     <link rel="prev" title="Statistical Process Control" href="statistical-process-control.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.5.3" />
+  <meta name="docsearch:version" content="0.5.4" />
   </head>
   
   
@@ -437,13 +437,13 @@
 <dt>Detailed examples</dt><dd><p><a class="github reference external" href="https://github.com/nklsxn/mqrpy-guide" rel="noreferer noopener" target="_blank">nklsxn/mqrpy-guide</a></p>
 </dd>
 <dt>Additional imports</dt><dd><p>In addition to the user-guide <a class="reference internal" href="../user-guide.html#imports"><span class="std std-ref">imports</span></a>,
-the plotting pages also requires the following imports.</p>
+the pages (Plots, Plotting Primer and Customising MQR plots) also require the following imports.</p>
 </dd>
 </dl>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
 </pre></div>
 </div>
 </div>
@@ -475,7 +475,7 @@ routines.
 <ul class="simple">
 <li><p><strong>matplotlib</strong> provides all the basic plotting tools, like figures and axes.
 It also provides various plot types (see <a class="reference internal" href="plotting-primer.html#elements"><span class="std std-ref">Elements</span></a> section).</p></li>
-<li><p><strong>seaborn</strong> builds on matplotlib to provide more sophisticated plots.
+<li><p><strong>seaborn</strong> builds on matplotlib to provide more sophisticated plots, mostly related to visualising statistics.
 It also provides alternatives to some matplotlib plots.</p></li>
 </ul>
 <section id="getting-help">
@@ -510,7 +510,7 @@ For more info on figures and axes, see <a class="reference external" href="https
 <img alt="../_images/730e2bec33693a043b569800d4bb5f0106c42536d4c5dbe280ec1bb902c4555c.png" src="../_images/730e2bec33693a043b569800d4bb5f0106c42536d4c5dbe280ec1bb902c4555c.png" />
 </div>
 </div>
-<p>In this guide and the example notebooks, the axes and figure variables are stored and used explicitlt.
+<p>In this guide and the example notebooks, the axes and figure variables are stored and used explicitly.
 For example, <code class="docutils literal notranslate"><span class="pre">ax.plot(...)</span></code> is usually used to draw a line, and
 <code class="docutils literal notranslate"><span class="pre">sns.histplot(...,</span> <span class="pre">ax=ax)</span></code> would be used to create a histogram.</p>
 <p>Lots of examples on the internet will not assign the result of calling <code class="docutils literal notranslate"><span class="pre">subplots</span></code>.
@@ -521,12 +521,13 @@ Explicit code is easier to read and easier to fix when there are problems.</p>
 </section>
 <section id="figure-context-manager">
 <h3>Figure context manager<a class="headerlink" href="#figure-context-manager" title="Link to this heading">#</a></h3>
-<p>The <code class="docutils literal notranslate"><span class="pre">mqr</span></code> library provides a wrapper around subplot creation.
+<p>MQR provides a wrapper around subplot creation.
 The wrapper is written as a <code class="docutils literal notranslate"><span class="pre">with</span></code>-block called <code class="docutils literal notranslate"><span class="pre">Figure</span></code>.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">with</span></code> construct is a python feature called a <em>context manager</em>.
 It helps automatically initialise and then destroy resources (the figure in this case).
 The <code class="docutils literal notranslate"><span class="pre">Figure</span></code> block creates a figure with the arguments supplied,
-and does a few other things to automate common actions to make nice looking figures in notebooks.</p>
+and does a few other things to automate common actions to make nice looking figures in notebooks.
+The code it executes is here: <a class="reference external" href="https://github.com/nklsxn/mqr/blob/master/mqr/plot/figure.py" rel="noreferer noopener" target="_blank"></a>.</p>
 <p>You can use either construct: <code class="docutils literal notranslate"><span class="pre">fig,</span> <span class="pre">ax</span> <span class="pre">=</span> <span class="pre">matplotlib.subplots(...)</span></code> or <code class="docutils literal notranslate"><span class="pre">with</span> <span class="pre">Figure(...)</span> <span class="pre">as</span> <span class="pre">(fig,</span> <span class="pre">ax):</span> <span class="pre">...</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -677,6 +678,11 @@ Grabbing a figure is useful for placing figures next to <code class="docutils li
 All plots that require multiple axes flatten the <code class="docutils literal notranslate"><span class="pre">ax</span></code> argument before use,
 so any dimensions that multiply to give the value of “No. axes” below will work,
 excluding <a class="reference internal" href="../reference/plot/generated/mqr.plot.correlation.matrix.html#mqr.plot.correlation.matrix" title="mqr.plot.correlation.matrix"><code class="xref myst py py-func docutils literal notranslate"><span class="pre">mqr.plot.correlation.matrix</span></code></a>, which must be exactly N by N.</p>
+<p>Some common plots are not listed here, because there are already implementations in matplotlib and seaborn.
+For example, MQR does not implement scatter plots, line plots, box plots or histograms.
+The <a class="reference internal" href="plotting-primer.html"><span class="std std-doc">Plotting primer</span></a> shows how to construct those directly from matplotlib or seaborn.
+<a class="reference external" href="https://matplotlib.org/stable/plot_types/index.html#plot-types" title="Matplotlib 3.10.0">matplotlib plot types</a> and
+<a class="reference external" href="https://seaborn.pydata.org/examples/index.html" title="seaborn 0.13.2">seaborn examples</a> for examples of other plots.</p>
 <p class="rubric">Process</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>

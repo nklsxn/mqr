@@ -4,7 +4,12 @@ Getting Started
 
 ## What MQR does
 
-MQR is a toolkit for applied statistics activities using python.
+MQR is a toolkit for applied statistics in python.
+It implements some statistical tools and brings those together with existing tools from other libraries.
+The library provides an organised interface for common activities,
+and is designed to ease planning, analysis and reporting in jupyter notebooks
+(or IDEs that run code to produce interactive output).
+
 Most of the tools are related to quite general statistical methods that are
 commonly used in fields outside design and manufacturing.
 
@@ -17,6 +22,11 @@ The tools in MQR cover four topics:
 
 See the <project:user-guide.md> for notes by topic, and take a look at the
 <project:api-ref.rst> for information about each module, class and function.
+
+Originally, MQR stood for _manufacturing quality and reliability_.
+MQR doesn't include tools for modelling product lifetime
+(see [reliability](inv:reliability:std#index) for that).
+However, it does provide the tools to create and analyse experiments that look for improvements in reliability.
 
 
 ## Installation
@@ -43,9 +53,9 @@ the processes that create products. To achieve that, the library does three thin
     and reduce repetitive code when plotting. The goal of these features is to make
     common plotting and descriptive activities fast.
 
-1.  **Code that provides a uniform interface to functionality in other libraries.**
+1.  **Provides a uniform interface to functionality from other libraries and MQR.**
 
-    Existing libraries provide good coverage of hypothesis tests, particularly
+    Existing libraries provide good functionality for hypothesis tests, particularly
     numpy, scipy and statsmodels. However, because the tests come from statistical
     literature, and are organised varously by name, purpose or application, they
     can be difficult to navigate, especially with limited experience using python.
@@ -53,17 +63,16 @@ the processes that create products. To achieve that, the library does three thin
     (eg. tests on means, tests on proportions), and (2) to provide a uniform
     interface that is easy for engineers to navigate and use in jupyter notebooks.
 
-    The `doe` module is another example. It provides an interface for designing experiments.
-    It can be used with `pyDOE3` (and provides convenience functions for that),
-    but also provides extra features that help with the practicalties of designing
+    The <project:#mqr.doe> module is another example. It provides an interface for designing experiments.
+    It can be used with [pyDOE3](inv:pyDOE3:std#index) (and provides convenience functions for that),
+    but also provides extra features that help with the practicalities of designing
     experiments, collecting and analysing data. For example, experimental designs
-    can be easily built up in a few lines of code by composing smaller sets of
-    runs.
+    can be built up in a few lines of code by composing smaller sets of runs.
 
 1.  **Code that implements useful features**
 
     MQR has tools to easily setup crossed GRR studies and the related mixed effects
-    analysis. The GRR studies are constructed using tools from `statsmodels`.
+    analysis. The GRR studies are constructed using tools from [statsmodels](inv:statsmodels:std#index).
 
     The library also implements hypothesis tests and confidence intervals that are
     not covered in other libraries like some confidence intervals on rates and proportions.

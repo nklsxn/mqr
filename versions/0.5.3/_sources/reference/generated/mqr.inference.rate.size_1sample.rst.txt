@@ -1,0 +1,11 @@
+.. raw:: html
+
+   <div class="prename">mqr.inference.rate.</div>
+   <div class="empty"></div>
+
+size_1sample
+===============================
+
+.. currentmodule:: mqr.inference.rate
+
+.. autofunction:: size_1sample

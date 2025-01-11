@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Customising MQR plots &#8212; mqr 0.5.3 documentation</title>
+    <title>Customising MQR plots &#8212; mqr 0.5.4 documentation</title>
   
   
   
@@ -30,7 +30,7 @@
   <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/_static/mqr.css" />
@@ -44,14 +44,14 @@
 
     <script src="../_static/jquery.js?v=5d32c60e"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../_static/documentation_options.js?v=2a2fe768"></script>
+    <script src="../_static/documentation_options.js?v=e1a677a5"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/plotting-customisation';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/nklsxn/mqr/refs/heads/master/docs/switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.4';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -61,7 +61,7 @@
     <link rel="prev" title="Plotting primer" href="plotting-primer.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.5.3" />
+  <meta name="docsearch:version" content="0.5.4" />
   </head>
   
   
@@ -433,13 +433,13 @@
 <h1>Customising MQR plots<a class="headerlink" href="#customising-mqr-plots" title="Link to this heading">#</a></h1>
 <dl class="simple myst">
 <dt>Additional imports</dt><dd><p>In addition to the user-guide <a class="reference internal" href="../user-guide.html#imports"><span class="std std-ref">imports</span></a>,
-the plotting pages also requires the following imports.</p>
+the pages (Plots, Plotting Primer and Customising MQR plots) also require the following imports.</p>
 </dd>
 </dl>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
 </pre></div>
 </div>
 </div>
@@ -452,7 +452,7 @@ the plotting pages also requires the following imports.</p>
 </ol>
 <section id="changing-rc-params-and-stylesheets">
 <h2>1. Changing <code class="docutils literal notranslate"><span class="pre">rc_params</span></code> and stylesheets<a class="headerlink" href="#changing-rc-params-and-stylesheets" title="Link to this heading">#</a></h2>
-<p>See: https://matplotlib.org/stable/users/explain/customizing.html</p>
+<p>See: <a class="reference external" href="https://matplotlib.org/stable/users/explain/customizing.html#customizing" title="Matplotlib 3.10.0">Customizing Matplotlib with style sheets and rcParams</a>.</p>
 <p>The options in <code class="docutils literal notranslate"><span class="pre">rc_params</span></code> globally change the way that matplotlib renders plots.
 Currently, <code class="docutils literal notranslate"><span class="pre">mqr</span></code> creates a set of rc_params in a context manager and uses that context at the same time as the <code class="docutils literal notranslate"><span class="pre">Figure</span></code> context.
 You can change the defaults used in <code class="docutils literal notranslate"><span class="pre">Figure</span></code> by changing or replacing <code class="docutils literal notranslate"><span class="pre">mqr.plot.defaults.Defaults.rc_params</span></code>.</p>
@@ -460,7 +460,7 @@ You can change the defaults used in <code class="docutils literal notranslate"><
 </section>
 <section id="changing-mqr-plot-defaults-defaults">
 <h2>2. Changing <code class="docutils literal notranslate"><span class="pre">mqr.plot.defaults.Defaults</span></code><a class="headerlink" href="#changing-mqr-plot-defaults-defaults" title="Link to this heading">#</a></h2>
-<p>Some specific defaults that are used several places have names in <code class="docutils literal notranslate"><span class="pre">Defaults</span></code>.
+<p>Some specific defaults that are used in several places have names in <code class="docutils literal notranslate"><span class="pre">Defaults</span></code>.
 For example, the colour of the targets and control limit lines on control charts are taken from, eg.
 <code class="docutils literal notranslate"><span class="pre">mqr.plot.defaults.Defaults.target_color</span></code>.</p>
 <p>Whenever a marker is added to a plot that shows no markers by default,

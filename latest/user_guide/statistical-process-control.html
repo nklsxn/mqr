@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Statistical Process Control &#8212; mqr 0.5.3 documentation</title>
+    <title>Statistical Process Control &#8212; mqr 0.5.4 documentation</title>
   
   
   
@@ -30,7 +30,7 @@
   <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/_static/mqr.css" />
@@ -44,7 +44,7 @@
 
     <script src="../_static/jquery.js?v=5d32c60e"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../_static/documentation_options.js?v=2a2fe768"></script>
+    <script src="../_static/documentation_options.js?v=e1a677a5"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/nklsxn/mqr/refs/heads/master/docs/switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.4';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -63,7 +63,7 @@
     <link rel="prev" title="Design of Experiments" href="design-of-experiments.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.5.3" />
+  <meta name="docsearch:version" content="0.5.4" />
   </head>
   
   
@@ -465,9 +465,10 @@ For details on those traditional parameters, see <a class="footnote-reference br
 </section>
 <section id="data-handling">
 <h2>Data Handling<a class="headerlink" href="#data-handling" title="Link to this heading">#</a></h2>
-<p>The routines in <code class="docutils literal notranslate"><span class="pre">mqr.spc</span></code> expect sample data to be passed in a specific way.
+<p>The routines in <code class="docutils literal notranslate"><span class="pre">mqr.spc</span></code> expect sample data to be passed in a particular way.
 For now, all sample sizes must be the same, though the sample sizes used to construct parameters
-need not match the size of the samples used to monitor a process in production.
+need not match the size of the samples used to monitor a process in production —
+their standard errors are calculated separately.
 Data should be formatted into pandas DataFrames with sample labels in the index.
 That is, if a process is sampled twice per day, then the first sample on the first day
 would be in the first row, the second sample that afternoon would be in the second row,
@@ -744,11 +745,35 @@ Each sample has eight observations labelled in the columns as “x1” to “x8�
 </section>
 <section id="control-parameters">
 <h2>Control parameters<a class="headerlink" href="#control-parameters" title="Link to this heading">#</a></h2>
-<p>The main type for statistical quality control in MQR is <a class="reference internal" href="../reference/generated/mqr.spc.ControlParams.html#mqr.spc.ControlParams" title="mqr.spc.ControlParams"><span class="xref myst py py-class">ControlParams</span></a>.
+<p>The main type for statistical process control in MQR is <a class="reference internal" href="../reference/generated/mqr.spc.ControlParams.html#mqr.spc.ControlParams" title="mqr.spc.ControlParams"><span class="xref myst py py-class">ControlParams</span></a>.
 ControlParams represent the target and limits of a process,
-and also contain enough information to calculate the monitored statistic from a set of samples.
-All control chart functions, therefore, required control parameters
-corresponding to the chart.
+and also contain enough information to calculate the monitored statistic from a set of samples.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The actual class <code class="docutils literal notranslate"><span class="pre">ControlParams</span></code> is a “superclass” in object-oriented terminology.
+All chart parameters like <code class="docutils literal notranslate"><span class="pre">XBarParams</span></code> are “derived” or “subclassed” from this type.
+Those derived classes have an “is-a” relationship with <code class="docutils literal notranslate"><span class="pre">ControlParams</span></code>:
+<code class="docutils literal notranslate"><span class="pre">XBarParams</span></code> is a <code class="docutils literal notranslate"><span class="pre">ControlParams</span></code>.
+In practise, this means that each of <code class="docutils literal notranslate"><span class="pre">XBarParams</span></code>, <code class="docutils literal notranslate"><span class="pre">RParams</span></code>, <code class="docutils literal notranslate"><span class="pre">SParams</span></code>, <code class="docutils literal notranslate"><span class="pre">EwmaParams</span></code> and <code class="docutils literal notranslate"><span class="pre">MewmaParams</span></code>
+can be used anywhere <code class="docutils literal notranslate"><span class="pre">ControlParams</span></code> are expected.</p>
+<p>Since the charting functions expect to be called with <code class="docutils literal notranslate"><span class="pre">ControlParams</span></code>,
+they can be called with, say, <code class="docutils literal notranslate"><span class="pre">SParams</span></code>.
+This is the signature of the charting function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mqr</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">chart</span><span class="p">(</span>
+    <span class="n">control_statistic</span><span class="p">:</span> <span class="n">ControlStatistic</span><span class="p">,</span>
+    <span class="n">control_params</span><span class="p">:</span> <span class="n">ControlParams</span><span class="p">,</span>
+    <span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Since <code class="docutils literal notranslate"><span class="pre">SParams</span></code> is a <code class="docutils literal notranslate"><span class="pre">ControlParams</span></code>, the charting function is called like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">SParams</span><span class="p">(</span><span class="mf">5.3</span><span class="p">)</span>
+<span class="n">statistic</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">statistic</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
+<span class="n">mqr</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">chart</span><span class="p">(</span><span class="n">statistic</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>All control chart functions require control parameters corresponding to the chart:
+the statistic should be calculated from the same object that will be passed to the plotting function.
 The class <a class="reference internal" href="../reference/generated/mqr.spc.XBarParams.html#mqr.spc.XBarParams" title="mqr.spc.XBarParams"><span class="xref myst py py-class">XBarParams</span></a> is an example of ControlParams and
 represents the parameters required to monitor the sample mean (x-bar) of a process.</p>
 <p>It is common to monitor in-control processes by comparing their statistics
@@ -824,7 +849,7 @@ For example, XBarParams, RParams and SParams are all ShewhartParams.</p>
 <p>New control parameters can be defined by subclassing
 <a class="reference internal" href="../reference/generated/mqr.spc.ControlParams.html#mqr.spc.ControlParams" title="mqr.spc.ControlParams"><span class="xref myst py py-class">ControlParams</span></a> or
 <a class="reference internal" href="../reference/generated/mqr.spc.ShewhartParams.html#mqr.spc.ShewhartParams" title="mqr.spc.ShewhartParams"><span class="xref myst py py-class">ShewhartParams</span></a>.
-New control parameters defined this was are supported by the plotting and alarming routines below.</p>
+New control parameters defined this way are supported by the plotting and alarming routines below.</p>
 </section>
 </section>
 <section id="alarm-rules">
@@ -833,7 +858,7 @@ New control parameters defined this was are supported by the plotting and alarmi
 in order to be considered out-of-control, and therefore warrant corrective action.</p>
 <p>Alarm rules are not a special type in MQR, but instead are simple functions/Callables
 with the signature:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">ControlStatistic</span><span class="p">,</span> <span class="n">ControlParams</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">Series</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Callable</span><span class="p">(</span><span class="n">ControlStatistic</span><span class="p">,</span> <span class="n">ControlParams</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">Series</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>where <code class="docutils literal notranslate"><span class="pre">Callable</span></code> is any object that can be called like a function,
@@ -846,7 +871,7 @@ If subsets overlap, then each ending point will be marked, even if they are cons
 The alarms do not, on the other hand, mark all the points that contributed to the alarm.</p>
 <p>The pre-defined alarms are all functions that return rules,
 which means they are functions that create functions.
-This can be confusing if you haven’t seen it before, but their use is straigh-forward;
+This can be confusing if you haven’t seen it before, but their use is straight-forward;
 see the examples below and in the <a class="reference internal" href="../reference/mqr.spc.rules.html#module-mqr.spc.rules" title="mqr.spc.rules"><span class="xref myst py py-mod">API Reference</span></a>.
 The pre-defined alarms are as follows:
 <a class="reference internal" href="../reference/generated/mqr.spc.rules.limits.html#mqr.spc.rules.limits" title="mqr.spc.rules.limits"><code class="xref myst py py-func docutils literal notranslate"><span class="pre">mqr.spc.rules.limits</span></code></a>,
@@ -854,7 +879,7 @@ The pre-defined alarms are as follows:
 <a class="reference internal" href="../reference/generated/mqr.spc.rules.n_1side.html#mqr.spc.rules.n_1side" title="mqr.spc.rules.n_1side"><code class="xref myst py py-func docutils literal notranslate"><span class="pre">mqr.spc.rules.n_1side</span></code></a>,
 <a class="reference internal" href="../reference/generated/mqr.spc.rules.n_trending.html#mqr.spc.rules.n_trending" title="mqr.spc.rules.n_trending"><code class="xref myst py py-func docutils literal notranslate"><span class="pre">mqr.spc.rules.n_trending</span></code></a>.</p>
 <p>This example shows a point that violates the limit of an XBar chart
-(the data is here, the chart is shown in the next section).</p>
+(the data is here, the chart is shown in the section <a class="reference internal" href="#control-charts"><span class="std std-ref">Control charts</span></a> below).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mean_hist</span> <span class="o">=</span> <span class="mf">10.0</span>
@@ -890,7 +915,7 @@ dtype: bool
 <p>MQR provides a mechanism (<a class="reference internal" href="../reference/generated/mqr.spc.rules.combine.html#mqr.spc.rules.combine" title="mqr.spc.rules.combine"><code class="xref myst py py-func docutils literal notranslate"><span class="pre">mqr.spc.rules.combine</span></code></a>) to build more complex alarm logic from simple elements.
 Any number of alarms can be combined with a logical operator to produce a new alarm.
 More information and examples are in the <a class="reference internal" href="../reference/generated/mqr.spc.rules.combine.html#mqr.spc.rules.combine" title="mqr.spc.rules.combine"><span class="xref myst py py-func">API Reference</span></a>.</p>
-<p>For example, this example creates a rule that triggers an alarm when</p>
+<p>This example creates a rule that triggers an alarm when</p>
 <ul class="simple">
 <li><p>the statistic is less that the LCL or greater than the UCL, or</p></li>
 <li><p>the statistic has 3 of 4 consecutive points greater than 2 standard deviations from the target, or</p></li>
@@ -926,7 +951,7 @@ all three of those conditions are true at the same time.</p>
 <section id="custom-rules">
 <h3>Custom rules<a class="headerlink" href="#custom-rules" title="Link to this heading">#</a></h3>
 <p>Any function that has the signature</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">ControlStatistic</span><span class="p">,</span> <span class="n">ControlParams</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">Series</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Callable</span><span class="p">(</span><span class="n">ControlStatistic</span><span class="p">,</span> <span class="n">ControlParams</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">Series</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>can be used as an alarm rule.
@@ -934,7 +959,7 @@ All custom defined rules with this signature will work with the combination func
 and will work with the plotting routines.
 All pre-defined control rules are defined as functions.
 The control rules are defined here, for reference:
-<a class="github reference external" href="https://github.com/nklsxn/mqr/blob/master/mqr/spc/rules.py" rel="noreferer noopener" target="_blank">nklsxn/mqr</a>.</p>
+<a class="reference external" href="https://github.com/nklsxn/mqr/blob/master/mqr/spc/rules.py" rel="noreferer noopener" target="_blank"></a>.</p>
 <p>Note that the index of the output series must match the index of the ControlStatistic argument.</p>
 </section>
 </section>
@@ -1071,7 +1096,7 @@ The object can be recreated by passing the resulting dictionary to the correspon
 <p>This is an example of pickling and then reconstructing an instance of RParams.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pickle</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
 
 <span class="n">params</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">RParams</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.86</span><span class="p">)</span>
 <span class="n">params_bin</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
@@ -1090,7 +1115,7 @@ The object can be recreated by passing the resulting dictionary to the correspon
 <p>This is an example of serliasing to JSON then reconstructing the same instance of RParams.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
 <span class="n">json_str</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">asdict</span><span class="p">())</span>
 <span class="n">params_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json_str</span><span class="p">)</span>

@@ -1,0 +1,11 @@
+.. raw:: html
+
+   <div class="prename">mqr.inference.nonparametric.quantile.</div>
+   <div class="empty"></div>
+
+test_1sample
+=================================================
+
+.. currentmodule:: mqr.inference.nonparametric.quantile
+
+.. autofunction:: test_1sample

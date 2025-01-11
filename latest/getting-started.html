@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Getting Started &#8212; mqr 0.5.3 documentation</title>
+    <title>Getting Started &#8212; mqr 0.5.4 documentation</title>
   
   
   
@@ -30,7 +30,7 @@
   <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/_static/mqr.css" />
@@ -44,14 +44,14 @@
 
     <script src="_static/jquery.js?v=5d32c60e"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="_static/documentation_options.js?v=2a2fe768"></script>
+    <script src="_static/documentation_options.js?v=e1a677a5"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'getting-started';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/nklsxn/mqr/refs/heads/master/docs/switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.4';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -61,7 +61,7 @@
     <link rel="prev" title="MQR" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.5.3" />
+  <meta name="docsearch:version" content="0.5.4" />
   </head>
   
   
@@ -411,8 +411,12 @@
 <h1>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading">#</a></h1>
 <section id="what-mqr-does">
 <h2>What MQR does<a class="headerlink" href="#what-mqr-does" title="Link to this heading">#</a></h2>
-<p>MQR is a toolkit for applied statistics activities using python.
-Most of the tools are related to quite general statistical methods that are
+<p>MQR is a toolkit for applied statistics in python.
+It implements some statistical tools and brings those together with existing tools from other libraries.
+The library provides an organised interface for common activities,
+and is designed to ease planning, analysis and reporting in jupyter notebooks
+(or IDEs that run code to produce interactive output).</p>
+<p>Most of the tools are related to quite general statistical methods that are
 commonly used in fields outside design and manufacturing.</p>
 <p>The tools in MQR cover four topics:</p>
 <ul class="simple">
@@ -423,6 +427,10 @@ commonly used in fields outside design and manufacturing.</p>
 </ul>
 <p>See the <a class="reference internal" href="user-guide.html"><span class="std std-doc">User Guide</span></a> for notes by topic, and take a look at the
 <a class="reference internal" href="api-ref.html"><span class="std std-doc">API Reference</span></a> for information about each module, class and function.</p>
+<p>Originally, MQR stood for <em>manufacturing quality and reliability</em>.
+MQR doesn’t include tools for modelling product lifetime
+(see <a class="reference external" href="https://reliability.readthedocs.io/en/latest/index.html" title="reliability 0.8.16">reliability</a> for that).
+However, it does provide the tools to create and analyse experiments that look for improvements in reliability.</p>
 </section>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
@@ -431,7 +439,7 @@ commonly used in fields outside design and manufacturing.</p>
 </pre></div>
 </div>
 <p>Import the package using:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">mqr</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">mqr</span>
 </pre></div>
 </div>
 </section>
@@ -446,24 +454,23 @@ of understanding the details of libraries like numpy, pandas, matplotlib, etc,
 and reduce repetitive code when plotting. The goal of these features is to make
 common plotting and descriptive activities fast.</p>
 </li>
-<li><p><strong>Code that provides a uniform interface to functionality in other libraries.</strong></p>
-<p>Existing libraries provide good coverage of hypothesis tests, particularly
+<li><p><strong>Provides a uniform interface to functionality from other libraries and MQR.</strong></p>
+<p>Existing libraries provide good functionality for hypothesis tests, particularly
 numpy, scipy and statsmodels. However, because the tests come from statistical
 literature, and are organised varously by name, purpose or application, they
 can be difficult to navigate, especially with limited experience using python.
 The purpose of wrapping these tools is (1) to organise tests by goal or application
 (eg. tests on means, tests on proportions), and (2) to provide a uniform
 interface that is easy for engineers to navigate and use in jupyter notebooks.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">doe</span></code> module is another example. It provides an interface for designing experiments.
-It can be used with <code class="docutils literal notranslate"><span class="pre">pyDOE3</span></code> (and provides convenience functions for that),
-but also provides extra features that help with the practicalties of designing
+<p>The <a class="reference internal" href="reference/mqr.doe.html#module-mqr.doe" title="mqr.doe"><code class="xref myst py py-mod docutils literal notranslate"><span class="pre">mqr.doe</span></code></a> module is another example. It provides an interface for designing experiments.
+It can be used with <a class="reference external" href="https://pydoe3.readthedocs.io/en/latest/index.html" title="pyDOE3 1">pyDOE3</a> (and provides convenience functions for that),
+but also provides extra features that help with the practicalities of designing
 experiments, collecting and analysing data. For example, experimental designs
-can be easily built up in a few lines of code by composing smaller sets of
-runs.</p>
+can be built up in a few lines of code by composing smaller sets of runs.</p>
 </li>
 <li><p><strong>Code that implements useful features</strong></p>
 <p>MQR has tools to easily setup crossed GRR studies and the related mixed effects
-analysis. The GRR studies are constructed using tools from <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code>.</p>
+analysis. The GRR studies are constructed using tools from <a class="reference external" href="https://www.statsmodels.org/stable/index.html" title="statsmodels 0.14.4 0.14.4">statsmodels</a>.</p>
 <p>The library also implements hypothesis tests and confidence intervals that are
 not covered in other libraries like some confidence intervals on rates and proportions.</p>
 <p>Statistical quality control tools are also provided, including traditional

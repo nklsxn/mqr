@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Data Analysis &#8212; mqr 0.5.3 documentation</title>
+    <title>Data Analysis &#8212; mqr 0.5.4 documentation</title>
   
   
   
@@ -30,7 +30,7 @@
   <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/_static/mqr.css" />
@@ -44,7 +44,7 @@
 
     <script src="../_static/jquery.js?v=5d32c60e"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../_static/documentation_options.js?v=2a2fe768"></script>
+    <script src="../_static/documentation_options.js?v=e1a677a5"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/nklsxn/mqr/refs/heads/master/docs/switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.4';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -63,7 +63,7 @@
     <link rel="prev" title="Process Summary and Capability" href="summary-capability.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.5.3" />
+  <meta name="docsearch:version" content="0.5.4" />
   </head>
   
   
@@ -447,8 +447,8 @@ comparisons between two populations, and simple non-parametric comparisons betwe
 More detailed structues like data from factorial experiments, split-plots designs, etc.
 are handled with ANOVA and regression techniques.</p>
 </section>
-<section id="anova-and-regression">
-<h2>ANOVA and regression<a class="headerlink" href="#anova-and-regression" title="Link to this heading">#</a></h2>
+<section id="regression-and-anova">
+<h2>Regression and ANOVA<a class="headerlink" href="#regression-and-anova" title="Link to this heading">#</a></h2>
 <dl class="simple myst">
 <dt>Section</dt><dd><p><a class="reference internal" href="regression-anova.html"><span class="std std-doc">Regression and ANOVA</span></a><br></p>
 </dd>
@@ -456,10 +456,11 @@ are handled with ANOVA and regression techniques.</p>
 <p>Describes how to create linear models that explain the effect of many factors on a measurable response,
 including factors that are quantitative/continuous and also factors that are categorical (eg. one tool vs. another).
 MQR does not perform regression itself, but presents results in a consistent way.
-There are several tools in python to run regression; this guide uses <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> in examples.
-Also describes the analysis of how well a model explains the observations from which it was created.
-The mathematical tools are <em>ordinary least squares</em> (OLS) and <em>analysis of variance</em> (ANOVA),
-which can be viewed as a particular setup of an OLS problem.
+There are several tools in python that do regression; examples here are shown with statsmodels,
+and some tools in MQR rely on the output from statsmodels.
+This section also describes the analysis of how well a model explains the observations from which it was created.
+The mathematical tools are <em>ordinary least squares</em> (OLS) and <em>analysis of variance</em> (ANOVA).
+ANOVA can be viewed as a particular setup of an OLS problem.
 This section shows how to organise data ready for regression,
 and also describes the tools that MQR provides to analyse regression results.</p>
 </section>
@@ -526,7 +527,7 @@ a gauge and measurement process is sufficiently precise to
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hypothesis-testing-and-confidence-intervals">Hypothesis testing and confidence intervals</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anova-and-regression">ANOVA and regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-and-anova">Regression and ANOVA</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#measurement-system-analysis">Measurement system analysis</a></li>
 </ul>
   </nav></div>

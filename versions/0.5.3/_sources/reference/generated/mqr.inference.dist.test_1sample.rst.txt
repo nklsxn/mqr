@@ -1,0 +1,11 @@
+.. raw:: html
+
+   <div class="prename">mqr.inference.dist.</div>
+   <div class="empty"></div>
+
+test_1sample
+===============================
+
+.. currentmodule:: mqr.inference.dist
+
+.. autofunction:: test_1sample

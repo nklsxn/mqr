@@ -1,0 +1,33 @@
+﻿.. py:module:: mqr.inference.rate
+
+.. raw:: html
+
+   <div class="prename">mqr.inference.</div>
+   <div class="empty"></div>
+
+rate
+==================
+
+.. currentmodule:: mqr.inference.rate
+
+
+
+
+
+
+.. rubric:: Functions
+.. autosummary::
+   :toctree:
+
+
+   confint_1sample
+   confint_2sample
+   power_1sample
+   power_2sample
+   size_1sample
+   size_2sample
+   test_1sample
+   test_2sample
+
+
+

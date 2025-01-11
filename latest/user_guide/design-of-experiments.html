@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Design of Experiments &#8212; mqr 0.5.3 documentation</title>
+    <title>Design of Experiments &#8212; mqr 0.5.4 documentation</title>
   
   
   
@@ -30,7 +30,7 @@
   <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/_static/mqr.css" />
@@ -44,7 +44,7 @@
 
     <script src="../_static/jquery.js?v=5d32c60e"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../_static/documentation_options.js?v=2a2fe768"></script>
+    <script src="../_static/documentation_options.js?v=e1a677a5"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/nklsxn/mqr/refs/heads/master/docs/switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.4';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -63,7 +63,7 @@
     <link rel="prev" title="Measurement System Analysis" href="measurement-system-analysis.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.5.3" />
+  <meta name="docsearch:version" content="0.5.4" />
   </head>
   
   
@@ -450,44 +450,58 @@ MQR focuses on the standard designs that can be analysed with linear regression.
 So, while ANOVA and regression are data analysis tools,
 <em>design of experiments</em> is about data collection.
 Standard factorial, fractional factorial and central composite designs are demonstrated below.
-Amongst design and process parameters, possibly many or them, these designs identify</p>
+In terms of design and process parameters, possibly multiple parameters, these experimental designs identify</p>
 <ul class="simple">
 <li><p><strong>main effects</strong>,
-which are linear terms like <span class="math notranslate nohighlight">\(x\)</span> in <span class="math notranslate nohighlight">\(z = a x + b y + c\)</span>,<br></p></li>
+which are linear terms like <span class="math notranslate nohighlight">\(x\)</span> in <span class="math notranslate nohighlight">\(f(x, y) = a x + b y + c\)</span>,<br></p></li>
 <li><p><strong>interactions</strong>
 which are non-linear terms involving variables that change one another’s effect on response like
-<span class="math notranslate nohighlight">\(x y\)</span> in <span class="math notranslate nohighlight">\(z = a x + b y + c x y + d\)</span>, and<br></p></li>
+<span class="math notranslate nohighlight">\(x y\)</span> in <span class="math notranslate nohighlight">\(f(x, y) = a x + b y + c x y + d\)</span>, and<br></p></li>
 <li><p><strong>quadratic effects</strong>
 which are second-order non-linearities within a single variable (or curvature along an axis) like
-<span class="math notranslate nohighlight">\(y^2\)</span> in <span class="math notranslate nohighlight">\(z = a x^2 + b y^2 + c x y + d\)</span>.
-Additionally, MQR provides tools to randomise runs, partly randomise runs (as in split-plot designs),
-and label point types to allow screening for curvature.</p></li>
+<span class="math notranslate nohighlight">\(y^2\)</span> in <span class="math notranslate nohighlight">\(f(x, y) = a x^2 + b y^2 + c x y + d\)</span>.</p></li>
 </ul>
+<p>Additionally, MQR provides tools to randomise runs, partly randomise runs (as in split-plot designs),
+and label point types to allow screening for curvature.</p>
 <p>The main features of this module are:</p>
 <ul class="simple">
 <li><p>easy concatenation of test runs, allowing screening to be expanded to more detailed tests,</p></li>
 <li><p>labelling with point types and block labels, for easy management in analysis,</p></li>
 <li><p>transforming from coded variables to physical values or category labels, to assist experimental technique,</p></li>
 <li><p>easy randomisation, and</p></li>
-<li><p>creation of from standard designs (factorial, etc.) using <code class="docutils literal notranslate"><span class="pre">pyDOE3</span></code> functions.</p></li>
+<li><p>creation of standard designs (factorial, etc.) using <code class="docutils literal notranslate"><span class="pre">pyDOE3</span></code> functions.</p></li>
 </ul>
-<p>For further information about <code class="docutils literal notranslate"><span class="pre">pyDOE3</span></code>, see <a class="reference external" href="https://pydoe3.readthedocs.io" rel="noreferer noopener" target="_blank">https://pydoe3.readthedocs.io</a>.</p>
+<p>For further information about <code class="docutils literal notranslate"><span class="pre">pyDOE3</span></code>, see <a class="reference external" href="https://pydoe3.readthedocs.io/en/latest/index.html" title="pyDOE3 1">here</a>.</p>
 </section>
 <section id="experimental-workflow">
 <h2>Experimental workflow<a class="headerlink" href="#experimental-workflow" title="Link to this heading">#</a></h2>
-<p>The module is designed to support a workflow similar to:</p>
+<p>The module is designed to fit into the <strong>Improve</strong> part of a DMAIC approach:</p>
+<ul class="simple">
+<li><p>(<strong>Define</strong> the process with process maps and FMEA, <a class="reference internal" href="../reference/mqr.process.html#module-mqr.process" title="mqr.process"><code class="xref myst py py-mod docutils literal notranslate"><span class="pre">mqr.process</span></code></a>,
+resulting in experimental variables.)</p></li>
+<li><p>(<strong>Measure</strong> the response/dimension of interest and
+check the characteristics of the measurement system <a class="reference internal" href="../reference/mqr.msa.html#module-mqr.msa" title="mqr.msa"><code class="xref myst py py-mod docutils literal notranslate"><span class="pre">mqr.msa</span></code></a>.)</p></li>
+<li><p>(<strong>Analyse</strong> the experimental data to see if the process is capable:
+<a class="reference internal" href="../reference/mqr.process.html#module-mqr.process" title="mqr.process"><code class="xref myst py py-mod docutils literal notranslate"><span class="pre">mqr.process</span></code></a> and <a class="reference internal" href="../reference/mqr.inference.html#module-mqr.inference" title="mqr.inference"><code class="xref myst py py-mod docutils literal notranslate"><span class="pre">mqr.inference</span></code></a>.)</p></li>
+<li><p><strong>Improve</strong> the process by showing which variables give the desired response.</p>
 <ol class="arabic simple">
-<li><p>(Analyse the process with process maps and FMEA, resulting in experimental variables.)</p></li>
-<li><p>Design the experiment using the tools in <code class="docutils literal notranslate"><span class="pre">mqr.doe</span></code> (or <code class="docutils literal notranslate"><span class="pre">pyDOE3</span></code> directly).</p></li>
+<li><p>Design an experiment using the tools in <a class="reference internal" href="../reference/mqr.doe.html#module-mqr.doe" title="mqr.doe"><code class="xref myst py py-mod docutils literal notranslate"><span class="pre">mqr.doe</span></code></a>
+(or <a class="reference external" href="https://pydoe3.readthedocs.io/en/latest/index.html" title="pyDOE3 1">pyDOE3</a> directly), exercising the variables
+identified in the earlier steps.</p></li>
 <li><p>Randomise the runs, possibly in blocks.</p></li>
 <li><p>Save the design to a <em>design file</em>, and append the experimental observations
 as new columns to make an <em>experiment file</em>.</p></li>
-<li><p>(optional) Instead of creating a new file, get the dataframe version of a design
-and enter data directly into the notebook as an extra column on the dataframe:
-<code class="docutils literal notranslate"><span class="pre">design['Observation']</span> <span class="pre">=</span> <span class="pre">np.array([...])</span></code></p></li>
+<li><p>(optional) Instead of creating a new file, get the DataFrame version of a design
+and enter data directly into the notebook as extra columns on the DataFrame:
+<code class="docutils literal notranslate"><span class="pre">design['Response']</span> <span class="pre">=</span> <span class="pre">np.array([...])</span></code>.</p></li>
 <li><p>Load the <em>experiment file</em> (if you created one) ready for analysis with ANOVA
-and regression tools.</p></li>
+and regression tools (<a class="reference internal" href="../reference/mqr.anova.html#module-mqr.anova" title="mqr.anova"><code class="xref myst py py-mod docutils literal notranslate"><span class="pre">mqr.anova</span></code></a>).</p></li>
+<li><p>Make changes to the process, guided by the model.</p></li>
+<li><p>Verify that the response changed using an appropriate statistical test: <a class="reference internal" href="../reference/mqr.inference.html#module-mqr.inference" title="mqr.inference"><code class="xref myst py py-mod docutils literal notranslate"><span class="pre">mqr.inference</span></code></a>.</p></li>
 </ol>
+</li>
+<li><p>(<strong>Control</strong> the processes capability using tools like <a class="reference internal" href="../reference/mqr.spc.html#module-mqr.spc" title="mqr.spc"><code class="xref myst py py-mod docutils literal notranslate"><span class="pre">mqr.spc</span></code></a>.)</p></li>
+</ul>
 </section>
 <section id="experimental-designs">
 <h2>Experimental designs<a class="headerlink" href="#experimental-designs" title="Link to this heading">#</a></h2>
@@ -497,11 +511,13 @@ The difference is that most operations in <code class="docutils literal notransl
 (“Runs”, “Blocks”, etc.) in particular ways, and to manage that treatment,
 <code class="docutils literal notranslate"><span class="pre">Design</span></code> was not implemented as a single <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>.
 To get the final <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>, call the <a class="reference internal" href="../reference/generated/mqr.doe.Design.to_df.html#mqr.doe.Design.to_df" title="mqr.doe.Design.to_df"><code class="xref myst py py-meth docutils literal notranslate"><span class="pre">mqr.doe.Design.to_df</span></code></a> method.
-Also, when displayed in a notebook,<code class="docutils literal notranslate"><span class="pre">Design</span></code>s are displayed like the <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>
+When displayed in a notebook,<code class="docutils literal notranslate"><span class="pre">Design</span></code>s are displayed like the <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>
 that would result from calling <code class="docutils literal notranslate"><span class="pre">Design.to_df()</span></code>.
 The examples below show how to create basic experimental designs.</p>
 <p>Note that the convenience functions <code class="docutils literal notranslate"><span class="pre">from_*</span></code> reflect the interface of <code class="docutils literal notranslate"><span class="pre">pyDOE3</span></code>:
-<a class="reference internal" href="../reference/generated/mqr.doe.Design.from_ccdesign.html#mqr.doe.Design.from_ccdesign" title="mqr.doe.Design.from_ccdesign"><code class="xref myst py py-meth docutils literal notranslate"><span class="pre">mqr.doe.Design.from_ccdesign</span></code></a> calls <code class="docutils literal notranslate"><span class="pre">pyDOE3.ccdesign</span></code>.</p>
+<a class="reference internal" href="../reference/generated/mqr.doe.Design.from_ccdesign.html#mqr.doe.Design.from_ccdesign" title="mqr.doe.Design.from_ccdesign"><code class="xref myst py py-meth docutils literal notranslate"><span class="pre">mqr.doe.Design.from_ccdesign</span></code></a> calls <a class="reference external" href="https://pydoe3.readthedocs.io/en/latest/rsm.html#central-composite" title="pyDOE3 1">ccdesign</a>.
+Alternatively, call those functions directly and pass the levels to
+<a class="reference internal" href="../reference/generated/mqr.doe.Design.from_levels.html#mqr.doe.Design.from_levels" title="mqr.doe.Design.from_levels"><code class="xref myst py py-meth docutils literal notranslate"><span class="pre">mqr.doe.Design.from_levels</span></code></a>.</p>
 <section id="full-factorial-designs">
 <h3>Full factorial designs<a class="headerlink" href="#full-factorial-designs" title="Link to this heading">#</a></h3>
 <p>Full factorical designs test every level of every variable and all interactions.</p>
@@ -664,7 +680,8 @@ but counfounds <code class="docutils literal notranslate"><span class="pre">x3</
 <p>This design adds three centre points to a <span class="math notranslate nohighlight">\(2^2\)</span> full-factorial design to check for curvature.
 The plus operator concatenates runs.
 The mean of the centre points in this design can be compared to the mean of the corner points
-using an appropriate hypothesis test (like <a class="reference internal" href="../reference/generated/mqr.inference.mean.test_2sample.html#mqr.inference.mean.test_2sample" title="mqr.inference.mean.test_2sample"><code class="xref myst py py-func docutils literal notranslate"><span class="pre">mqr.inference.mean.test_2sample</span></code></a>).</p>
+using an appropriate hypothesis test (like <a class="reference internal" href="../reference/generated/mqr.inference.mean.test_2sample.html#mqr.inference.mean.test_2sample" title="mqr.inference.mean.test_2sample"><code class="xref myst py py-func docutils literal notranslate"><span class="pre">mqr.inference.mean.test_2sample</span></code></a>),
+or the centre points can be given a separate block label that is used as a categorical variable in ANOVA.</p>
 <p>Note that corner points have type 1 and centre points have type 0.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -674,7 +691,7 @@ using an appropriate hypothesis test (like <a class="reference internal" href=".
 <span class="n">fullfact</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">doe</span><span class="o">.</span><span class="n">Design</span><span class="o">.</span><span class="n">from_fullfact</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">levels</span><span class="p">)</span>
 <span class="n">centres</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">doe</span><span class="o">.</span><span class="n">Design</span><span class="o">.</span><span class="n">from_centrepoints</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 
-<span class="n">fullfact</span> <span class="o">+</span> <span class="n">centres</span>
+<span class="n">fullfact</span> <span class="o">+</span> <span class="n">centres</span> <span class="c1"># &#39;+&#39; concatenates the runs from each design</span>
 </pre></div>
 </div>
 </div>
@@ -744,9 +761,11 @@ The axial points (points lying on an axis) are designed to quantify quadratic ef
 Axial points are always labelled with point type 2.</p>
 <p>The <span class="math notranslate nohighlight">\(\sqrt{2}\)</span> magnitude of the axial points is deliberate
 and creates desirable properties in the variance of the predicted response.
-See <a class="footnote-reference brackets" href="#id3" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> and <a class="footnote-reference brackets" href="#id4" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> for more details.</p>
+See “sqhericity” in <a class="footnote-reference brackets" href="#id3" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> and <a class="footnote-reference brackets" href="#id4" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> for more details.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">centres</span></code> argument adds centre points, which are useful for estimating error,
-and therefore increase the power of the ANOVA statistical tests.</p>
+and therefore increase the power of the ANOVA statistical tests.
+This adds three centre point runs following the factorial corner points, and
+another three centre point runs following the axial runs.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">]</span>
@@ -860,7 +879,7 @@ and therefore increase the power of the ANOVA statistical tests.</p>
 <p>Central composite designs can be constructed manually using
 factorial designs, centre points and axial points.
 This example constructs the central composite design from the previous example.
-Here, though, the blocking tools create orthogonal blocks from the corner and axial points.</p>
+Here, though, the <code class="docutils literal notranslate"><span class="pre">as_block</span></code> method allows corner and axial points to be checked in separate runs.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">]</span>
@@ -993,10 +1012,10 @@ Here, though, the blocking tools create orthogonal blocks from the corner and ax
 <p>MQR does not expose the latin hypercube or Box-Behnken designs from <code class="docutils literal notranslate"><span class="pre">pyDOE3</span></code>,
 but they can be constructed easily.
 This example calls <code class="docutils literal notranslate"><span class="pre">pyDOE3</span></code> directly, resulting in an <code class="docutils literal notranslate"><span class="pre">np.array</span></code> of levels.
-The design is a Box-Behnken design with no centre points for three factors.</p>
+The design is a Box-Behnken design for three factors, and contains no centre points.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyDOE3</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pyDOE3</span>
 
 <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">,</span> <span class="s1">&#39;x3&#39;</span><span class="p">]</span>
 <span class="n">levels</span> <span class="o">=</span> <span class="n">pyDOE3</span><span class="o">.</span><span class="n">bbdesign</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
@@ -1095,11 +1114,10 @@ The design is a Box-Behnken design with no centre points for three factors.</p>
 </section>
 <section id="practicalities">
 <h2>Practicalities<a class="headerlink" href="#practicalities" title="Link to this heading">#</a></h2>
-<p>These features are to help with the practicalities of running experiments.</p>
+<p>These features help with the practicalities of running experiments.</p>
 <section id="replication">
 <h3>Replication<a class="headerlink" href="#replication" title="Link to this heading">#</a></h3>
-<p>Runs can be replicated.
-The optional argument <code class="docutils literal notranslate"><span class="pre">label</span></code> adds a column that labels replicates.</p>
+<p>Runs can be replicated.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">]</span>
@@ -1196,14 +1214,16 @@ The optional argument <code class="docutils literal notranslate"><span class="pr
   </tbody>
 </table></div></div>
 </div>
-<p>If necessary, the replicates can be labelled.</p>
+<p>The optional argument <code class="docutils literal notranslate"><span class="pre">label</span></code> adds a column that labels replicates.
+This might be helpful for managing eg. split-plot structure
+if experimental constraints restrict randomisation of replicates.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">]</span>
 <span class="n">levels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
 
 <span class="n">design</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">doe</span><span class="o">.</span><span class="n">Design</span><span class="o">.</span><span class="n">from_fullfact</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">levels</span><span class="p">)</span>
-<span class="n">design</span><span class="o">.</span><span class="n">replicate</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;Rep&#39;</span><span class="p">)</span>
+<span class="n">design</span><span class="o">.</span><span class="n">replicate</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Rep&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1309,9 +1329,9 @@ The optional argument <code class="docutils literal notranslate"><span class="pr
 </section>
 <section id="randomisation">
 <h3>Randomisation<a class="headerlink" href="#randomisation" title="Link to this heading">#</a></h3>
-<p>Rearrange the rows of a <code class="docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> by calling <a class="reference internal" href="../reference/generated/mqr.doe.Design.randomise_runs.html#mqr.doe.Design.randomise_runs" title="mqr.doe.Design.randomise_runs"><code class="xref myst py py-meth docutils literal notranslate"><span class="pre">mqr.doe.Design.randomise_runs</span></code></a>.
+<p>Randomise the rows of a <code class="docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> by calling <a class="reference internal" href="../reference/generated/mqr.doe.Design.randomise_runs.html#mqr.doe.Design.randomise_runs" title="mqr.doe.Design.randomise_runs"><code class="xref myst py py-meth docutils literal notranslate"><span class="pre">mqr.doe.Design.randomise_runs</span></code></a>.
 Randomisation uses the <code class="docutils literal notranslate"><span class="pre">numpy</span></code> random number generator, so seeding that generator will seed the MQR randomisation.
-Blocks or factor levels can be kept in order by including the name of the block or factor in the argument <code class="docutils literal notranslate"><span class="pre">order</span></code>.</p>
+Blocks or factor levels can be kept in order by passing the name of the blocks or factors as arguments.</p>
 <p>This example is the blocked central composite design from above.
 The runs within each block are randomised, or put another way, the blocks are ordered.</p>
 <div class="cell docutils container">
@@ -1324,7 +1344,7 @@ The runs within each block are randomised, or put another way, the blocks are or
 <span class="n">centres</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">doe</span><span class="o">.</span><span class="n">Design</span><span class="o">.</span><span class="n">from_centrepoints</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="n">design</span> <span class="o">=</span> <span class="n">fullfact</span><span class="o">.</span><span class="n">as_block</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">centres</span><span class="o">.</span><span class="n">as_block</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">axial</span><span class="o">.</span><span class="n">as_block</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">centres</span><span class="o">.</span><span class="n">as_block</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 
-<span class="c1"># Seeding with 0 for replicatable docs;</span>
+<span class="c1"># Seeding with 0 for repeatable docs;</span>
 <span class="c1"># in practise, use something like the date-time or a randomly generated seed.</span>
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">design</span><span class="o">.</span><span class="n">randomise_runs</span><span class="p">(</span><span class="s1">&#39;Block&#39;</span><span class="p">)</span>
@@ -1460,7 +1480,7 @@ Or they can be dicts that give a mapped value for every coded level.</p>
 The factor <code class="docutils literal notranslate"><span class="pre">x3</span></code> is left in coded units.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mqr.doe</span> <span class="kn">import</span> <span class="n">Transform</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">mqr.doe</span><span class="w"> </span><span class="kn">import</span> <span class="n">Transform</span>
 
 <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">,</span> <span class="s1">&#39;x3&#39;</span><span class="p">,</span> <span class="s1">&#39;x4&#39;</span><span class="p">]</span>
 <span class="n">levels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
@@ -1623,7 +1643,7 @@ The factor <code class="docutils literal notranslate"><span class="pre">x3</span
 <section id="saving-to-a-file">
 <h3>Saving to a file<a class="headerlink" href="#saving-to-a-file" title="Link to this heading">#</a></h3>
 <p>There are a few options for saving designs to files.
-If the design is going to a database, use python’s pickle library, or some similar serialisation.</p>
+If the design is going to a file/database, use python’s pickle library, or some similar serialisation.</p>
 <p>Below is an example that saves the design to a CSV or Excel file.
 The index_label argument in <code class="docutils literal notranslate"><span class="pre">DataFrame.to_csv(...)</span></code> tells Pandas to include the index column with the given name.</p>
 <div class="cell docutils container">
@@ -1633,7 +1653,7 @@ The index_label argument in <code class="docutils literal notranslate"><span cla
 <span class="n">design</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">doe</span><span class="o">.</span><span class="n">Design</span><span class="o">.</span><span class="n">from_fullfact</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">levels</span><span class="p">)</span>
 
 <span class="c1"># np.random.randint(0, 2**32-1)</span>
-<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1294194915</span><span class="p">)</span> <span class="c1"># Randomly generated seed (above)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1294194915</span><span class="p">)</span> <span class="c1"># Randomly generated seed</span>
 <span class="n">frozen_design</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">randomise_runs</span><span class="p">()</span><span class="o">.</span><span class="n">to_df</span><span class="p">()</span>
 
 <span class="c1"># Run these to create the actual files</span>

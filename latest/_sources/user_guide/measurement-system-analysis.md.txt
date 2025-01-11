@@ -35,7 +35,9 @@ Detailed examples
 
 
 MQR can automatically configure an ANOVA to perform a crossed GRR study.
-Data should be arranged in a DataFrame with columns for the measurement, part number and operator.
+Data should be arranged in a DataFrame with columns for the measurement, part identifier and operator identifier.
+These columns can have any names, which will be configured in the next step.
+The DataFrame can have other columns too, which will be ignored.
 ```{code-cell} ipython3
 data = pd.read_csv(mqr.sample_data('grr.csv'))
 data.head()
@@ -52,11 +54,11 @@ Define the following parameters:
 MQR uses the column name mapping to configure the GRR regression.
 
 ```{code-cell} ipython3
-USL = 10.5
-LSL = 7.5
-SV = 6.0
-Include_Interaction = True
-tol = np.absolute(USL - LSL)
+usl = 10.5
+lsl = 7.5
+tol = usl - lsl
+sv = 6.0
+include_interaction = True
 
 name_mapping = mqr.msa.NameMapping(
     measurement='Height',
@@ -72,8 +74,8 @@ grr = mqr.msa.GRR(
     data,
     tolerance=tol,
     names=name_mapping,
-    include_interaction=False,
-    nsigma=SV)
+    include_interaction=include_interaction,
+    nsigma=sv)
 grr
 ```
 
@@ -84,7 +86,7 @@ Use the regression result (`GRR.regression_result`) to analyse the model fit.
 The tools from `mqr.anova` show a summary of the contrasts and the adquacy of the fit.
 The residuals can be reviewed as demonstrated in [Analysing residuals](/user_guide/regression-anova).
 
-The summary above, the interaction is not significant, and the GRR should be re-run without it.
+In the summary below, the interaction is not significant, and the GRR should be re-run without it.
 This example continues with the interaction included.
 
 ```{code-cell} ipython3

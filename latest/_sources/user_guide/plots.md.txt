@@ -44,7 +44,7 @@ Detailed examples
 
 Additional imports
 : In addition to the user-guide [imports](/user-guide.md#imports),
-  the plotting pages also requires the following imports.
+  the pages (Plots, Plotting Primer and Customising MQR plots) also require the following imports.
 ```{code-cell} ipython3
 from matplotlib import pyplot as plt
 import seaborn as sns
@@ -77,7 +77,7 @@ routines.
 The summaries and example notebooks use two libraries: `matplotlib` and `seaborn`.
 * **matplotlib** provides all the basic plotting tools, like figures and axes.
   It also provides various plot types (see <project:/user_guide/plotting-primer.md#elements> section).
-* **seaborn** builds on matplotlib to provide more sophisticated plots.
+* **seaborn** builds on matplotlib to provide more sophisticated plots, mostly related to visualising statistics.
   It also provides alternatives to some matplotlib plots.
 
 
@@ -105,7 +105,7 @@ fig, ax = plt.subplots(figsize=(6, 3))
 plt.show(fig)
 plt.close(fig)
 ```
-In this guide and the example notebooks, the axes and figure variables are stored and used explicitlt.
+In this guide and the example notebooks, the axes and figure variables are stored and used explicitly.
 For example, `ax.plot(...)` is usually used to draw a line, and
 `sns.histplot(..., ax=ax)` would be used to create a histogram.
 
@@ -117,13 +117,14 @@ Explicit code is easier to read and easier to fix when there are problems.
 
 
 ### Figure context manager
-The `mqr` library provides a wrapper around subplot creation.
+MQR provides a wrapper around subplot creation.
 The wrapper is written as a `with`-block called `Figure`.
 
 The `with` construct is a python feature called a _context manager_.
 It helps automatically initialise and then destroy resources (the figure in this case).
 The `Figure` block creates a figure with the arguments supplied,
 and does a few other things to automate common actions to make nice looking figures in notebooks.
+The code it executes is here: [](https://github.com/nklsxn/mqr/blob/master/mqr/plot/figure.py).
 
 You can use either construct: `fig, ax = matplotlib.subplots(...)` or `with Figure(...) as (fig, ax): ...`.
 
@@ -185,6 +186,12 @@ MQR constructs the following common plots for convenience.
 All plots that require multiple axes flatten the `ax` argument before use,
 so any dimensions that multiply to give the value of "No. axes" below will work,
 excluding <project:#mqr.plot.correlation.matrix>, which must be exactly N by N.
+
+Some common plots are not listed here, because there are already implementations in matplotlib and seaborn.
+For example, MQR does not implement scatter plots, line plots, box plots or histograms.
+The [](project:/user_guide/plotting-primer.md) shows how to construct those directly from matplotlib or seaborn.
+[matplotlib plot types](inv:matplotlib:std#plot_types) and
+[seaborn examples](inv:seaborn:std#examples/index) for examples of other plots.
 
 
 ```{rubric} Process
