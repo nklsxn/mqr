@@ -1,5 +1,5 @@
 import importlib.metadata
-__version__ = importlib.metadata.version('mqr-quality')
+__version__ = importlib.metadata.version('mqrpy')
 
 import mqr.anova
 import mqr.doe

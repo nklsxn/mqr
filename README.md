@@ -4,7 +4,7 @@ This library is a python toolkit for manufacturing and design statistics.
 
 Installation
 ------------
-`pip install mqr-quality`
+`pip install mqrpy`
 
 Import the package using:<br>
 `import mqr`
