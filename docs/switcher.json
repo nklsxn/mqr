@@ -1,8 +1,13 @@
 [
     {
-        "version": "0.5.4",
-        "name": "0.5.4 (latest)",
+        "version": "0.6.0",
+        "name": "0.6.0 (latest)",
         "url": "https://nklsxn.github.io/mqr/latest"
+    },
+    {
+        "version": "0.5.4",
+        "name": "0.5.4",
+        "url": "https://nklsxn.github.io/mqr/versions/0.5.4"
     },
     {
         "version": "0.5.3",
