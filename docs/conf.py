@@ -10,7 +10,7 @@
 import importlib
 
 project = 'mqr'
-copyright = '2024, Nikolas Crossan'
+copyright = '2024-2025 Nikolas Crossan and Kevin Otto'
 author = 'Nikolas Crossan'
 version = importlib.metadata.version('mqrpy')
 release = version

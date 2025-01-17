@@ -21,7 +21,7 @@ This package is provided under the BSD License (3-clause).
 
 Credit
 ------
-Copyright (c) 2024 Nikolas Crossan, Kevin Otto
+Copyright 2024-2025 Nikolas Crossan and Kevin Otto
 
 Supported by the University of Melbourne<br>
 Department of Mechanical Engineering
