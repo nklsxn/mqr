@@ -1,0 +1,11 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.spc.util.</div>
+   <div class="empty"></div>
+
+c4_fn
+==================
+
+.. currentmodule:: mqr.spc.util
+
+.. autofunction:: c4_fn

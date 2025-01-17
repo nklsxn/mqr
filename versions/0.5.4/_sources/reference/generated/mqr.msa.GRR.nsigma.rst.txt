@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.msa.GRR.</div>
+   <div class="empty"></div>
+
+mqr.msa.GRR.nsigma
+==================
+
+.. currentmodule:: mqr.msa
+
+.. autoattribute:: GRR.nsigma

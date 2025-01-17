@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.doe.Design.</div>
+   <div class="empty"></div>
+
+to_df
+====================
+
+.. currentmodule:: mqr.doe
+
+.. automethod:: Design.to_df

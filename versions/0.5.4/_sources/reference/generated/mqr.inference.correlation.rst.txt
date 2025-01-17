@@ -1,0 +1,28 @@
+﻿.. py:module:: mqr.inference.correlation
+
+.. raw:: html
+
+   <div class="prename">mqr.inference.</div>
+   <div class="empty"></div>
+
+correlation
+=========================
+
+.. currentmodule:: mqr.inference.correlation
+
+
+
+
+
+
+.. rubric:: Functions
+.. autosummary::
+   :toctree:
+
+
+   confint
+   test
+   test_diff
+
+
+

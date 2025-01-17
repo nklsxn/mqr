@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.inference.confint.ConfidenceInterval.</div>
+   <div class="empty"></div>
+
+mqr.inference.confint.ConfidenceInterval.lower
+==============================================
+
+.. currentmodule:: mqr.inference.confint
+
+.. autoattribute:: ConfidenceInterval.lower

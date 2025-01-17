@@ -1,0 +1,1817 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Design of Experiments &#8212; mqr 0.5.4 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/_static/mqr.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mqr.css?v=394250bc" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../_static/documentation_options.js?v=e1a677a5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/design-of-experiments';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/nklsxn/mqr/refs/heads/master/docs/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.4';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Statistical Process Control" href="statistical-process-control.html" />
+    <link rel="prev" title="Measurement System Analysis" href="measurement-system-analysis.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.5.4" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">MQR</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting-started.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../user-guide.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api-ref.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../notes/notes.html">
+    Notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/nklsxn/mqr" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting-started.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../user-guide.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api-ref.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../notes/notes.html">
+    Notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/nklsxn/mqr" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="summary-capability.html">Process Summary and Capability</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="data-analysis.html">Data Analysis</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="inference.html">Basic Statistical Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression-anova.html">Regression and ANOVA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="measurement-system-analysis.html">Measurement System Analysis</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Design of Experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistical-process-control.html">Statistical Process Control</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="plots.html">Plots</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="plotting-primer.html">Plotting primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plotting-customisation.html">Customising MQR plots</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../user-guide.html" class="nav-link">User Guide</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Design of Experiments</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="design-of-experiments">
+<h1>Design of Experiments<a class="headerlink" href="#design-of-experiments" title="Link to this heading">#</a></h1>
+<dl class="simple myst">
+<dt>Related modules</dt><dd><p><a class="reference internal" href="../reference/mqr.doe.html#module-mqr.doe" title="mqr.doe"><code class="xref myst py py-mod docutils literal notranslate"><span class="pre">mqr.doe</span></code></a></p>
+</dd>
+<dt>Detailed examples</dt><dd><p><a class="github reference external" href="https://github.com/nklsxn/mqrpy-guide" rel="noreferer noopener" target="_blank">nklsxn/mqrpy-guide</a></p>
+</dd>
+</dl>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>The goal of experimental design is to efficiently collect enough data to make
+conclusions about a particular set of questions.
+In the case of ANOVA, the question is whether subsets of a sample have different means.
+In the case of regression, the question is whether or not the terms in an equation
+have non-zero coefficients.</p>
+<p>While it is possible to come up with bespoke null-hypotheses and then derive the
+distributions of related statistics,
+many problems can be answered with a set of standard designs and their corresponding null-hypotheses.
+MQR focuses on the standard designs that can be analysed with linear regression.
+So, while ANOVA and regression are data analysis tools,
+<em>design of experiments</em> is about data collection.
+Standard factorial, fractional factorial and central composite designs are demonstrated below.
+In terms of design and process parameters, possibly multiple parameters, these experimental designs identify</p>
+<ul class="simple">
+<li><p><strong>main effects</strong>,
+which are linear terms like <span class="math notranslate nohighlight">\(x\)</span> in <span class="math notranslate nohighlight">\(f(x, y) = a x + b y + c\)</span>,<br></p></li>
+<li><p><strong>interactions</strong>
+which are non-linear terms involving variables that change one another’s effect on response like
+<span class="math notranslate nohighlight">\(x y\)</span> in <span class="math notranslate nohighlight">\(f(x, y) = a x + b y + c x y + d\)</span>, and<br></p></li>
+<li><p><strong>quadratic effects</strong>
+which are second-order non-linearities within a single variable (or curvature along an axis) like
+<span class="math notranslate nohighlight">\(y^2\)</span> in <span class="math notranslate nohighlight">\(f(x, y) = a x^2 + b y^2 + c x y + d\)</span>.</p></li>
+</ul>
+<p>Additionally, MQR provides tools to randomise runs, partly randomise runs (as in split-plot designs),
+and label point types to allow screening for curvature.</p>
+<p>The main features of this module are:</p>
+<ul class="simple">
+<li><p>easy concatenation of test runs, allowing screening to be expanded to more detailed tests,</p></li>
+<li><p>labelling with point types and block labels, for easy management in analysis,</p></li>
+<li><p>transforming from coded variables to physical values or category labels, to assist experimental technique,</p></li>
+<li><p>easy randomisation, and</p></li>
+<li><p>creation of standard designs (factorial, etc.) using <code class="docutils literal notranslate"><span class="pre">pyDOE3</span></code> functions.</p></li>
+</ul>
+<p>For further information about <code class="docutils literal notranslate"><span class="pre">pyDOE3</span></code>, see <a class="reference external" href="https://pydoe3.readthedocs.io/en/latest/index.html" title="pyDOE3 1">here</a>.</p>
+</section>
+<section id="experimental-workflow">
+<h2>Experimental workflow<a class="headerlink" href="#experimental-workflow" title="Link to this heading">#</a></h2>
+<p>The module is designed to fit into the <strong>Improve</strong> part of a DMAIC approach:</p>
+<ul class="simple">
+<li><p>(<strong>Define</strong> the process with process maps and FMEA, <a class="reference internal" href="../reference/mqr.process.html#module-mqr.process" title="mqr.process"><code class="xref myst py py-mod docutils literal notranslate"><span class="pre">mqr.process</span></code></a>,
+resulting in experimental variables.)</p></li>
+<li><p>(<strong>Measure</strong> the response/dimension of interest and
+check the characteristics of the measurement system <a class="reference internal" href="../reference/mqr.msa.html#module-mqr.msa" title="mqr.msa"><code class="xref myst py py-mod docutils literal notranslate"><span class="pre">mqr.msa</span></code></a>.)</p></li>
+<li><p>(<strong>Analyse</strong> the experimental data to see if the process is capable:
+<a class="reference internal" href="../reference/mqr.process.html#module-mqr.process" title="mqr.process"><code class="xref myst py py-mod docutils literal notranslate"><span class="pre">mqr.process</span></code></a> and <a class="reference internal" href="../reference/mqr.inference.html#module-mqr.inference" title="mqr.inference"><code class="xref myst py py-mod docutils literal notranslate"><span class="pre">mqr.inference</span></code></a>.)</p></li>
+<li><p><strong>Improve</strong> the process by showing which variables give the desired response.</p>
+<ol class="arabic simple">
+<li><p>Design an experiment using the tools in <a class="reference internal" href="../reference/mqr.doe.html#module-mqr.doe" title="mqr.doe"><code class="xref myst py py-mod docutils literal notranslate"><span class="pre">mqr.doe</span></code></a>
+(or <a class="reference external" href="https://pydoe3.readthedocs.io/en/latest/index.html" title="pyDOE3 1">pyDOE3</a> directly), exercising the variables
+identified in the earlier steps.</p></li>
+<li><p>Randomise the runs, possibly in blocks.</p></li>
+<li><p>Save the design to a <em>design file</em>, and append the experimental observations
+as new columns to make an <em>experiment file</em>.</p></li>
+<li><p>(optional) Instead of creating a new file, get the DataFrame version of a design
+and enter data directly into the notebook as extra columns on the DataFrame:
+<code class="docutils literal notranslate"><span class="pre">design['Response']</span> <span class="pre">=</span> <span class="pre">np.array([...])</span></code>.</p></li>
+<li><p>Load the <em>experiment file</em> (if you created one) ready for analysis with ANOVA
+and regression tools (<a class="reference internal" href="../reference/mqr.anova.html#module-mqr.anova" title="mqr.anova"><code class="xref myst py py-mod docutils literal notranslate"><span class="pre">mqr.anova</span></code></a>).</p></li>
+<li><p>Make changes to the process, guided by the model.</p></li>
+<li><p>Verify that the response changed using an appropriate statistical test: <a class="reference internal" href="../reference/mqr.inference.html#module-mqr.inference" title="mqr.inference"><code class="xref myst py py-mod docutils literal notranslate"><span class="pre">mqr.inference</span></code></a>.</p></li>
+</ol>
+</li>
+<li><p>(<strong>Control</strong> the processes capability using tools like <a class="reference internal" href="../reference/mqr.spc.html#module-mqr.spc" title="mqr.spc"><code class="xref myst py py-mod docutils literal notranslate"><span class="pre">mqr.spc</span></code></a>.)</p></li>
+</ul>
+</section>
+<section id="experimental-designs">
+<h2>Experimental designs<a class="headerlink" href="#experimental-designs" title="Link to this heading">#</a></h2>
+<p>The main type is <a class="reference internal" href="../reference/generated/mqr.doe.Design.html#mqr.doe.Design" title="mqr.doe.Design"><code class="xref myst py py-class docutils literal notranslate"><span class="pre">mqr.doe.Design</span></code></a>.
+The <code class="docutils literal notranslate"><span class="pre">Design</span></code> type is a class that looks a lot like a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>.
+The difference is that most operations in <code class="docutils literal notranslate"><span class="pre">mqr.doe</span></code> treat the various columns
+(“Runs”, “Blocks”, etc.) in particular ways, and to manage that treatment,
+<code class="docutils literal notranslate"><span class="pre">Design</span></code> was not implemented as a single <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>.
+To get the final <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>, call the <a class="reference internal" href="../reference/generated/mqr.doe.Design.to_df.html#mqr.doe.Design.to_df" title="mqr.doe.Design.to_df"><code class="xref myst py py-meth docutils literal notranslate"><span class="pre">mqr.doe.Design.to_df</span></code></a> method.
+When displayed in a notebook,<code class="docutils literal notranslate"><span class="pre">Design</span></code>s are displayed like the <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>
+that would result from calling <code class="docutils literal notranslate"><span class="pre">Design.to_df()</span></code>.
+The examples below show how to create basic experimental designs.</p>
+<p>Note that the convenience functions <code class="docutils literal notranslate"><span class="pre">from_*</span></code> reflect the interface of <code class="docutils literal notranslate"><span class="pre">pyDOE3</span></code>:
+<a class="reference internal" href="../reference/generated/mqr.doe.Design.from_ccdesign.html#mqr.doe.Design.from_ccdesign" title="mqr.doe.Design.from_ccdesign"><code class="xref myst py py-meth docutils literal notranslate"><span class="pre">mqr.doe.Design.from_ccdesign</span></code></a> calls <a class="reference external" href="https://pydoe3.readthedocs.io/en/latest/rsm.html#central-composite" title="pyDOE3 1">ccdesign</a>.
+Alternatively, call those functions directly and pass the levels to
+<a class="reference internal" href="../reference/generated/mqr.doe.Design.from_levels.html#mqr.doe.Design.from_levels" title="mqr.doe.Design.from_levels"><code class="xref myst py py-meth docutils literal notranslate"><span class="pre">mqr.doe.Design.from_levels</span></code></a>.</p>
+<section id="full-factorial-designs">
+<h3>Full factorial designs<a class="headerlink" href="#full-factorial-designs" title="Link to this heading">#</a></h3>
+<p>Full factorical designs test every level of every variable and all interactions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">,</span> <span class="s1">&#39;x3&#39;</span><span class="p">]</span>
+<span class="n">levels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+
+<span class="n">mqr</span><span class="o">.</span><span class="n">doe</span><span class="o">.</span><span class="n">Design</span><span class="o">.</span><span class="n">from_fullfact</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">levels</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>x1</th>
+      <th>x2</th>
+      <th>x3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>-1.0</td>
+      <td>0.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>-1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table></div></div>
+</div>
+</section>
+<section id="fractional-factorial-designs">
+<h3>Fractional factorial designs<a class="headerlink" href="#fractional-factorial-designs" title="Link to this heading">#</a></h3>
+<p>Fractional factorial designs use Yates labels to express desired aliasing.
+For example, this design has every combination of two levels for <code class="docutils literal notranslate"><span class="pre">x1</span></code> and <code class="docutils literal notranslate"><span class="pre">x2</span></code>,
+but counfounds <code class="docutils literal notranslate"><span class="pre">x3</span></code> with the <code class="docutils literal notranslate"><span class="pre">x1</span> <span class="pre">*</span> <span class="pre">x2</span></code> interaction.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">,</span> <span class="s1">&#39;x3&#39;</span><span class="p">]</span>
+<span class="n">generator</span> <span class="o">=</span> <span class="s1">&#39;a b ab&#39;</span>
+
+<span class="n">mqr</span><span class="o">.</span><span class="n">doe</span><span class="o">.</span><span class="n">Design</span><span class="o">.</span><span class="n">from_fracfact</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">generator</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PtType</th>
+      <th>x1</th>
+      <th>x2</th>
+      <th>x3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table></div></div>
+</div>
+</section>
+<section id="a-screening-design-that-checks-for-curvature">
+<h3>A screening design that checks for curvature<a class="headerlink" href="#a-screening-design-that-checks-for-curvature" title="Link to this heading">#</a></h3>
+<p>This design adds three centre points to a <span class="math notranslate nohighlight">\(2^2\)</span> full-factorial design to check for curvature.
+The plus operator concatenates runs.
+The mean of the centre points in this design can be compared to the mean of the corner points
+using an appropriate hypothesis test (like <a class="reference internal" href="../reference/generated/mqr.inference.mean.test_2sample.html#mqr.inference.mean.test_2sample" title="mqr.inference.mean.test_2sample"><code class="xref myst py py-func docutils literal notranslate"><span class="pre">mqr.inference.mean.test_2sample</span></code></a>),
+or the centre points can be given a separate block label that is used as a categorical variable in ANOVA.</p>
+<p>Note that corner points have type 1 and centre points have type 0.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">]</span>
+<span class="n">levels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+
+<span class="n">fullfact</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">doe</span><span class="o">.</span><span class="n">Design</span><span class="o">.</span><span class="n">from_fullfact</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">levels</span><span class="p">)</span>
+<span class="n">centres</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">doe</span><span class="o">.</span><span class="n">Design</span><span class="o">.</span><span class="n">from_centrepoints</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="n">fullfact</span> <span class="o">+</span> <span class="n">centres</span> <span class="c1"># &#39;+&#39; concatenates the runs from each design</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PtType</th>
+      <th>x1</th>
+      <th>x2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table></div></div>
+</div>
+</section>
+<section id="central-composite-design">
+<h3>Central composite design<a class="headerlink" href="#central-composite-design" title="Link to this heading">#</a></h3>
+<p>Assuming curvature was detected or is known to exist from physical reasoning,
+this central composite design characterises all main effects, interactions and
+quadratic curvature along both axes.
+The axial points (points lying on an axis) are designed to quantify quadratic effects.
+Axial points are always labelled with point type 2.</p>
+<p>The <span class="math notranslate nohighlight">\(\sqrt{2}\)</span> magnitude of the axial points is deliberate
+and creates desirable properties in the variance of the predicted response.
+See “sqhericity” in <a class="footnote-reference brackets" href="#id3" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> and <a class="footnote-reference brackets" href="#id4" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> for more details.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">centres</span></code> argument adds centre points, which are useful for estimating error,
+and therefore increase the power of the ANOVA statistical tests.
+This adds three centre point runs following the factorial corner points, and
+another three centre point runs following the axial runs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">]</span>
+<span class="n">centres</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="n">mqr</span><span class="o">.</span><span class="n">doe</span><span class="o">.</span><span class="n">Design</span><span class="o">.</span><span class="n">from_ccdesign</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">centres</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PtType</th>
+      <th>x1</th>
+      <th>x2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>-1.000000</td>
+      <td>-1.000000</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>1.000000</td>
+      <td>-1.000000</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>-1.000000</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>2</td>
+      <td>-1.414214</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>2</td>
+      <td>1.414214</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>2</td>
+      <td>0.000000</td>
+      <td>-1.414214</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>2</td>
+      <td>0.000000</td>
+      <td>1.414214</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+  </tbody>
+</table></div></div>
+</div>
+</section>
+<section id="axial-points">
+<h3>Axial points<a class="headerlink" href="#axial-points" title="Link to this heading">#</a></h3>
+<p>Central composite designs can be constructed manually using
+factorial designs, centre points and axial points.
+This example constructs the central composite design from the previous example.
+Here, though, the <code class="docutils literal notranslate"><span class="pre">as_block</span></code> method allows corner and axial points to be checked in separate runs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">]</span>
+<span class="n">levels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+
+<span class="n">fullfact</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">doe</span><span class="o">.</span><span class="n">Design</span><span class="o">.</span><span class="n">from_fullfact</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">levels</span><span class="p">)</span>
+<span class="n">axial</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">doe</span><span class="o">.</span><span class="n">Design</span><span class="o">.</span><span class="n">from_axial</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">magnitude</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">centres</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">doe</span><span class="o">.</span><span class="n">Design</span><span class="o">.</span><span class="n">from_centrepoints</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="n">fullfact</span><span class="o">.</span><span class="n">as_block</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">centres</span><span class="o">.</span><span class="n">as_block</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">axial</span><span class="o">.</span><span class="n">as_block</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">centres</span><span class="o">.</span><span class="n">as_block</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PtType</th>
+      <th>Block</th>
+      <th>x1</th>
+      <th>x2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>1</td>
+      <td>-1.000000</td>
+      <td>-1.000000</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>1</td>
+      <td>1.000000</td>
+      <td>-1.000000</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>1</td>
+      <td>-1.000000</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>1</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>2</td>
+      <td>2</td>
+      <td>-1.414214</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>2</td>
+      <td>2</td>
+      <td>1.414214</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>2</td>
+      <td>2</td>
+      <td>0.000000</td>
+      <td>-1.414214</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>2</td>
+      <td>2</td>
+      <td>0.000000</td>
+      <td>1.414214</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>0</td>
+      <td>2</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>0</td>
+      <td>2</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>0</td>
+      <td>2</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+  </tbody>
+</table></div></div>
+</div>
+</section>
+<section id="custom-designs">
+<h3>Custom designs<a class="headerlink" href="#custom-designs" title="Link to this heading">#</a></h3>
+<p>MQR does not expose the latin hypercube or Box-Behnken designs from <code class="docutils literal notranslate"><span class="pre">pyDOE3</span></code>,
+but they can be constructed easily.
+This example calls <code class="docutils literal notranslate"><span class="pre">pyDOE3</span></code> directly, resulting in an <code class="docutils literal notranslate"><span class="pre">np.array</span></code> of levels.
+The design is a Box-Behnken design for three factors, and contains no centre points.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pyDOE3</span>
+
+<span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">,</span> <span class="s1">&#39;x3&#39;</span><span class="p">]</span>
+<span class="n">levels</span> <span class="o">=</span> <span class="n">pyDOE3</span><span class="o">.</span><span class="n">bbdesign</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="n">mqr</span><span class="o">.</span><span class="n">doe</span><span class="o">.</span><span class="n">Design</span><span class="o">.</span><span class="n">from_levels</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">levels</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>x1</th>
+      <th>x2</th>
+      <th>x3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>-1.0</td>
+      <td>0.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>-1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>0.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>0.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table></div></div>
+</div>
+</section>
+</section>
+<section id="practicalities">
+<h2>Practicalities<a class="headerlink" href="#practicalities" title="Link to this heading">#</a></h2>
+<p>These features help with the practicalities of running experiments.</p>
+<section id="replication">
+<h3>Replication<a class="headerlink" href="#replication" title="Link to this heading">#</a></h3>
+<p>Runs can be replicated.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">]</span>
+<span class="n">levels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+
+<span class="n">design</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">doe</span><span class="o">.</span><span class="n">Design</span><span class="o">.</span><span class="n">from_fullfact</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">levels</span><span class="p">)</span>
+<span class="n">design</span><span class="o">.</span><span class="n">replicate</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PtType</th>
+      <th>x1</th>
+      <th>x2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>1</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>1</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>1</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>1</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>1</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>1</td>
+      <td>1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>1</td>
+      <td>1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>1</td>
+      <td>1.0</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table></div></div>
+</div>
+<p>The optional argument <code class="docutils literal notranslate"><span class="pre">label</span></code> adds a column that labels replicates.
+This might be helpful for managing eg. split-plot structure
+if experimental constraints restrict randomisation of replicates.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">]</span>
+<span class="n">levels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+
+<span class="n">design</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">doe</span><span class="o">.</span><span class="n">Design</span><span class="o">.</span><span class="n">from_fullfact</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">levels</span><span class="p">)</span>
+<span class="n">design</span><span class="o">.</span><span class="n">replicate</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Rep&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PtType</th>
+      <th>Rep</th>
+      <th>x1</th>
+      <th>x2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>1</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>2</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>3</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>1</td>
+      <td>2</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>1</td>
+      <td>3</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>1</td>
+      <td>1</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>1</td>
+      <td>2</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>1</td>
+      <td>3</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>1</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>1</td>
+      <td>2</td>
+      <td>1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>1</td>
+      <td>3</td>
+      <td>1.0</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table></div></div>
+</div>
+</section>
+<section id="randomisation">
+<h3>Randomisation<a class="headerlink" href="#randomisation" title="Link to this heading">#</a></h3>
+<p>Randomise the rows of a <code class="docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> by calling <a class="reference internal" href="../reference/generated/mqr.doe.Design.randomise_runs.html#mqr.doe.Design.randomise_runs" title="mqr.doe.Design.randomise_runs"><code class="xref myst py py-meth docutils literal notranslate"><span class="pre">mqr.doe.Design.randomise_runs</span></code></a>.
+Randomisation uses the <code class="docutils literal notranslate"><span class="pre">numpy</span></code> random number generator, so seeding that generator will seed the MQR randomisation.
+Blocks or factor levels can be kept in order by passing the name of the blocks or factors as arguments.</p>
+<p>This example is the blocked central composite design from above.
+The runs within each block are randomised, or put another way, the blocks are ordered.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">]</span>
+<span class="n">levels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+
+<span class="n">fullfact</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">doe</span><span class="o">.</span><span class="n">Design</span><span class="o">.</span><span class="n">from_fullfact</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">levels</span><span class="p">)</span>
+<span class="n">axial</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">doe</span><span class="o">.</span><span class="n">Design</span><span class="o">.</span><span class="n">from_axial</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">magnitude</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">centres</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">doe</span><span class="o">.</span><span class="n">Design</span><span class="o">.</span><span class="n">from_centrepoints</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">design</span> <span class="o">=</span> <span class="n">fullfact</span><span class="o">.</span><span class="n">as_block</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">centres</span><span class="o">.</span><span class="n">as_block</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">axial</span><span class="o">.</span><span class="n">as_block</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">centres</span><span class="o">.</span><span class="n">as_block</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Seeding with 0 for repeatable docs;</span>
+<span class="c1"># in practise, use something like the date-time or a randomly generated seed.</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">design</span><span class="o">.</span><span class="n">randomise_runs</span><span class="p">(</span><span class="s1">&#39;Block&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PtType</th>
+      <th>Block</th>
+      <th>x1</th>
+      <th>x2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>7</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>1</td>
+      <td>-1.000000</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>1</td>
+      <td>1.000000</td>
+      <td>-1.000000</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>1</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>1</td>
+      <td>-1.000000</td>
+      <td>-1.000000</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>2</td>
+      <td>2</td>
+      <td>1.414214</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>0</td>
+      <td>2</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>0</td>
+      <td>2</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>2</td>
+      <td>2</td>
+      <td>0.000000</td>
+      <td>-1.414214</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>2</td>
+      <td>2</td>
+      <td>-1.414214</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>2</td>
+      <td>2</td>
+      <td>0.000000</td>
+      <td>1.414214</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>0</td>
+      <td>2</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+  </tbody>
+</table></div></div>
+</div>
+</section>
+<section id="transforms">
+<h3>Transforms<a class="headerlink" href="#transforms" title="Link to this heading">#</a></h3>
+<p>Writing down exactly which values correspond to each level is convenient for careful experimental technique.
+These values can be read off a screen or printed while conducting an actual experiment.</p>
+<p>First, define a transform that maps the levels that correspond to each label
+(when <code class="docutils literal notranslate"><span class="pre">mqr.doe</span></code> constructs a transform from labels like below, it assumes the transform is affine).
+The transforms can be callable objects like a lambda, function or <code class="docutils literal notranslate"><span class="pre">mqr.doe.Transorm</span></code>.
+Or they can be dicts that give a mapped value for every coded level.</p>
+<p>This example transforms
+<code class="docutils literal notranslate"><span class="pre">x1</span></code> with an affine transform,
+<code class="docutils literal notranslate"><span class="pre">x2</span></code> with an affine transform that is inversely proportional to the coded variable, and
+<code class="docutils literal notranslate"><span class="pre">x4</span></code> with a categorical value.
+The factor <code class="docutils literal notranslate"><span class="pre">x3</span></code> is left in coded units.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">mqr.doe</span><span class="w"> </span><span class="kn">import</span> <span class="n">Transform</span>
+
+<span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">,</span> <span class="s1">&#39;x3&#39;</span><span class="p">,</span> <span class="s1">&#39;x4&#39;</span><span class="p">]</span>
+<span class="n">levels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">design</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">doe</span><span class="o">.</span><span class="n">Design</span><span class="o">.</span><span class="n">from_fullfact</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">levels</span><span class="p">)</span>
+
+<span class="n">transforms</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;x1&#39;</span><span class="p">:</span> <span class="n">Transform</span><span class="o">.</span><span class="n">from_map</span><span class="p">({</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">110</span><span class="p">}),</span>
+    <span class="s1">&#39;x2&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">x</span> <span class="o">+</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="s1">&#39;x4&#39;</span><span class="p">:</span> <span class="p">{</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;low&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;high&#39;</span><span class="p">},</span>
+<span class="p">}</span>
+<span class="n">design</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="o">**</span><span class="n">transforms</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PtType</th>
+      <th>x1</th>
+      <th>x2</th>
+      <th>x3</th>
+      <th>x4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>100.0</td>
+      <td>6.0</td>
+      <td>-1.0</td>
+      <td>low</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>110.0</td>
+      <td>6.0</td>
+      <td>-1.0</td>
+      <td>low</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>100.0</td>
+      <td>4.0</td>
+      <td>-1.0</td>
+      <td>low</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>110.0</td>
+      <td>4.0</td>
+      <td>-1.0</td>
+      <td>low</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>1</td>
+      <td>100.0</td>
+      <td>6.0</td>
+      <td>1.0</td>
+      <td>low</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>1</td>
+      <td>110.0</td>
+      <td>6.0</td>
+      <td>1.0</td>
+      <td>low</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>1</td>
+      <td>100.0</td>
+      <td>4.0</td>
+      <td>1.0</td>
+      <td>low</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>1</td>
+      <td>110.0</td>
+      <td>4.0</td>
+      <td>1.0</td>
+      <td>low</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>1</td>
+      <td>100.0</td>
+      <td>6.0</td>
+      <td>-1.0</td>
+      <td>high</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>1</td>
+      <td>110.0</td>
+      <td>6.0</td>
+      <td>-1.0</td>
+      <td>high</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>1</td>
+      <td>100.0</td>
+      <td>4.0</td>
+      <td>-1.0</td>
+      <td>high</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>1</td>
+      <td>110.0</td>
+      <td>4.0</td>
+      <td>-1.0</td>
+      <td>high</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>1</td>
+      <td>100.0</td>
+      <td>6.0</td>
+      <td>1.0</td>
+      <td>high</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>1</td>
+      <td>110.0</td>
+      <td>6.0</td>
+      <td>1.0</td>
+      <td>high</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>1</td>
+      <td>100.0</td>
+      <td>4.0</td>
+      <td>1.0</td>
+      <td>high</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>1</td>
+      <td>110.0</td>
+      <td>4.0</td>
+      <td>1.0</td>
+      <td>high</td>
+    </tr>
+  </tbody>
+</table></div></div>
+</div>
+</section>
+<section id="saving-to-a-file">
+<h3>Saving to a file<a class="headerlink" href="#saving-to-a-file" title="Link to this heading">#</a></h3>
+<p>There are a few options for saving designs to files.
+If the design is going to a file/database, use python’s pickle library, or some similar serialisation.</p>
+<p>Below is an example that saves the design to a CSV or Excel file.
+The index_label argument in <code class="docutils literal notranslate"><span class="pre">DataFrame.to_csv(...)</span></code> tells Pandas to include the index column with the given name.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">]</span>
+<span class="n">levels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">design</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">doe</span><span class="o">.</span><span class="n">Design</span><span class="o">.</span><span class="n">from_fullfact</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">levels</span><span class="p">)</span>
+
+<span class="c1"># np.random.randint(0, 2**32-1)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1294194915</span><span class="p">)</span> <span class="c1"># Randomly generated seed</span>
+<span class="n">frozen_design</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">randomise_runs</span><span class="p">()</span><span class="o">.</span><span class="n">to_df</span><span class="p">()</span>
+
+<span class="c1"># Run these to create the actual files</span>
+<span class="c1"># frozen_design.to_csv(</span>
+<span class="c1">#     &#39;doe-section6-1294194915.csv&#39;,</span>
+<span class="c1">#     index_label=&#39;run&#39;)</span>
+<span class="c1"># frozen_design.to_excel(</span>
+<span class="c1">#     &#39;doe-section6-1294194915.xlsx&#39;,</span>
+<span class="c1">#     index_label=&#39;run&#39;)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+</section>
+</section>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id3" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Montgomery, D. C. (2017).
+Design and analysis of experiments.
+John wiley &amp; sons.</p>
+</aside>
+<aside class="footnote brackets" id="id4" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>Box, G. E., &amp; Hunter, J. S. (1957).
+Multi-factor experimental designs for exploring response surfaces.
+The Annals of Mathematical Statistics, 195-241.</p>
+</aside>
+</aside>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="measurement-system-analysis.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Measurement System Analysis</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="statistical-process-control.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Statistical Process Control</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#experimental-workflow">Experimental workflow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#experimental-designs">Experimental designs</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#full-factorial-designs">Full factorial designs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fractional-factorial-designs">Fractional factorial designs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-screening-design-that-checks-for-curvature">A screening design that checks for curvature</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#central-composite-design">Central composite design</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#axial-points">Axial points</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-designs">Custom designs</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practicalities">Practicalities</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#replication">Replication</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#randomisation">Randomisation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transforms">Transforms</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#saving-to-a-file">Saving to a file</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Nikolas Crossan.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,11 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.plot.msa.</div>
+   <div class="empty"></div>
+
+box_measurement_by_operator
+========================================
+
+.. currentmodule:: mqr.plot.msa
+
+.. autofunction:: box_measurement_by_operator

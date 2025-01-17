@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.process.Summary.</div>
+   <div class="empty"></div>
+
+__getitem__
+===============================
+
+.. currentmodule:: mqr.process
+
+.. automethod:: Summary.__getitem__

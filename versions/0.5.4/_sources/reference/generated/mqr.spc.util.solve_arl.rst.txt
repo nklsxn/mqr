@@ -1,0 +1,11 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.spc.util.</div>
+   <div class="empty"></div>
+
+solve_arl
+======================
+
+.. currentmodule:: mqr.spc.util
+
+.. autofunction:: solve_arl

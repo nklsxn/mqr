@@ -33,7 +33,7 @@ However, it does provide the tools to create and analyse experiments that look f
 
 Install the package using pip:
 ```bash
-pip install mqr-quality
+pip install mqrpy
 ```
 
 Import the package using:

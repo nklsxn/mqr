@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.doe.Design.</div>
+   <div class="empty"></div>
+
+mqr.doe.Design.pttypes
+======================
+
+.. currentmodule:: mqr.doe
+
+.. autoattribute:: Design.pttypes

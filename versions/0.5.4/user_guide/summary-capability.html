@@ -1,0 +1,1100 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Process Summary and Capability &#8212; mqr 0.5.4 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/_static/mqr.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mqr.css?v=394250bc" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../_static/documentation_options.js?v=e1a677a5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/summary-capability';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/nklsxn/mqr/refs/heads/master/docs/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.4';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Data Analysis" href="data-analysis.html" />
+    <link rel="prev" title="User Guide" href="../user-guide.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.5.4" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">MQR</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting-started.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../user-guide.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api-ref.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../notes/notes.html">
+    Notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/nklsxn/mqr" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting-started.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../user-guide.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api-ref.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../notes/notes.html">
+    Notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/nklsxn/mqr" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Process Summary and Capability</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="data-analysis.html">Data Analysis</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="inference.html">Basic Statistical Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression-anova.html">Regression and ANOVA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="measurement-system-analysis.html">Measurement System Analysis</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="design-of-experiments.html">Design of Experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistical-process-control.html">Statistical Process Control</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="plots.html">Plots</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="plotting-primer.html">Plotting primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plotting-customisation.html">Customising MQR plots</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../user-guide.html" class="nav-link">User Guide</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Process Summary and Capability</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="process-summary-and-capability">
+<h1>Process Summary and Capability<a class="headerlink" href="#process-summary-and-capability" title="Link to this heading">#</a></h1>
+<dl class="simple myst">
+<dt>Related modules</dt><dd><p><a class="reference internal" href="../reference/generated/mqr.plot.ishikawa.html#mqr.plot.ishikawa" title="mqr.plot.ishikawa"><code class="xref myst py py-func docutils literal notranslate"><span class="pre">mqr.plot.ishikawa</span></code></a><br>
+<a class="reference internal" href="../reference/mqr.process.html#module-mqr.process" title="mqr.process"><code class="xref myst py py-mod docutils literal notranslate"><span class="pre">mqr.process</span></code></a> (and <a class="reference internal" href="../reference/plot/mqr.plot.process.html#module-mqr.plot.process" title="mqr.plot.process"><code class="xref myst py py-mod docutils literal notranslate"><span class="pre">mqr.plot.process</span></code></a>)<br>
+<a class="reference internal" href="../reference/plot/mqr.plot.correlation.html#module-mqr.plot.correlation" title="mqr.plot.correlation"><code class="xref myst py py-mod docutils literal notranslate"><span class="pre">mqr.plot.correlation</span></code></a></p>
+</dd>
+<dt>Detailed examples</dt><dd><p><a class="github reference external" href="https://github.com/nklsxn/mqrpy-guide" rel="noreferer noopener" target="_blank">nklsxn/mqrpy-guide</a></p>
+</dd>
+</dl>
+<section id="fishbone-diagram">
+<h2>Fishbone diagram<a class="headerlink" href="#fishbone-diagram" title="Link to this heading">#</a></h2>
+<p>A fishbone diagram can be constructed with the tools in matplotlib,
+though constructing all the lines by hand is a bit tedious,
+so MQR includes a convenience function to create the plot.</p>
+<p>The plot can create only two levels of “bones”, including the “spine”.
+The top-level result is given in the argument <code class="docutils literal notranslate"><span class="pre">problem</span></code>
+and the two levels of causes are given in the argument <code class="docutils literal notranslate"><span class="pre">causes</span></code>.</p>
+<p>This is a general diagram.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">problem</span> <span class="o">=</span> <span class="s1">&#39;Problem&#39;</span>
+<span class="n">causes</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Method&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Time consumption&#39;</span><span class="p">,</span> <span class="s1">&#39;Cost&#39;</span><span class="p">,</span> <span class="s1">&#39;Procedures&#39;</span><span class="p">,</span> <span class="s1">&#39;Inefficient process&#39;</span><span class="p">,</span> <span class="s1">&#39;Sampling&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Machine&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Faulty equipment&#39;</span><span class="p">,</span> <span class="s1">&#39;Compatibility&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Material&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Raw materials&#39;</span><span class="p">,</span> <span class="s1">&#39;Supplier&#39;</span><span class="p">,</span> <span class="s1">&#39;Shortage&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Measurement&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Calibration&#39;</span><span class="p">,</span> <span class="s1">&#39;Performance&#39;</span><span class="p">,</span> <span class="s1">&#39;Bad measurements&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Environment&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Bad conditions&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;People&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Lack of training&#39;</span><span class="p">,</span> <span class="s1">&#39;Managers&#39;</span><span class="p">,</span> <span class="s1">&#39;Labor shortage&#39;</span><span class="p">,</span> <span class="s1">&#39;Procedures&#39;</span><span class="p">,</span> <span class="s1">&#39;Sales strategy&#39;</span><span class="p">],</span>
+<span class="p">}</span>
+
+<span class="k">with</span> <span class="n">Figure</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+    <span class="n">mqr</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">ishikawa</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">causes</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3b5767c775a76332ad8db9df2c6ba63f397921eb6f7a147353a02a25301fe533.png" src="../_images/3b5767c775a76332ad8db9df2c6ba63f397921eb6f7a147353a02a25301fe533.png" />
+</div>
+</div>
+<p>A more specific example for, say, the variability in the yield strength in a dimension
+of an injection molded plastic part might be like this.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">problem</span> <span class="o">=</span> <span class="s1">&#39;$</span><span class="se">\\</span><span class="s1">mathbf</span><span class="si">{var}</span><span class="se">\\</span><span class="s1"> </span><span class="se">\\</span><span class="s1">sigma_y$&#39;</span>
+<span class="n">causes</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;gate location&#39;</span><span class="p">,</span> <span class="s1">&#39;shear rate&#39;</span><span class="p">,</span> <span class="s1">&#39;hold pressure&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;hold time&#39;</span><span class="p">,</span> <span class="s1">&#39;gate-wall ratio&#39;</span><span class="p">,</span> <span class="s1">&#39;location in batch mould&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;machine&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;time since service&#39;</span><span class="p">,</span> <span class="s1">&#39;time since sensor calibration&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;warm-up time&#39;</span><span class="p">,</span> <span class="s1">&#39;mold surface texture&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;material&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;pellet material&#39;</span><span class="p">,</span> <span class="s1">&#39;colour (dye)&#39;</span><span class="p">,</span> <span class="s1">&#39;supplier&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;measurement&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;gauge capability&#39;</span><span class="p">,</span> <span class="s1">&#39;gauge calibration&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;environment&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;humidity at pellet hopper&#39;</span><span class="p">,</span> <span class="s1">&#39;ambient temp (cooling time)&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;people&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;removal technique&#39;</span><span class="p">,</span> <span class="s1">&#39;removal force&#39;</span><span class="p">],</span>
+<span class="p">}</span>
+
+<span class="k">with</span> <span class="n">Figure</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+    <span class="n">mqr</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">ishikawa</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">causes</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/d83c7855453c954938797d61ebd3eef63fa019405c29ed56bc49c81a207cd66f.png" src="../_images/d83c7855453c954938797d61ebd3eef63fa019405c29ed56bc49c81a207cd66f.png" />
+</div>
+</div>
+<p>Often the defaults and matplotlib’s spacing algorithms will present a tidy diagram.
+The Ishikawa defaults in MQR can be viewed at</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mqr</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">defaults</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">ishikawa</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;head_space&#39;: 2.0,
+ &#39;bone_space&#39;: 8.0,
+ &#39;bone_angle&#39;: 0.7853981633974483,
+ &#39;cause_space&#39;: 1.0,
+ &#39;cause_length&#39;: 2.0,
+ &#39;padding&#39;: (1.0, 1.0, 1.0, 1.0),
+ &#39;line_kwargs&#39;: {&#39;linewidth&#39;: 0.8, &#39;color&#39;: &#39;k&#39;},
+ &#39;defect_font_dict&#39;: {&#39;fontsize&#39;: 12, &#39;weight&#39;: &#39;bold&#39;},
+ &#39;cause_font_dict&#39;: {&#39;fontsize&#39;: 9, &#39;weight&#39;: &#39;bold&#39;},
+ &#39;primary_font_dict&#39;: {&#39;fontsize&#39;: 9},
+ &#39;bone_rise&#39;: 7.0,
+ &#39;bone_run&#39;: 7.000000000000001}
+</pre></div>
+</div>
+</div>
+</div>
+<p>For this diagram,
+split the long lines and increase the bone-space and cause-space.
+To split a line, insert a new-line character “\n” (backslash-n).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">causes</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;gate location&#39;</span><span class="p">,</span> <span class="s1">&#39;shear rate&#39;</span><span class="p">,</span> <span class="s1">&#39;hold pressure&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;hold time&#39;</span><span class="p">,</span> <span class="s1">&#39;gate-wall ratio&#39;</span><span class="p">,</span> <span class="s1">&#39;location in</span><span class="se">\n</span><span class="s1">batch mould&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;machine&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;time since service&#39;</span><span class="p">,</span> <span class="s1">&#39;time since</span><span class="se">\n</span><span class="s1">sensor calibration&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;warm-up time&#39;</span><span class="p">,</span> <span class="s1">&#39;mold surface texture&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;material&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;pellet material&#39;</span><span class="p">,</span> <span class="s1">&#39;colour (dye)&#39;</span><span class="p">,</span> <span class="s1">&#39;supplier&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;measurement&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;gauge capability&#39;</span><span class="p">,</span> <span class="s1">&#39;gauge calibration&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;environment&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;humidity at pellet hopper&#39;</span><span class="p">,</span> <span class="s1">&#39;ambient temp</span><span class="se">\n</span><span class="s1">(cooling time)&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;people&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;removal technique&#39;</span><span class="p">,</span> <span class="s1">&#39;removal force&#39;</span><span class="p">],</span>
+<span class="p">}</span>
+
+<span class="n">ishikawa_kws</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;bone_space&#39;</span><span class="p">:</span> <span class="mf">15.0</span><span class="p">,</span> <span class="s1">&#39;cause_space&#39;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">}</span>
+
+<span class="k">with</span> <span class="n">Figure</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+    <span class="n">mqr</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">ishikawa</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">causes</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">ishikawa_kws</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/879cc0e117ae27a0b6955426e5858f409597c8f288a52278ec1e2027dd9ccef0.png" src="../_images/879cc0e117ae27a0b6955426e5858f409597c8f288a52278ec1e2027dd9ccef0.png" />
+</div>
+</div>
+</section>
+<section id="summary-statistics">
+<h2>Summary statistics<a class="headerlink" href="#summary-statistics" title="Link to this heading">#</a></h2>
+<p>Summary statistics are organised into the following types.</p>
+<dl class="simple myst">
+<dt><a class="reference internal" href="../reference/generated/mqr.process.Summary.html#mqr.process.Summary" title="mqr.process.Summary"><code class="xref myst py py-class docutils literal notranslate"><span class="pre">mqr.process.Summary</span></code></a></dt><dd><p>A set of samples from a process, optionally including specifications for the
+dimensions which are used to calculate capability.</p>
+</dd>
+<dt><a class="reference internal" href="../reference/generated/mqr.process.Specification.html#mqr.process.Specification" title="mqr.process.Specification"><code class="xref myst py py-class docutils literal notranslate"><span class="pre">mqr.process.Specification</span></code></a></dt><dd><p>A target, and lower and upper limits.</p>
+</dd>
+<dt><a class="reference internal" href="../reference/generated/mqr.process.Sample.html#mqr.process.Sample" title="mqr.process.Sample"><code class="xref myst py py-class docutils literal notranslate"><span class="pre">mqr.process.Sample</span></code></a></dt><dd><p>Measurements from a single dimension in a process/product shown with a set of
+common descriptive statistics.</p>
+</dd>
+<dt><a class="reference internal" href="../reference/generated/mqr.process.Capability.html#mqr.process.Capability" title="mqr.process.Capability"><code class="xref myst py py-class docutils literal notranslate"><span class="pre">mqr.process.Capability</span></code></a></dt><dd><p>Formed from a sample and a specification, contains process potential, capability,
+and expected defect rates.</p>
+</dd>
+</dl>
+<section id="summary">
+<h3>Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h3>
+<p>Of those types, <a class="reference internal" href="../reference/generated/mqr.process.Summary.html#mqr.process.Summary" title="mqr.process.Summary"><span class="xref myst py py-class"><code class="docutils literal notranslate"><span class="pre">Summary</span></code></span></a> and <a class="reference internal" href="../reference/generated/mqr.process.Summary.html#mqr.process.Summary" title="mqr.process.Summary"><span class="xref myst py py-class"><code class="docutils literal notranslate"><span class="pre">Specification</span></code></span></a>
+must be constructed manually.
+The other two are created automatically when <code class="docutils literal notranslate"><span class="pre">Summary</span></code> is created with <code class="docutils literal notranslate"><span class="pre">Specification</span></code>s.</p>
+<p>Create a summary of a process from a DataFrame.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">mqr</span><span class="o">.</span><span class="n">sample_data</span><span class="p">(</span><span class="s1">&#39;study-random-5x5.csv&#39;</span><span class="p">))</span>
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>run</th>
+      <th>part</th>
+      <th>operator</th>
+      <th>replicate</th>
+      <th>KPI1</th>
+      <th>KPI2</th>
+      <th>KPI3</th>
+      <th>KPO1</th>
+      <th>KPO2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>A1</td>
+      <td>Op A</td>
+      <td>1</td>
+      <td>152.234</td>
+      <td>19.952</td>
+      <td>15.190</td>
+      <td>159.717</td>
+      <td>2.619</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>A1</td>
+      <td>Op A</td>
+      <td>2</td>
+      <td>149.571</td>
+      <td>19.914</td>
+      <td>15.101</td>
+      <td>159.380</td>
+      <td>2.116</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>A1</td>
+      <td>Op A</td>
+      <td>3</td>
+      <td>150.542</td>
+      <td>19.735</td>
+      <td>12.951</td>
+      <td>162.806</td>
+      <td>4.656</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>A1</td>
+      <td>Op B</td>
+      <td>1</td>
+      <td>148.946</td>
+      <td>19.661</td>
+      <td>13.979</td>
+      <td>159.633</td>
+      <td>2.031</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>A1</td>
+      <td>Op B</td>
+      <td>2</td>
+      <td>148.948</td>
+      <td>20.171</td>
+      <td>13.784</td>
+      <td>163.127</td>
+      <td>5.880</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Pass the measurements from the DataFrame to the <a class="reference internal" href="../reference/generated/mqr.process.Summary.html#mqr.process.Summary" title="mqr.process.Summary"><code class="xref myst py py-class docutils literal notranslate"><span class="pre">mqr.process.Summary</span></code></a> constructor.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">summary</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">Summary</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">&#39;KPI1&#39;</span><span class="p">:</span><span class="s1">&#39;KPO2&#39;</span><span class="p">])</span>
+<span class="n">summary</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+    <table>
+        <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">KPI1</th><th scope="col">KPI2</th><th scope="col">KPI3</th><th scope="col">KPO1</th><th scope="col">KPO2</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th colspan=6 style="text-align:left;">Normality (Anderson-Darling)</th>
+            </tr>
+            <tr>
+                <th scope="row">Stat</th>
+                <td>0.34262</td><td>0.23807</td><td>1.1871</td><td>0.19191</td><td>0.70216</td>
+            </tr>
+            <tr>
+                <th scope="row">P-value</th>
+                <td>0.48587</td><td>0.77799</td><td>0.0040861</td><td>0.89435</td><td>0.065132</td>
+            </tr>
+
+            <thead><tr></tr></thead>
+            <tr>
+                <th scope="row">N</th>
+                <td>120</td><td>120</td><td>120</td><td>120</td><td>120</td>
+            </tr>
+
+            <thead><tr></tr></thead>
+            <tr>
+                <th scope="row">Mean</th>
+                <td>149.97</td><td>20.003</td><td>14.004</td><td>160.05</td><td>4.0189</td>
+            </tr>
+            <tr>
+                <th scope="row">StdDev</th>
+                <td>1.1733</td><td>0.24530</td><td>0.75645</td><td>2.0489</td><td>1.5634</td>
+            </tr>
+            <tr>
+                <th scope="row">Variance</th>
+                <td>1.3767</td><td>0.060174</td><td>0.57221</td><td>4.1979</td><td>2.4442</td>
+            </tr>
+            <tr>
+                <th scope="row">Skewness</th>
+                <td>0.23671</td><td>-0.31725</td><td>-0.63426</td><td>-0.12055</td><td>0.087372</td>
+            </tr>
+            <tr>
+                <th scope="row">Kurtosis</th>
+                <td>0.34013</td><td>-0.032887</td><td>0.37921</td><td>-0.16922</td><td>-0.18837</td>
+            </tr>
+
+            <thead><tr></tr></thead>
+            <tr>
+                <th scope="row">Minimum</th>
+                <td>147.03</td><td>19.234</td><td>11.639</td><td>154.89</td><td>-0.37200</td>
+            </tr>
+            <tr>
+                <th scope="row">1st Quartile</th>
+                <td>149.22</td><td>19.833</td><td>13.642</td><td>158.87</td><td>2.9020</td>
+            </tr>
+            <tr>
+                <th scope="row">Median</th>
+                <td>149.97</td><td>20.011</td><td>14.033</td><td>160.03</td><td>3.9265</td>
+            </tr>
+            <tr>
+                <th scope="row">3rd Quartile</th>
+                <td>150.56</td><td>20.174</td><td>14.481</td><td>161.35</td><td>5.2163</td>
+            </tr>
+            <tr>
+                <th scope="row">Maximum</th>
+                <td>153.27</td><td>20.505</td><td>15.460</td><td>164.51</td><td>8.2830</td>
+            </tr>
+
+            <thead><tr></tr></thead>
+            <tr>
+                <th scope="row">N Outliers</th>
+                <td>5</td><td>1</td><td>4</td><td>1</td><td>0</td>
+            </tr>
+        </tbody>
+        <tfoot>
+        </tfoot>
+    </table>
+    </div></div>
+</div>
+<p>Samples are automatically created as part of a <code class="docutils literal notranslate"><span class="pre">Summary</span></code>,
+and can be retrieved using indexing syntax.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vstack</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s1">&#39;median = </span><span class="si">{</span><span class="n">summary</span><span class="p">[</span><span class="s1">&#39;KPO1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">summary</span><span class="p">[</span><span class="s1">&#39;KPI2&#39;</span><span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div style="display:flex;flex-direction:column;justify-content:start;justify-items:start;align-content:start;align-items:start;"><div style="margin:5px 10px 5px 10px;"><p>median = 160.025</p></div><div style="margin:5px 10px 5px 10px;">
+    <table>
+        <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">KPI2</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th colspan=2 style="text-align:left;">Normality (Anderson-Darling)</th>
+            </tr>
+            <tr>
+                <th scope="row">Stat</th>
+                <td>0.23807</td>
+            </tr>
+            <tr>
+                <th scope="row">P-value</th>
+                <td>0.77799</td>
+            </tr>
+
+            <thead><tr></tr></thead>
+            <tr>
+                <th scope="row">N</th>
+                <td>120</td>
+            </tr>
+
+            <thead><tr></tr></thead>
+            <tr>
+                <th scope="row">Mean</th>
+                <td>20.003</td>
+            </tr>
+            <tr>
+                <th scope="row">StdDev</th>
+                <td>0.24530</td>
+            </tr>
+            <tr>
+                <th scope="row">Variance</th>
+                <td>0.060174</td>
+            </tr>
+            <tr>
+                <th scope="row">Skewness</th>
+                <td>-0.31725</td>
+            </tr>
+            <tr>
+                <th scope="row">Kurtosis</th>
+                <td>-0.032887</td>
+            </tr>
+
+            <thead><tr></tr></thead>
+            <tr>
+                <th scope="row">Minimum</th>
+                <td>19.234</td>
+            </tr>
+            <tr>
+                <th scope="row">1st Quartile</th>
+                <td>19.833</td>
+            </tr>
+            <tr>
+                <th scope="row">Median</th>
+                <td>20.011</td>
+            </tr>
+            <tr>
+                <th scope="row">3rd Quartile</th>
+                <td>20.174</td>
+            </tr>
+            <tr>
+                <th scope="row">Maximum</th>
+                <td>20.505</td>
+            </tr>
+
+            <thead><tr></tr></thead>
+            <tr>
+                <th scope="row">N Outliers</th>
+                <td>1</td>
+            </tr>
+        </tbody>
+        <tfoot>
+        </tfoot>
+    </table>
+    </div></div></div></div>
+</div>
+</section>
+<section id="specifications-and-capability">
+<h3>Specifications and capability<a class="headerlink" href="#specifications-and-capability" title="Link to this heading">#</a></h3>
+<p>If specifications (<a class="reference internal" href="../reference/generated/mqr.process.Specification.html#mqr.process.Specification" title="mqr.process.Specification"><code class="xref myst py py-class docutils literal notranslate"><span class="pre">mqr.process.Specification</span></code></a>) are passed to <code class="docutils literal notranslate"><span class="pre">Summary</span></code>
+then capabilities will be included in the summary.
+They are stored in the <code class="docutils literal notranslate"><span class="pre">Summary.capabilities</span></code> attribute.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">specs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;KPI1&#39;</span><span class="p">:</span> <span class="n">mqr</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">Specification</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">145</span><span class="p">,</span> <span class="mi">155</span><span class="p">),</span>       <span class="c1"># cp=cpk~1.33</span>
+    <span class="s1">&#39;KPI2&#39;</span><span class="p">:</span> <span class="n">mqr</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">Specification</span><span class="p">(</span><span class="mf">20.25</span><span class="p">,</span> <span class="mf">19.00</span><span class="p">,</span> <span class="mf">21.50</span><span class="p">),</span> <span class="c1"># cp~1.67, cpk~1.33</span>
+    <span class="s1">&#39;KPI3&#39;</span><span class="p">:</span> <span class="n">mqr</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">Specification</span><span class="p">(</span><span class="mf">14.00</span><span class="p">,</span> <span class="mf">11.72</span><span class="p">,</span> <span class="mf">16.28</span><span class="p">),</span> <span class="c1"># cp=cpk~1.00</span>
+    <span class="s1">&#39;KPO1&#39;</span><span class="p">:</span> <span class="n">mqr</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">Specification</span><span class="p">(</span><span class="mi">160</span><span class="p">,</span> <span class="mi">148</span><span class="p">,</span> <span class="mi">172</span><span class="p">),</span>       <span class="c1"># cp=cpk~2.00</span>
+    <span class="s1">&#39;KPO2&#39;</span><span class="p">:</span> <span class="n">mqr</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">Specification</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.6</span><span class="p">,</span> <span class="mf">11.6</span><span class="p">),</span>       <span class="c1"># cp~2.00, cpk~1.67</span>
+<span class="p">}</span>
+
+<span class="n">summary</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">Summary</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">&#39;KPI1&#39;</span><span class="p">:</span><span class="s1">&#39;KPO2&#39;</span><span class="p">],</span> <span class="n">specs</span><span class="p">)</span>
+<span class="n">summary</span><span class="o">.</span><span class="n">capabilities</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+    <table>
+        <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">KPI1</th><th scope="col">KPI2</th><th scope="col">KPI3</th><th scope="col">KPO1</th><th scope="col">KPO2</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row"><font color="gray">USL</font></th>
+                <td><font color="gray">155.</font></td><td><font color="gray">21.5</font></td><td><font color="gray">16.3</font></td><td><font color="gray">172.</font></td><td><font color="gray">11.6</font></td>
+            </tr
+            <tr>
+                <th scope="row">Target</th>
+                <td>150.</td><td>20.2</td><td>14.0</td><td>160.</td><td>2.00</td>
+            </tr>
+            <tr>
+                <th scope="row"><font color="gray">LSL</font></th>
+                <td><font color="gray">145.</font></td><td><font color="gray">19.0</font></td><td><font color="gray">11.7</font></td><td><font color="gray">148.</font></td><td><font color="gray">-7.60</font></td>
+            </tr>
+
+            <thead><tr></tr></thead>
+            <tr>
+                <th scope="row"><b>C<sub>pk</sub></b></th>
+                <td><b>1.41</b></td><td><b>1.36</b></td><td><b>1.00</b></td><td><b>1.94</b></td><td><b>1.62</b></td>
+            </tr>
+            <tr>
+                <th scope="row">C<sub>p</sub></th>
+                <td>1.42</td><td>1.70</td><td>1.00</td><td>1.95</td><td>2.05</td>
+            </tr>
+            <tr>
+                <th scope="row">Defects<sub>st</sub> (ppm)</th>
+                <td>20.4</td><td>21.8</td><td>2.58e+03</td><td>0.00476</td><td>0.620</td>
+            </tr>
+            <tr>
+                <th scope="row">Defects<sub>lt</sub> (ppm)</th>
+                <td>123.</td><td>97.8</td><td>2.62e+03</td><td>0.939</td><td>11.5</td>
+            </tr>
+        <tbody>
+        <tfoot>
+        </tfoot>
+    </table>
+    </div></div>
+</div>
+</section>
+<section id="graphical-summaries">
+<h3>Graphical summaries<a class="headerlink" href="#graphical-summaries" title="Link to this heading">#</a></h3>
+<p>These routines (from <a class="reference internal" href="../reference/plot/mqr.plot.process.html#module-mqr.plot.process" title="mqr.plot.process"><code class="xref myst py py-mod docutils literal notranslate"><span class="pre">mqr.plot.process</span></code></a>) operate on the types from <a class="reference internal" href="../reference/mqr.process.html#module-mqr.process" title="mqr.process"><code class="xref myst py py-mod docutils literal notranslate"><span class="pre">mqr.process</span></code></a>.</p>
+<p>The histogram and box plot for a sample and also a confidence interval for its mean
+can be shown on a plot with</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Figure</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">height_ratios</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="k">as</span> <span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span><span class="p">):</span>
+    <span class="n">mqr</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">summary</span><span class="p">[</span><span class="s1">&#39;KPO1&#39;</span><span class="p">],</span> <span class="n">axs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/92c006c9dc1a26821b4cf711511552067587f76b65455936200c5112c3610c52.png" src="../_images/92c006c9dc1a26821b4cf711511552067587f76b65455936200c5112c3610c52.png" />
+</div>
+</div>
+<p>If a summary was created with specifications, MQR can show sample capabilities graphically.
+If the target capability is different from 2.0 (the default), pass the target as <code class="docutils literal notranslate"><span class="pre">cp</span></code>,
+which truncates the tails of the fitted density function so that if it fits in the tolerance region,
+then the sample has at least the specified capability.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Figure</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axs</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;KPI1&#39;</span><span class="p">,</span> <span class="s1">&#39;KPI2&#39;</span><span class="p">,</span> <span class="s1">&#39;KPI3&#39;</span><span class="p">,</span> <span class="s1">&#39;KPO1&#39;</span><span class="p">,</span> <span class="s1">&#39;KPO2&#39;</span><span class="p">]):</span>
+        <span class="n">mqr</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">capability</span><span class="p">(</span><span class="n">summary</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">cp</span><span class="o">=</span><span class="mi">5</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/fa4ae1e11ab679787444435e490a2083b2c6c2f40b0af788d8a46fed7f617166.png" src="../_images/fa4ae1e11ab679787444435e490a2083b2c6c2f40b0af788d8a46fed7f617166.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="correlation">
+<h2>Correlation<a class="headerlink" href="#correlation" title="Link to this heading">#</a></h2>
+<p>Use <a class="reference internal" href="../reference/plot/mqr.plot.correlation.html#module-mqr.plot.correlation" title="mqr.plot.correlation"><code class="xref myst py py-mod docutils literal notranslate"><span class="pre">mqr.plot.correlation</span></code></a> to show a detailed correlation plot.
+The plot includes
+histograms on the diagonal,
+scatter plots and fitted lines on the lower triangle,
+and statistics on the upper triangle.
+Pass <code class="docutils literal notranslate"><span class="pre">show_conf=True</span></code> to include confidence intervals on the correlation coefficients.
+Significant correlations are shown in bold.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Figure</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span><span class="p">):</span>
+    <span class="n">mqr</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">correlation</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">&#39;KPI1&#39;</span><span class="p">:</span><span class="s1">&#39;KPO2&#39;</span><span class="p">],</span> <span class="n">axs</span><span class="p">,</span> <span class="n">show_conf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/950c535b750e91826a3d91b289ece42d4868c84c0aa098577846b582acb1804b.png" src="../_images/950c535b750e91826a3d91b289ece42d4868c84c0aa098577846b582acb1804b.png" />
+</div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../user-guide.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">User Guide</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="data-analysis.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Data Analysis</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fishbone-diagram">Fishbone diagram</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-statistics">Summary statistics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#specifications-and-capability">Specifications and capability</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#graphical-summaries">Graphical summaries</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation">Correlation</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Nikolas Crossan.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+﻿.. py:module:: mqr.inference.nonparametric.median
+
+.. raw:: html
+
+   <div class="prename">mqr.inference.nonparametric.</div>
+   <div class="empty"></div>
+
+median
+==================================
+
+.. currentmodule:: mqr.inference.nonparametric.median
+
+
+
+
+
+
+.. rubric:: Functions
+.. autosummary::
+   :toctree:
+
+
+   test_1sample
+   test_nsample
+
+
+
