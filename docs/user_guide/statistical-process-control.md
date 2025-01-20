@@ -32,7 +32,7 @@ Related modules
 : [](#mqr.spc) (and [](#mqr.plot.spc))
 
 Detailed examples
-: <https://github.com/nklsxn/mqrpy-guide>
+: <https://github.com/nklsxn/mqr-guide>
 
 MQR provides classes for statistical process control. While the tools are designed
 for use with the plotting functions, they can also be used independently of control charts,
