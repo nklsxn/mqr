@@ -31,7 +31,7 @@ Related modules
 : <project:#mqr.doe>
 
 Detailed examples
-: <https://github.com/nklsxn/mqrpy-guide>
+: <https://github.com/nklsxn/mqr-guide>
 
 
 ## Introduction

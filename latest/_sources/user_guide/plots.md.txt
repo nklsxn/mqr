@@ -40,7 +40,7 @@ Related modules
   <project:#mqr.nbtools>
 
 Detailed examples
-: <https://github.com/nklsxn/mqrpy-guide>
+: <https://github.com/nklsxn/mqr-guide>
 
 Additional imports
 : In addition to the user-guide [imports](/user-guide.md#imports),

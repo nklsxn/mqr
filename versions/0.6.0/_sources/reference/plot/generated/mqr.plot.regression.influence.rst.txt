@@ -1,0 +1,11 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.plot.regression.</div>
+   <div class="empty"></div>
+
+influence
+=============================
+
+.. currentmodule:: mqr.plot.regression
+
+.. autofunction:: influence

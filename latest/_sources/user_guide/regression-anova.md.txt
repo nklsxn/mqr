@@ -32,7 +32,7 @@ Related modules
 : <project:#mqr.anova> (and <project:#mqr.plot.anova>, <project:#mqr.plot.regression>)
 
 Detailed examples
-: <https://github.com/nklsxn/mqrpy-guide>
+: <https://github.com/nklsxn/mqr-guide>
 
 
 MQR provides tools to analyse the results of ordinary least squares (OLS) and analysis of variance (ANOVA).

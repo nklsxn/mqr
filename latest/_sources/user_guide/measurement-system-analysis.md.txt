@@ -31,7 +31,7 @@ Related modules
 : <project:#mqr.msa> (and <project:#mqr.plot.msa>)
 
 Detailed examples
-: <https://github.com/nklsxn/mqrpy-guide>
+: <https://github.com/nklsxn/mqr-guide>
 
 
 MQR can automatically configure an ANOVA to perform a crossed GRR study.

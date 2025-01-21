@@ -33,7 +33,7 @@ Related modules
   <project:#mqr.plot.confint>
 
 Detailed examples
-: <https://github.com/nklsxn/mqrpy-guide>
+: <https://github.com/nklsxn/mqr-guide>
 
 
 The inference module is largely an interface to other libraries.

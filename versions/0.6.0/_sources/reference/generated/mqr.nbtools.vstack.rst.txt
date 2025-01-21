@@ -1,0 +1,11 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.nbtools.</div>
+   <div class="empty"></div>
+
+vstack
+==================
+
+.. currentmodule:: mqr.nbtools
+
+.. autofunction:: vstack

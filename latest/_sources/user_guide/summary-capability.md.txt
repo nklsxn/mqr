@@ -33,7 +33,7 @@ Related modules
     <project:#mqr.plot.correlation>
 
 Detailed examples
-:   <https://github.com/nklsxn/mqrpy-guide>
+:   <https://github.com/nklsxn/mqr-guide>
 
 
 ## Fishbone diagram

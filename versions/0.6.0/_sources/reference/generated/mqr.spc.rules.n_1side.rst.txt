@@ -1,0 +1,11 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.spc.rules.</div>
+   <div class="empty"></div>
+
+n_1side
+=====================
+
+.. currentmodule:: mqr.spc.rules
+
+.. autofunction:: n_1side

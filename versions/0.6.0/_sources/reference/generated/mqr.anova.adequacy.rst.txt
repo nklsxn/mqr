@@ -1,0 +1,11 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.anova.</div>
+   <div class="empty"></div>
+
+adequacy
+==================
+
+.. currentmodule:: mqr.anova
+
+.. autofunction:: adequacy

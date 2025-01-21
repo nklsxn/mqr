@@ -1,0 +1,44 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.spc.</div>
+   <div class="empty"></div>
+
+XBarParams
+==================
+
+.. currentmodule:: mqr.spc
+
+.. autoclass:: XBarParams
+   :no-members:
+   :no-inherited-members:
+   :no-special-members:
+
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         XBarParams.asdict
+         XBarParams.from_data
+         XBarParams.from_range
+         XBarParams.from_stddev
+         XBarParams.lcl
+         XBarParams.se
+         XBarParams.statistic
+         XBarParams.target
+         XBarParams.ucl
+      
+  
+
+  
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         XBarParams.name
+         XBarParams.nsigma
+         XBarParams.centre
+         XBarParams.sigma
+  
+  

@@ -22,6 +22,7 @@ The tools in MQR cover four topics:
 
 See the <project:user-guide.md> for notes by topic, and take a look at the
 <project:api-ref.rst> for information about each module, class and function.
+See <https://github.com/nklsxn/mqr-guide> for notebooks with detailed examples.
 
 Originally, MQR stood for _manufacturing quality and reliability_.
 MQR doesn't include tools for modelling product lifetime

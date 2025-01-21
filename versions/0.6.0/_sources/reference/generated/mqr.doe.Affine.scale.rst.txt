@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.doe.Affine.</div>
+   <div class="empty"></div>
+
+mqr.doe.Affine.scale
+====================
+
+.. currentmodule:: mqr.doe
+
+.. autoattribute:: Affine.scale

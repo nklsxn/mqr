@@ -1,0 +1,43 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.spc.</div>
+   <div class="empty"></div>
+
+RParams
+===============
+
+.. currentmodule:: mqr.spc
+
+.. autoclass:: RParams
+   :no-members:
+   :no-inherited-members:
+   :no-special-members:
+
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         RParams.asdict
+         RParams.from_data
+         RParams.from_range
+         RParams.lcl
+         RParams.se
+         RParams.statistic
+         RParams.target
+         RParams.ucl
+      
+  
+
+  
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         RParams.name
+         RParams.nsigma
+         RParams.centre
+         RParams.sigma
+  
+  
