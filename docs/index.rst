@@ -23,5 +23,5 @@ Credit
 ------
 Copyright 2024-2025 Nikolas Crossan and Kevin Otto
 
-Supported by the University of Melbourne<br>
-Department of Mechanical Engineering
+| Supported by the University of Melbourne
+| Department of Mechanical Engineering
