@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.inference.hyptest.HypothesisTest.</div>
+   <div class="empty"></div>
+
+mqr.inference.hyptest.HypothesisTest.sample_stat
+================================================
+
+.. currentmodule:: mqr.inference.hyptest
+
+.. autoattribute:: HypothesisTest.sample_stat

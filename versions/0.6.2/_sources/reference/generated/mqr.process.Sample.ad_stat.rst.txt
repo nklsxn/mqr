@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.process.Sample.</div>
+   <div class="empty"></div>
+
+mqr.process.Sample.ad_stat
+==========================
+
+.. currentmodule:: mqr.process
+
+.. autoattribute:: Sample.ad_stat

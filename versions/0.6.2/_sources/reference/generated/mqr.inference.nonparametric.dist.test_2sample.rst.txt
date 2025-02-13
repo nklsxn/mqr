@@ -1,0 +1,11 @@
+.. raw:: html
+
+   <div class="prename">mqr.inference.nonparametric.dist.</div>
+   <div class="empty"></div>
+
+test_2sample
+=============================================
+
+.. currentmodule:: mqr.inference.nonparametric.dist
+
+.. autofunction:: test_2sample

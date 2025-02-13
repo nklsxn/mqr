@@ -1,0 +1,11 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.plot.msa.</div>
+   <div class="empty"></div>
+
+r_operator
+=======================
+
+.. currentmodule:: mqr.plot.msa
+
+.. autofunction:: r_operator

@@ -1,0 +1,11 @@
+.. raw:: html
+
+   <div class="prename">mqr.inference.proportion.</div>
+   <div class="empty"></div>
+
+test_2sample
+=====================================
+
+.. currentmodule:: mqr.inference.proportion
+
+.. autofunction:: test_2sample

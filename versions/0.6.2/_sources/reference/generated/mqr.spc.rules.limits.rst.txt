@@ -1,0 +1,11 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.spc.rules.</div>
+   <div class="empty"></div>
+
+limits
+====================
+
+.. currentmodule:: mqr.spc.rules
+
+.. autofunction:: limits

@@ -1,0 +1,26 @@
+﻿.. py:module:: mqr.inference.dist
+
+.. raw:: html
+
+   <div class="prename">mqr.inference.</div>
+   <div class="empty"></div>
+
+dist
+==================
+
+.. currentmodule:: mqr.inference.dist
+
+
+
+
+
+
+.. rubric:: Functions
+.. autosummary::
+   :toctree:
+
+
+   test_1sample
+
+
+

@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.doe.Design.</div>
+   <div class="empty"></div>
+
+from_ccdesign
+============================
+
+.. currentmodule:: mqr.doe
+
+.. automethod:: Design.from_ccdesign
