@@ -1,5 +1,5 @@
-mqr deployment guide
---------------------
+mqrpy deployment guide
+----------------------
 
 1.  Make changes<br>
     Use commit messages with the following prefixes:<br>
@@ -18,5 +18,9 @@ mqr deployment guide
     Tag the version using:<br>
     `git tag -a <new_version> <new_version>`.
 
-3.  Push the version update and tag:<br>
+3.  Push the version update and tag, which triggers the github pages workflow to build new documentation:<br>
     `git push && git push --tags`.
+
+4.  Build the and upload packages:<br>
+    `python3 -m build`<br>
+    `python3 -m twine upload --repository pypi dist/mqrpy-<new_version>-py3-none-any.whl dist/mqrpy-<new_version>.tar.gz`
