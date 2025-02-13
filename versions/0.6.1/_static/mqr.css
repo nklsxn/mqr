@@ -1,0 +1,19 @@
+.bd-page-width:not(#fakeId) {
+    max-width: 1800px;
+}
+
+.bd-sidebar-primary:not(#fakeId) {
+    width: 22rem;
+}
+
+.bd-main:not(#fakeId) {
+    max-width: none;
+}
+
+.bd-article-container:not(#fakeId) {
+    max-width: none;
+}
+
+.bd-sidebar-secondary:not(#fakeId) {
+    width: 22rem;
+}

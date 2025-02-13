@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.msa.GRR.</div>
+   <div class="empty"></div>
+
+mqr.msa.GRR.regression_result
+=============================
+
+.. currentmodule:: mqr.msa
+
+.. autoattribute:: GRR.regression_result

@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.inference.power.TestPower.</div>
+   <div class="empty"></div>
+
+mqr.inference.power.TestPower.alpha
+===================================
+
+.. currentmodule:: mqr.inference.power
+
+.. autoattribute:: TestPower.alpha

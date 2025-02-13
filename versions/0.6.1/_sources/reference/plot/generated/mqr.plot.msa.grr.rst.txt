@@ -1,0 +1,11 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.plot.msa.</div>
+   <div class="empty"></div>
+
+grr
+================
+
+.. currentmodule:: mqr.plot.msa
+
+.. autofunction:: grr

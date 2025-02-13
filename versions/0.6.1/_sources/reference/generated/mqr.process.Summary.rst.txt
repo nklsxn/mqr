@@ -1,0 +1,35 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.process.</div>
+   <div class="empty"></div>
+
+Summary
+===================
+
+.. currentmodule:: mqr.process
+
+.. autoclass:: Summary
+   :no-members:
+   :no-inherited-members:
+   :no-special-members:
+
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         Summary.__getitem__
+      
+  
+
+  
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         Summary.data
+         Summary.samples
+         Summary.capabilities
+  
+  
