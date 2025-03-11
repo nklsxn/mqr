@@ -300,7 +300,7 @@ def r_operator(grr, ax,
     ax.axhline(params.ucl(N), **control_kws)
     ax.axhline(params.lcl(N), **control_kws)
     ax.set_xlabel(name_p)
-    ax.set_ylabel(f'{name_m}\n(mean over repeats)')
+    ax.set_ylabel(f'{name_m}\n(range over repeats)')
     ax.set_title(f'Range by {name_o}')
 
 def grr(grr, axs, sources=None):
