@@ -1,0 +1,27 @@
+﻿.. py:module:: mqr.inference.nonparametric.quantile
+
+.. raw:: html
+
+   <div class="prename">mqr.inference.nonparametric.</div>
+   <div class="empty"></div>
+
+quantile
+====================================
+
+.. currentmodule:: mqr.inference.nonparametric.quantile
+
+
+
+
+
+
+.. rubric:: Functions
+.. autosummary::
+   :toctree:
+
+
+   confint_1sample
+   test_1sample
+
+
+

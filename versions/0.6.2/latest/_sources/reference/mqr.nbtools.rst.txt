@@ -1,0 +1,4 @@
+.. automodule:: mqr.nbtools
+   :no-members:
+   :no-inherited-members:
+   :no-special-members:

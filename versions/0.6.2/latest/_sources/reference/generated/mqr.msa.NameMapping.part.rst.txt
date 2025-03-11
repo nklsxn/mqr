@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.msa.NameMapping.</div>
+   <div class="empty"></div>
+
+mqr.msa.NameMapping.part
+========================
+
+.. currentmodule:: mqr.msa
+
+.. autoattribute:: NameMapping.part

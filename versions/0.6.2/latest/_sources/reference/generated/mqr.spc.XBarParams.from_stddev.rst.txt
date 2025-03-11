@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.spc.XBarParams.</div>
+   <div class="empty"></div>
+
+from_stddev
+==============================
+
+.. currentmodule:: mqr.spc
+
+.. automethod:: XBarParams.from_stddev

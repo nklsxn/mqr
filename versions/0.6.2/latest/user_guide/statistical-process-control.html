@@ -1,0 +1,1279 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Statistical Process Control &#8212; mqr 0.6.2 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/_static/mqr.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mqr.css?v=394250bc" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../_static/documentation_options.js?v=1c28bd9a"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/statistical-process-control';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/nklsxn/mqr/refs/heads/master/docs/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.6.2';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Plots" href="plots.html" />
+    <link rel="prev" title="Design of Experiments" href="design-of-experiments.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.6.2" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">MQR</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting-started.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../user-guide.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api-ref.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../notes/notes.html">
+    Notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/nklsxn/mqr" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting-started.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../user-guide.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api-ref.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../notes/notes.html">
+    Notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/nklsxn/mqr" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="summary-capability.html">Process Summary and Capability</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="data-analysis.html">Data Analysis</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="inference.html">Basic Statistical Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression-anova.html">Regression and ANOVA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="measurement-system-analysis.html">Measurement System Analysis</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="design-of-experiments.html">Design of Experiments</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Statistical Process Control</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="plots.html">Plots</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="plotting-primer.html">Plotting primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plotting-customisation.html">Customising MQR plots</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../user-guide.html" class="nav-link">User Guide</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Statistical Process Control</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="statistical-process-control">
+<h1>Statistical Process Control<a class="headerlink" href="#statistical-process-control" title="Link to this heading">#</a></h1>
+<dl class="simple myst">
+<dt>Related modules</dt><dd><p><a class="reference internal" href="../reference/mqr.spc.html#module-mqr.spc" title="mqr.spc"><code class="xref myst py py-mod docutils literal notranslate"><span class="pre">mqr.spc</span></code></a> (and <a class="reference internal" href="../reference/plot/mqr.plot.spc.html#module-mqr.plot.spc" title="mqr.plot.spc"><code class="xref myst py py-mod docutils literal notranslate"><span class="pre">mqr.plot.spc</span></code></a>)</p>
+</dd>
+<dt>Detailed examples</dt><dd><p><a class="github reference external" href="https://github.com/nklsxn/mqr-guide" rel="noreferer noopener" target="_blank">nklsxn/mqr-guide</a></p>
+</dd>
+</dl>
+<p>MQR provides classes for statistical process control. While the tools are designed
+for use with the plotting functions, they can also be used independently of control charts,
+for example in scripts that detect alarm conditions and take some automated action
+like sending an email, displaying on a dashboard, etc.</p>
+<section id="background">
+<h2>Background<a class="headerlink" href="#background" title="Link to this heading">#</a></h2>
+<p>Traditionally, charts based on range and standard deviation have been defined
+and used together. For example, X-bar and R charts (both based on sample range)
+are often defined together. In this module, charts are treated separately so
+that <a class="reference internal" href="../reference/generated/mqr.spc.XBarParams.html#mqr.spc.XBarParams" title="mqr.spc.XBarParams"><span class="xref myst py py-class">XBarParams</span></a> is used with R and S charts.
+<a class="reference internal" href="../reference/generated/mqr.spc.XBarParams.html#mqr.spc.XBarParams" title="mqr.spc.XBarParams"><span class="xref myst py py-class">XBarParams</span></a> has methods to construct its parameters
+from either range or standard deviation.</p>
+<p>When control charts were originally developed, they were drawn by hand. To make
+drawing practical, the historical chart parameters (control, upper and lower
+limits) were defined in terms of tabulated constants. For example, the upper control limit
+of an XBar chart that was based on the sample range was often written with a constant
+<span class="math notranslate nohighlight">\(A_2\)</span> as <span class="math notranslate nohighlight">\(\mathrm{UCL} = \overline{\overline{x}} + A_2 \overline{R}\)</span>, where <span class="math notranslate nohighlight">\(A_2\)</span>
+is <span class="math notranslate nohighlight">\(3/(d_2(n)\sqrt{n})\)</span>, which includes a factor to estimate process standard
+deviation from sample range (<span class="math notranslate nohighlight">\(1 / d_2(n)\)</span>), the scale of the standard error of the mean
+(<span class="math notranslate nohighlight">\(1 / \sqrt{n}\)</span>), and the width of the limits (<span class="math notranslate nohighlight">\(3\)</span> standard errors).
+Since this library plots charts automatically, it does not use or provide a way to
+calculate those traditional constants. Instead, it calculates all parameters
+directly, using lookup tables for pre-calculated unbiasing constants.</p>
+<p>If necessary, the traditional constants are easy to calculate from standard errors
+and the unbiasing constants implemented in MQR (see <a class="reference internal" href="../reference/mqr.spc.util.html#module-mqr.spc.util" title="mqr.spc.util"><code class="xref myst py py-mod docutils literal notranslate"><span class="pre">mqr.spc.util</span></code></a>).
+For details on those traditional parameters, see <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+</section>
+<section id="data-handling">
+<h2>Data Handling<a class="headerlink" href="#data-handling" title="Link to this heading">#</a></h2>
+<p>The routines in <code class="docutils literal notranslate"><span class="pre">mqr.spc</span></code> expect sample data to be passed in a particular way.
+For now, all sample sizes must be the same, though the sample sizes used to construct parameters
+need not match the size of the samples used to monitor a process in production —
+their standard errors are calculated separately.
+Data should be formatted into pandas DataFrames with sample labels in the index.
+That is, if a process is sampled twice per day, then the first sample on the first day
+would be in the first row, the second sample that afternoon would be in the second row,
+the sample from the next morning would be in row three, and so on.
+Data should be formatted as follows.</p>
+<ul class="simple">
+<li><p>For XBarParams, RParams, SParams and EwmaParams each column corresponds to an observation in a sample.</p></li>
+<li><p>For MewmaParams each column corresponds to a measurements from a dimensions/KPIs.</p></li>
+</ul>
+<p>This sample data is provided with MQR.
+It is the format that should be used with XBarParams, RParams, etc.
+It shows 20 samples labelled from “0” to “19” in the index.
+Each sample has eight observations labelled in the columns as “x1” to “x8”.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">mqr</span><span class="o">.</span><span class="n">sample_data</span><span class="p">(</span><span class="s1">&#39;spc.csv&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>x1</th>
+      <th>x2</th>
+      <th>x3</th>
+      <th>x4</th>
+      <th>x5</th>
+      <th>x6</th>
+      <th>x7</th>
+      <th>x8</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>9.9976</td>
+      <td>10.0021</td>
+      <td>9.9961</td>
+      <td>9.9986</td>
+      <td>10.0033</td>
+      <td>9.9979</td>
+      <td>10.0026</td>
+      <td>9.9983</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>9.9998</td>
+      <td>10.0004</td>
+      <td>10.0006</td>
+      <td>9.9976</td>
+      <td>10.0017</td>
+      <td>10.0021</td>
+      <td>10.0025</td>
+      <td>9.9999</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>9.9998</td>
+      <td>9.9987</td>
+      <td>9.9972</td>
+      <td>9.9992</td>
+      <td>9.9990</td>
+      <td>9.9996</td>
+      <td>9.9988</td>
+      <td>10.0037</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>10.0005</td>
+      <td>9.9977</td>
+      <td>9.9963</td>
+      <td>9.9984</td>
+      <td>10.0028</td>
+      <td>10.0021</td>
+      <td>9.9999</td>
+      <td>9.9993</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>9.9963</td>
+      <td>9.9986</td>
+      <td>10.0024</td>
+      <td>9.9984</td>
+      <td>10.0008</td>
+      <td>9.9977</td>
+      <td>9.9968</td>
+      <td>9.9977</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>10.0014</td>
+      <td>9.9990</td>
+      <td>9.9978</td>
+      <td>10.0045</td>
+      <td>9.9968</td>
+      <td>10.0014</td>
+      <td>9.9966</td>
+      <td>9.9980</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>10.0009</td>
+      <td>10.0046</td>
+      <td>9.9982</td>
+      <td>10.0009</td>
+      <td>10.0033</td>
+      <td>10.0010</td>
+      <td>9.9976</td>
+      <td>9.9990</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>9.9994</td>
+      <td>10.0001</td>
+      <td>10.0018</td>
+      <td>9.9993</td>
+      <td>10.0005</td>
+      <td>9.9973</td>
+      <td>9.9995</td>
+      <td>9.9996</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>9.9981</td>
+      <td>9.9998</td>
+      <td>9.9992</td>
+      <td>9.9981</td>
+      <td>9.9992</td>
+      <td>10.0007</td>
+      <td>9.9996</td>
+      <td>9.9976</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>10.0024</td>
+      <td>10.0013</td>
+      <td>10.0005</td>
+      <td>9.9983</td>
+      <td>9.9998</td>
+      <td>9.9990</td>
+      <td>10.0011</td>
+      <td>9.9999</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>10.0018</td>
+      <td>10.0008</td>
+      <td>10.0009</td>
+      <td>9.9997</td>
+      <td>9.9989</td>
+      <td>9.9997</td>
+      <td>9.9990</td>
+      <td>9.9995</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>10.0027</td>
+      <td>10.0025</td>
+      <td>9.9996</td>
+      <td>9.9998</td>
+      <td>9.9997</td>
+      <td>9.9980</td>
+      <td>10.0002</td>
+      <td>9.9964</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>10.0029</td>
+      <td>10.0005</td>
+      <td>10.0035</td>
+      <td>9.9993</td>
+      <td>9.9998</td>
+      <td>10.0010</td>
+      <td>10.0005</td>
+      <td>9.9997</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>9.9991</td>
+      <td>10.0029</td>
+      <td>10.0001</td>
+      <td>9.9987</td>
+      <td>10.0005</td>
+      <td>10.0019</td>
+      <td>10.0025</td>
+      <td>9.9992</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>10.0008</td>
+      <td>10.0020</td>
+      <td>10.0035</td>
+      <td>9.9980</td>
+      <td>9.9988</td>
+      <td>10.0005</td>
+      <td>9.9983</td>
+      <td>9.9998</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>9.9985</td>
+      <td>9.9983</td>
+      <td>9.9972</td>
+      <td>9.9994</td>
+      <td>10.0032</td>
+      <td>9.9965</td>
+      <td>10.0001</td>
+      <td>9.9983</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>10.0010</td>
+      <td>10.0000</td>
+      <td>10.0001</td>
+      <td>10.0038</td>
+      <td>9.9993</td>
+      <td>9.9995</td>
+      <td>9.9989</td>
+      <td>10.0021</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>9.9986</td>
+      <td>10.0036</td>
+      <td>10.0013</td>
+      <td>9.9987</td>
+      <td>10.0004</td>
+      <td>10.0040</td>
+      <td>9.9995</td>
+      <td>10.0023</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>9.9988</td>
+      <td>10.0009</td>
+      <td>10.0046</td>
+      <td>10.0014</td>
+      <td>9.9999</td>
+      <td>9.9993</td>
+      <td>9.9996</td>
+      <td>9.9992</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>10.0010</td>
+      <td>10.0015</td>
+      <td>10.0012</td>
+      <td>10.0005</td>
+      <td>10.0040</td>
+      <td>10.0009</td>
+      <td>10.0017</td>
+      <td>10.0006</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="control-parameters">
+<h2>Control parameters<a class="headerlink" href="#control-parameters" title="Link to this heading">#</a></h2>
+<p>The main type for statistical process control in MQR is <a class="reference internal" href="../reference/generated/mqr.spc.ControlParams.html#mqr.spc.ControlParams" title="mqr.spc.ControlParams"><span class="xref myst py py-class">ControlParams</span></a>.
+ControlParams represent the target and limits of a process,
+and also contain enough information to calculate the monitored statistic from a set of samples.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The actual class <code class="docutils literal notranslate"><span class="pre">ControlParams</span></code> is a “superclass” in object-oriented terminology.
+All chart parameters like <code class="docutils literal notranslate"><span class="pre">XBarParams</span></code> are “derived” or “subclassed” from this type.
+Those derived classes have an “is-a” relationship with <code class="docutils literal notranslate"><span class="pre">ControlParams</span></code>:
+<code class="docutils literal notranslate"><span class="pre">XBarParams</span></code> is a <code class="docutils literal notranslate"><span class="pre">ControlParams</span></code>.
+In practise, this means that each of <code class="docutils literal notranslate"><span class="pre">XBarParams</span></code>, <code class="docutils literal notranslate"><span class="pre">RParams</span></code>, <code class="docutils literal notranslate"><span class="pre">SParams</span></code>, <code class="docutils literal notranslate"><span class="pre">EwmaParams</span></code> and <code class="docutils literal notranslate"><span class="pre">MewmaParams</span></code>
+can be used anywhere <code class="docutils literal notranslate"><span class="pre">ControlParams</span></code> are expected.</p>
+<p>Since the charting functions expect to be called with <code class="docutils literal notranslate"><span class="pre">ControlParams</span></code>,
+they can be called with, say, <code class="docutils literal notranslate"><span class="pre">SParams</span></code>.
+This is the signature of the charting function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mqr</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">chart</span><span class="p">(</span>
+    <span class="n">control_statistic</span><span class="p">:</span> <span class="n">ControlStatistic</span><span class="p">,</span>
+    <span class="n">control_params</span><span class="p">:</span> <span class="n">ControlParams</span><span class="p">,</span>
+    <span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Since <code class="docutils literal notranslate"><span class="pre">SParams</span></code> is a <code class="docutils literal notranslate"><span class="pre">ControlParams</span></code>, the charting function is called like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">SParams</span><span class="p">(</span><span class="mf">5.3</span><span class="p">)</span>
+<span class="n">statistic</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">statistic</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
+<span class="n">mqr</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">chart</span><span class="p">(</span><span class="n">statistic</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>All control chart functions require control parameters corresponding to the chart:
+the statistic should be calculated from the same object that will be passed to the plotting function.
+The class <a class="reference internal" href="../reference/generated/mqr.spc.XBarParams.html#mqr.spc.XBarParams" title="mqr.spc.XBarParams"><span class="xref myst py py-class">XBarParams</span></a> is an example of ControlParams and
+represents the parameters required to monitor the sample mean (x-bar) of a process.</p>
+<p>It is common to monitor in-control processes by comparing their statistics
+against historical statistics that were calculated from known-good
+processes or from reference values.
+<code class="docutils literal notranslate"><span class="pre">ControlParams</span></code> can be used to represent those historical parameters,
+or when historical parameters are not available,
+<code class="docutils literal notranslate"><span class="pre">ControlParams</span></code> can be created from a production sample.</p>
+<p>Many control strategies monitor sample statistics.
+X-bar charts track the sample mean, while R charts track the sample range.
+The monitored statistic is called the <a class="reference internal" href="../reference/generated/mqr.spc.ControlStatistic.html#mqr.spc.ControlStatistic" title="mqr.spc.ControlStatistic"><span class="xref myst py py-class">ControlStatistic</span></a> in MQR.
+Objects of this type are not normally calculated directly, but from
+<a class="reference internal" href="../reference/generated/mqr.spc.ControlParams.statistic.html#mqr.spc.ControlParams.statistic" title="mqr.spc.ControlParams.statistic"><span class="xref myst py py-meth">ControlParams.statistic</span></a>.
+This example calculates the sample means of four samples, each of size three.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[</span><span class="mf">4.3</span><span class="p">,</span> <span class="mf">1.7</span><span class="p">,</span> <span class="mf">6.2</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">5.4</span><span class="p">,</span> <span class="mf">5.4</span><span class="p">,</span> <span class="mf">3.6</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">6.8</span><span class="p">,</span> <span class="mf">2.8</span><span class="p">,</span> <span class="mf">7.1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">4.4</span><span class="p">,</span> <span class="mf">4.2</span><span class="p">,</span> <span class="mf">2.9</span><span class="p">],</span>
+<span class="p">])</span>
+<span class="n">sample_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
+
+<span class="c1"># process target is 4.5, process stddev (not stderr) is 1.8.</span>
+<span class="n">params</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">XBarParams</span><span class="p">(</span><span class="mf">4.5</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">)</span>
+
+<span class="c1"># in this case, the statistic does not depend on the target or stddev,</span>
+<span class="c1"># but does depend on the sample size.</span>
+<span class="n">ctrl_stat</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">statistic</span><span class="p">(</span><span class="n">sample_data</span><span class="p">)</span>
+<span class="n">ctrl_stat</span><span class="o">.</span><span class="n">stat</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5    4.066667
+6    4.800000
+7    5.566667
+8    3.833333
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>The ControlStatistic has the same units and is compared directly against the control limits.
+The control limits often depend on the sample size.
+For example, the XBar chart has limits that depend on the standard error of the mean,
+and so they depend on the sample size.
+The XBar example above has the following limits.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">params</span><span class="o">.</span><span class="n">lcl</span><span class="p">(</span><span class="n">nobs</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span> <span class="n">params</span><span class="o">.</span><span class="n">ucl</span><span class="p">(</span><span class="n">nobs</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1.3823085463760205, 7.61769145362398)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The control statistic is required to plot a control chart, and must be
+passed to plotting functions along with the control parameters.</p>
+<p>The class <a class="reference internal" href="../reference/generated/mqr.spc.ShewhartParams.html#mqr.spc.ShewhartParams" title="mqr.spc.ShewhartParams"><span class="xref myst py py-class">ShewhartParams</span></a> is a subclass of
+<a class="reference internal" href="../reference/generated/mqr.spc.ControlParams.html#mqr.spc.ControlParams" title="mqr.spc.ControlParams"><span class="xref myst py py-class">ControlParams</span></a> for strategies/charts whose
+control limits are based on the standard error of their statistic.
+For example, XBarParams, RParams and SParams are all ShewhartParams.</p>
+<section id="predefined-control-parameters">
+<h3>Predefined control parameters<a class="headerlink" href="#predefined-control-parameters" title="Link to this heading">#</a></h3>
+<p>These are the instances of <a class="reference internal" href="../reference/generated/mqr.spc.ControlParams.html#mqr.spc.ControlParams" title="mqr.spc.ControlParams"><span class="xref myst py py-class">ControlParams</span></a>:<br>
+<a class="reference internal" href="../reference/generated/mqr.spc.XBarParams.html#mqr.spc.XBarParams" title="mqr.spc.XBarParams"><code class="xref myst py py-class docutils literal notranslate"><span class="pre">mqr.spc.XBarParams</span></code></a>, <a class="reference internal" href="../reference/generated/mqr.spc.RParams.html#mqr.spc.RParams" title="mqr.spc.RParams"><code class="xref myst py py-class docutils literal notranslate"><span class="pre">mqr.spc.RParams</span></code></a>, <a class="reference internal" href="../reference/generated/mqr.spc.SParams.html#mqr.spc.SParams" title="mqr.spc.SParams"><code class="xref myst py py-class docutils literal notranslate"><span class="pre">mqr.spc.SParams</span></code></a>,
+<a class="reference internal" href="../reference/generated/mqr.spc.EwmaParams.html#mqr.spc.EwmaParams" title="mqr.spc.EwmaParams"><code class="xref myst py py-class docutils literal notranslate"><span class="pre">mqr.spc.EwmaParams</span></code></a>, <a class="reference internal" href="../reference/generated/mqr.spc.MewmaParams.html#mqr.spc.MewmaParams" title="mqr.spc.MewmaParams"><code class="xref myst py py-class docutils literal notranslate"><span class="pre">mqr.spc.MewmaParams</span></code></a>.</p>
+<p>New control parameters can be defined by subclassing
+<a class="reference internal" href="../reference/generated/mqr.spc.ControlParams.html#mqr.spc.ControlParams" title="mqr.spc.ControlParams"><span class="xref myst py py-class">ControlParams</span></a> or
+<a class="reference internal" href="../reference/generated/mqr.spc.ShewhartParams.html#mqr.spc.ShewhartParams" title="mqr.spc.ShewhartParams"><span class="xref myst py py-class">ShewhartParams</span></a>.
+New control parameters defined this way are supported by the plotting and alarming routines below.</p>
+</section>
+</section>
+<section id="alarm-rules">
+<h2>Alarm rules<a class="headerlink" href="#alarm-rules" title="Link to this heading">#</a></h2>
+<p>In MQR, alarm rules encode the conditions that a control statistic must satisfy
+in order to be considered out-of-control, and therefore warrant corrective action.</p>
+<p>Alarm rules are not a special type in MQR, but instead are simple functions/Callables
+with the signature:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Callable</span><span class="p">(</span><span class="n">ControlStatistic</span><span class="p">,</span> <span class="n">ControlParams</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">Series</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">Callable</span></code> is any object that can be called like a function,
+ie. with arguments between parentheses.
+The resulting pandas Series is an indexed list of True/False values,
+where <code class="docutils literal notranslate"><span class="pre">True</span></code> indicates that the statistic has triggered the alarm at that index.
+The convention (which is followed by all pre-defined rules) is that the alarm
+marks the last index of any subset that violates the rule.
+If subsets overlap, then each ending point will be marked, even if they are consecutive.
+The alarms do not, on the other hand, mark all the points that contributed to the alarm.</p>
+<p>The pre-defined alarms are all functions that return rules,
+which means they are functions that create functions.
+This can be confusing if you haven’t seen it before, but their use is straight-forward;
+see the examples below and in the <a class="reference internal" href="../reference/mqr.spc.rules.html#module-mqr.spc.rules" title="mqr.spc.rules"><span class="xref myst py py-mod">API Reference</span></a>.
+The pre-defined alarms are as follows:
+<a class="reference internal" href="../reference/generated/mqr.spc.rules.limits.html#mqr.spc.rules.limits" title="mqr.spc.rules.limits"><code class="xref myst py py-func docutils literal notranslate"><span class="pre">mqr.spc.rules.limits</span></code></a>,
+<a class="reference internal" href="../reference/generated/mqr.spc.rules.aofb_nsigma.html#mqr.spc.rules.aofb_nsigma" title="mqr.spc.rules.aofb_nsigma"><code class="xref myst py py-func docutils literal notranslate"><span class="pre">mqr.spc.rules.aofb_nsigma</span></code></a>,
+<a class="reference internal" href="../reference/generated/mqr.spc.rules.n_1side.html#mqr.spc.rules.n_1side" title="mqr.spc.rules.n_1side"><code class="xref myst py py-func docutils literal notranslate"><span class="pre">mqr.spc.rules.n_1side</span></code></a>,
+<a class="reference internal" href="../reference/generated/mqr.spc.rules.n_trending.html#mqr.spc.rules.n_trending" title="mqr.spc.rules.n_trending"><code class="xref myst py py-func docutils literal notranslate"><span class="pre">mqr.spc.rules.n_trending</span></code></a>.</p>
+<p>This example shows a point that violates the limit of an XBar chart
+(the data is here, the chart is shown in the section <a class="reference internal" href="#control-charts"><span class="std std-ref">Control charts</span></a> below).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mean_hist</span> <span class="o">=</span> <span class="mf">10.0</span>
+<span class="n">std_hist</span> <span class="o">=</span> <span class="mf">0.002</span>
+<span class="n">params</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">XBarParams</span><span class="p">(</span><span class="n">mean_hist</span><span class="p">,</span> <span class="n">std_hist</span><span class="p">)</span>
+
+<span class="c1"># Load sample data (which is in-control)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">mqr</span><span class="o">.</span><span class="n">sample_data</span><span class="p">(</span><span class="s1">&#39;spc.csv&#39;</span><span class="p">))</span>
+<span class="c1"># Add an out-of-control point</span>
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">10.0019</span><span class="p">,</span> <span class="mf">10.0027</span><span class="p">,</span> <span class="mf">10.0038</span><span class="p">,</span> <span class="mf">10.0036</span><span class="p">,</span> <span class="mf">9.9973</span><span class="p">,</span> <span class="mf">10.0037</span><span class="p">,</span> <span class="mf">10.0028</span><span class="p">,</span> <span class="mf">10.0017</span><span class="p">]</span>
+
+<span class="n">statistic</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">statistic</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">rule</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">limits</span><span class="p">()</span>
+
+<span class="n">alarms</span> <span class="o">=</span> <span class="n">rule</span><span class="p">(</span><span class="n">statistic</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+<span class="n">alarms</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16    False
+17    False
+18    False
+19    False
+20     True
+dtype: bool
+</pre></div>
+</div>
+</div>
+</div>
+<section id="combining-rules">
+<h3>Combining rules<a class="headerlink" href="#combining-rules" title="Link to this heading">#</a></h3>
+<p>MQR provides a mechanism (<a class="reference internal" href="../reference/generated/mqr.spc.rules.combine.html#mqr.spc.rules.combine" title="mqr.spc.rules.combine"><code class="xref myst py py-func docutils literal notranslate"><span class="pre">mqr.spc.rules.combine</span></code></a>) to build more complex alarm logic from simple elements.
+Any number of alarms can be combined with a logical operator to produce a new alarm.
+More information and examples are in the <a class="reference internal" href="../reference/generated/mqr.spc.rules.combine.html#mqr.spc.rules.combine" title="mqr.spc.rules.combine"><span class="xref myst py py-func">API Reference</span></a>.</p>
+<p>This example creates a rule that triggers an alarm when</p>
+<ul class="simple">
+<li><p>the statistic is less that the LCL or greater than the UCL, or</p></li>
+<li><p>the statistic has 3 of 4 consecutive points greater than 2 standard deviations from the target, or</p></li>
+<li><p>the statistic has 5 values either monotonic increasing or monotonic decreasing.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">,</span>
+    <span class="n">mqr</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">limits</span><span class="p">(),</span>
+    <span class="n">mqr</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">aofb_nsigma</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+    <span class="n">mqr</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">n_trending</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This rule is the same, except that it triggers an alarm only when
+all three of those conditions are true at the same time.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">,</span>                     <span class="c1"># AND instead of OR</span>
+    <span class="n">mqr</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">limits</span><span class="p">(),</span>
+    <span class="n">mqr</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">aofb_nsigma</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+    <span class="n">mqr</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">n_trending</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="custom-rules">
+<h3>Custom rules<a class="headerlink" href="#custom-rules" title="Link to this heading">#</a></h3>
+<p>Any function that has the signature</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Callable</span><span class="p">(</span><span class="n">ControlStatistic</span><span class="p">,</span> <span class="n">ControlParams</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">Series</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>can be used as an alarm rule.
+All custom defined rules with this signature will work with the combination functions,
+and will work with the plotting routines.
+All pre-defined control rules are defined as functions.
+The control rules are defined here, for reference:
+<a class="reference external" href="https://github.com/nklsxn/mqr/blob/master/mqr/spc/rules.py" rel="noreferer noopener" target="_blank"></a>.</p>
+<p>Note that the index of the output series must match the index of the ControlStatistic argument.</p>
+</section>
+</section>
+<section id="control-charts">
+<h2>Control charts<a class="headerlink" href="#control-charts" title="Link to this heading">#</a></h2>
+<p>To plot ControlStatistics against ControlParameters, use <a class="reference internal" href="../reference/plot/generated/mqr.plot.spc.chart.html#mqr.plot.spc.chart" title="mqr.plot.spc.chart"><code class="xref myst py py-func docutils literal notranslate"><span class="pre">mqr.plot.spc.chart</span></code></a>.
+This chart shows the sample data from <a class="reference internal" href="#alarm-rules"><span class="std std-ref">Alarm rules</span></a> above.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Figure</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+    <span class="n">mqr</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">chart</span><span class="p">(</span><span class="n">statistic</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/0831d0b6d7d231150dcc0bff42d5d28353da89ac7a31b369e39fcb6776d70526.png" src="../_images/0831d0b6d7d231150dcc0bff42d5d28353da89ac7a31b369e39fcb6776d70526.png" />
+</div>
+</div>
+<p>Alarm rules are shown as an overlay on the statistic.
+The overlay shows a red point and a red-shaded region over the statistic plot.
+The last point in the example above triggers an alarm according to the <a class="reference internal" href="../reference/generated/mqr.spc.rules.limits.html#mqr.spc.rules.limits" title="mqr.spc.rules.limits"><span class="xref myst py py-func"><code class="docutils literal notranslate"><span class="pre">limits</span></code></span></a> rule.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">limits</span><span class="p">()</span>
+
+<span class="k">with</span> <span class="n">Figure</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+    <span class="n">mqr</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">chart</span><span class="p">(</span><span class="n">statistic</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+    <span class="n">mqr</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">alarms</span><span class="p">(</span><span class="n">statistic</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">rule</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/fd292287d9ae6ca3e65295f3690e4efa6f39d233fd9ea51f557e482a08937089.png" src="../_images/fd292287d9ae6ca3e65295f3690e4efa6f39d233fd9ea51f557e482a08937089.png" />
+</div>
+</div>
+<p>The same data will trigger the <a class="reference internal" href="../reference/generated/mqr.spc.rules.n_trending.html#mqr.spc.rules.n_trending" title="mqr.spc.rules.n_trending"><span class="xref myst py py-func"><code class="docutils literal notranslate"><span class="pre">n_trending(4)</span></code></span></a> rule.
+This example demonstrates that only the last of the points in a violating subset is highlighted.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">n_trending</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">Figure</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+    <span class="n">mqr</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">chart</span><span class="p">(</span><span class="n">statistic</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+    <span class="n">mqr</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">alarms</span><span class="p">(</span><span class="n">statistic</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">rule</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/77275a7c74ca6326dfe4038e169a3a84bfb35a5a5a169c58e6eb28d151c8b19a.png" src="../_images/77275a7c74ca6326dfe4038e169a3a84bfb35a5a5a169c58e6eb28d151c8b19a.png" />
+</div>
+</div>
+<p>See more examples in <a class="reference internal" href="../reference/mqr.spc.rules.html#module-mqr.spc.rules" title="mqr.spc.rules"><code class="xref myst py py-mod docutils literal notranslate"><span class="pre">mqr.spc.rules</span></code></a>.</p>
+</section>
+<section id="historical-vs-live-data">
+<h2>Historical vs. live data<a class="headerlink" href="#historical-vs-live-data" title="Link to this heading">#</a></h2>
+<p>ControlParams represent the target and limits of an in-control process.
+Ideally, ControlParams should be created from historical or reference values for the process.
+For example, XBarParams would be created from an historical process target and standard deviation directly.
+That is true for all the types: the class attributes are the reference parameters.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mqr</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">XBarParams</span><span class="p">(</span><span class="mf">4.3</span><span class="p">,</span> <span class="mf">0.21</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>XBarParams(centre=4.3, sigma=0.21)
+</pre></div>
+</div>
+</div>
+</div>
+<p>To create reference parameters from historical samples, use the <code class="docutils literal notranslate"><span class="pre">.from_data</span></code> methods, like this.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">mqr</span><span class="o">.</span><span class="n">sample_data</span><span class="p">(</span><span class="s1">&#39;spc.csv&#39;</span><span class="p">))</span>
+<span class="n">mqr</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">XBarParams</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>XBarParams(centre=10.000053750000001, sigma=0.0018739437029978527)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">.from_data</span></code> methods can be used to create ControlParams from live data,
+but be aware that the limits are then 3<span class="math notranslate nohighlight">\(\sigma\)</span> (by default) from the mean of the live data.
+As a result, the live data will rarely (about 0.03% of points, since the data were assumed to be normal)
+trigger an alarm on its own limits.</p>
+<p>ControlParams should only be created this way if the process is known to be in-control.</p>
+</div>
+<p>ControlParams can also be created from the statistics of historical samples.
+For example, RParams can be created from an historical sample range like this.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mqr</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">RParams</span><span class="o">.</span><span class="n">from_range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">nobs</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RParams(centre=2, sigma=0.8598714945002754)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The resulting RParams has a target sample range of 2,
+and is parameterised on a process standard deviation of <span class="math notranslate nohighlight">\(\sigma \approx 0.86\)</span>,
+which was calculated from the sample range.
+If the process standard deviation is known, use it directly:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mqr</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">RParams</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.86</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RParams(centre=2, sigma=0.86)
+</pre></div>
+</div>
+</div>
+</div>
+<section id="saving-controlparams">
+<h3>Saving ControlParams<a class="headerlink" href="#saving-controlparams" title="Link to this heading">#</a></h3>
+<p>After ControlParams have been created they can be serialised to disk/file in two ways.</p>
+<ol class="arabic simple">
+<li><p>Use python’s <code class="docutils literal notranslate"><span class="pre">pickle</span></code> library to serialise the object to an efficient binary format.
+Pickle data contains enough information to recreate the object directly,
+with no further type information.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">mqr.spc.ControlParams.asdict</span></code> to serialise the object to a dict and then JSON.
+The object can be recreated by passing the resulting dictionary to the corresponding constructor.</p></li>
+</ol>
+<p>This is an example of pickling and then reconstructing an instance of RParams.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
+
+<span class="n">params</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">RParams</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.86</span><span class="p">)</span>
+<span class="n">params_bin</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+<span class="n">obj</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">params_bin</span><span class="p">)</span>
+
+<span class="n">vstack</span><span class="p">(</span>
+    <span class="n">params_bin</span><span class="p">,</span>
+    <span class="n">obj</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div style="display:flex;flex-direction:column;justify-content:start;justify-items:start;align-content:start;align-items:start;"><div style="margin:5px 10px 5px 10px;"><pre>b'\x80\x04\x95]\x00\x00\x00\x00\x00\x00\x00\x8c\x13mqr.spc.lib.control\x94\x8c\x07RParams\x94\x93\x94)\x81\x94}\x94(\x8c\x06centre\x94K\x02\x8c\x05sigma\x94G?\xeb\x85\x1e\xb8Q\xeb\x85\x8c\x06nsigma\x94K\x03\x8c\x04name\x94\x8c\x01R\x94ub.'</pre></div><div style="margin:5px 10px 5px 10px;"><pre>RParams(centre=2, sigma=0.86)</pre></div></div></div></div>
+</div>
+<p>This is an example of serliasing to JSON then reconstructing the same instance of RParams.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="n">json_str</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">asdict</span><span class="p">())</span>
+<span class="n">params_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json_str</span><span class="p">)</span>
+<span class="n">obj</span> <span class="o">=</span> <span class="n">mqr</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">RParams</span><span class="p">(</span><span class="o">**</span><span class="n">params_dict</span><span class="p">)</span>
+
+<span class="n">vstack</span><span class="p">(</span>
+    <span class="n">json_str</span><span class="p">,</span>
+    <span class="n">params_dict</span><span class="p">,</span>
+    <span class="n">obj</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div style="display:flex;flex-direction:column;justify-content:start;justify-items:start;align-content:start;align-items:start;"><div style="margin:5px 10px 5px 10px;"><p>{"centre": 2, "sigma": 0.86, "nsigma": 3, "name": "R"}</p></div><div style="margin:5px 10px 5px 10px;"><pre>{'centre': 2, 'sigma': 0.86, 'nsigma': 3, 'name': 'R'}</pre></div><div style="margin:5px 10px 5px 10px;"><pre>RParams(centre=2, sigma=0.86)</pre></div></div></div></div>
+</div>
+<p>Note that there is not enough information in the JSON representation to know
+which type is being constructed.
+Usually, the JSON will be stored in a way that makes it clear how it should be reconstructed.
+That is, the JSON will be stored at a location that contains only RParams, or
+the type name (“mqr.spc.RParams”) could be stored as metadata with the JSON.</p>
+</section>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+</section>
+</section>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Montgomery, D. C. (2009).
+Statistical quality control (Vol. 7).
+New York: Wiley.</p>
+</aside>
+</aside>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="design-of-experiments.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Design of Experiments</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="plots.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Plots</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#background">Background</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-handling">Data Handling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#control-parameters">Control parameters</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#predefined-control-parameters">Predefined control parameters</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alarm-rules">Alarm rules</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combining-rules">Combining rules</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-rules">Custom rules</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#control-charts">Control charts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#historical-vs-live-data">Historical vs. live data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#saving-controlparams">Saving ControlParams</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024-2025 Nikolas Crossan and Kevin Otto.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
