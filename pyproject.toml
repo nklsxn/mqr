@@ -22,8 +22,12 @@ classifiers = [
     "Intended Audience :: Manufacturing",
 ]
 keywords = [
-    "quality", "manufacturing", "six sigma", "design of experiments", "dmaic",
-    "anova", "grr", "msa"]
+    "quality", "manufacturing",
+    "six sigma", "dmaic",
+    "design of experiments", "anova", "grr", "msa",
+    "statistical quality control", "sqc", "statistical process control", "spc",
+    "robust design", "response surface design",
+]
 dependencies = [
     "ipython",
     "pytest",
