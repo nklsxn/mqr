@@ -1,3 +1,17 @@
+"""
+=======================================
+Utilities (:mod:`mqr.utils`)
+=======================================
+
+.. rubric:: Functions
+
+.. autosummary::
+    :toctree: generated/
+
+    make_ordinal
+    clip_where
+    fredholm2
+"""
 from collections.abc import Iterable
 import numpy as np
 
@@ -63,13 +77,13 @@ def fredholm2(t0, fn_K, fn_g, lmda, x, w):
     """
     Solve a Fredholm equation of the second kind.
 
-    Evaluates f at t0 in:
+    Evaluates :math:`f` at `t0` in:
 
     .. math::
 
         f(t) = g(t) + λ \\int_Q K(t, s) f(s) ds
 
-    where the definite integral is approximated over the region Q defined by the
+    where the definite integral is approximated over the region :math:`Q` defined by the
     quadrature points `x` and weights `w`.
 
     Uses the quadrature points and weights provided to form linear equations,

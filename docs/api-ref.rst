@@ -19,6 +19,7 @@ API Reference
     reference/mqr.plot
     reference/mqr.transforms
     reference/mqr.nbtools
+    reference/mqr.utils
 
 The code is organised into the following namespaces.
 
@@ -39,6 +40,7 @@ Namespaces
     mqr.plot
     mqr.transforms
     mqr.nbtools
+    mqr.utils
 
 
 Related plotting tools

@@ -44,7 +44,7 @@ data.head()
 ```
 
 
-## Setting up a problem
+## Setting up a study
 
 Define the following parameters:
 * tolerance,

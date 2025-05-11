@@ -15,6 +15,9 @@ The documentation, including a user guide and API reference is at https://nklsxn
 
 A set of detailed examples is available in the repository https://github.com/nklsxn/mqrpy-guide.
 
+To build the documentation, further packages are needed that are not included with the pip installation:<br>
+`sphinx`, `sphinx_rtd_theme`, `numpydoc`, `myst_nb`, and `pydata_sphinx_theme`.
+
 License
 -------
 This package is provided under the BSD License (3-clause).

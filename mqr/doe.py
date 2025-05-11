@@ -50,9 +50,9 @@ class Design:
         Numerical labels for each run. Useful for tracking runs after randomisation.
     pttypes : array_like
         Numerical label for each point type:
-        | 0 : centre point
-        | 1 : corner point
-        | 2 : axial point
+            | 0 : centre point
+            | 1 : corner point
+            | 2 : axial point
 
     Examples
     --------
