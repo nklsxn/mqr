@@ -83,7 +83,7 @@ class NameMapping:
 @dataclass
 class GRR:
     """
-    A Gauge Repeatability and Reliability study.
+    A Gauge Repeatability and Reproducibility study.
 
     Constructs a model and calls `statsmodels.formula.api.ols`.
 
@@ -201,7 +201,7 @@ class SummaryTable:
         html = f'''
             <table>
             <thead>
-                <caption>Gauge Repeatability and Reliability Study</caption>
+                <caption>Gauge Repeatability and Reproducibility Study</caption>
             </thead>
             <tbody>
                 <thead>
