@@ -1,0 +1,11 @@
+.. raw:: html
+
+   <div class="prename">mqr.inference.mean.</div>
+   <div class="empty"></div>
+
+test_2sample
+===============================
+
+.. currentmodule:: mqr.inference.mean
+
+.. autofunction:: test_2sample

@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.doe.Affine.</div>
+   <div class="empty"></div>
+
+from_map
+=======================
+
+.. currentmodule:: mqr.doe
+
+.. automethod:: Affine.from_map

@@ -1,0 +1,11 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.plot.tools.</div>
+   <div class="empty"></div>
+
+sharex
+=====================
+
+.. currentmodule:: mqr.plot.tools
+
+.. autofunction:: sharex

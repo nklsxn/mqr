@@ -18,6 +18,7 @@ ConfidenceInterval
       .. autosummary::
          :toctree:
       
+         ConfidenceInterval.__len__
       
   
 

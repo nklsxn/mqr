@@ -1,0 +1,894 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>test_nsample &#8212; mqr 0.6.4 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/_static/mqr.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mqr.css?v=394250bc" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../../_static/documentation_options.js?v=73d9a94e"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'reference/generated/mqr.inference.nonparametric.median.test_nsample';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/nklsxn/mqr/refs/heads/master/docs/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.6.4';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="quantile" href="mqr.inference.nonparametric.quantile.html" />
+    <link rel="prev" title="test_1sample" href="mqr.inference.nonparametric.median.test_1sample.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.6.4" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">MQR</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting-started.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../quick-reference.html">
+    Quick Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user-guide.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../api-ref.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../notes/notes.html">
+    Notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/nklsxn/mqr" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting-started.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../quick-reference.html">
+    Quick Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user-guide.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../api-ref.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../notes/notes.html">
+    Notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/nklsxn/mqr" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mqr.process.html">Process summary and capability (<code class="xref py py-mod docutils literal notranslate"><span class="pre">mqr.process</span></code>)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="mqr.process.Sample.html">Sample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.process.Specification.html">Specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.process.Capability.html">Capability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.process.Summary.html">Summary</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mqr.inference.html">Basic statistical inference (<code class="xref py py-mod docutils literal notranslate"><span class="pre">mqr.inference</span></code>)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="mqr.inference.dist.html">dist</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.dist.test_1sample.html">test_1sample</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="mqr.inference.correlation.html">correlation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.correlation.confint.html">confint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.correlation.test.html">test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.correlation.test_diff.html">test_diff</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="mqr.inference.mean.html">mean</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.mean.confint_1sample.html">confint_1sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.mean.confint_2sample.html">confint_2sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.mean.confint_paired.html">confint_paired</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.mean.size_1sample.html">size_1sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.mean.size_2sample.html">size_2sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.mean.size_paired.html">size_paired</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.mean.test_1sample.html">test_1sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.mean.test_2sample.html">test_2sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.mean.test_paired.html">test_paired</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="mqr.inference.proportion.html">proportion</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.proportion.confint_1sample.html">confint_1sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.proportion.confint_2sample.html">confint_2sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.proportion.power_1sample.html">power_1sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.proportion.power_2sample.html">power_2sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.proportion.size_1sample.html">size_1sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.proportion.size_2sample.html">size_2sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.proportion.test_1sample.html">test_1sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.proportion.test_2sample.html">test_2sample</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="mqr.inference.rate.html">rate</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.rate.confint_1sample.html">confint_1sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.rate.confint_2sample.html">confint_2sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.rate.power_1sample.html">power_1sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.rate.power_2sample.html">power_2sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.rate.size_1sample.html">size_1sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.rate.size_2sample.html">size_2sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.rate.test_1sample.html">test_1sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.rate.test_2sample.html">test_2sample</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="mqr.inference.stddev.html">stddev</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.stddev.confint_1sample.html">confint_1sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.stddev.confint_2sample.html">confint_2sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.stddev.size_1sample.html">size_1sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.stddev.size_2sample.html">size_2sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.stddev.test_1sample.html">test_1sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.stddev.test_2sample.html">test_2sample</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="mqr.inference.variance.html">variance</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.variance.confint_1sample.html">confint_1sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.variance.confint_2sample.html">confint_2sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.variance.power_1sample.html">power_1sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.variance.power_2sample.html">power_2sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.variance.size_1sample.html">size_1sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.variance.size_2sample.html">size_2sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.variance.test_1sample.html">test_1sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.variance.test_2sample.html">test_2sample</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.inference.confint.ConfidenceInterval.html">ConfidenceInterval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.inference.hyptest.HypothesisTest.html">HypothesisTest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.inference.power.TestPower.html">TestPower</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../mqr.inference.nonparametric.html">Basic statistical inference (<code class="xref py py-mod docutils literal notranslate"><span class="pre">mqr.inference.nonparametric</span></code>)</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="mqr.inference.nonparametric.correlation.html">correlation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.nonparametric.correlation.test.html">test</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="mqr.inference.nonparametric.dist.html">dist</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.nonparametric.dist.test_1sample.html">test_1sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.nonparametric.dist.test_2sample.html">test_2sample</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="mqr.inference.nonparametric.median.html">median</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.nonparametric.median.test_1sample.html">test_1sample</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">test_nsample</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="mqr.inference.nonparametric.quantile.html">quantile</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.nonparametric.quantile.confint_1sample.html">confint_1sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.nonparametric.quantile.test_1sample.html">test_1sample</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="mqr.inference.nonparametric.variance.html">variance</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="mqr.inference.nonparametric.variance.test_nsample.html">test_nsample</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mqr.anova.html">Analysis of Variance (<code class="xref py py-mod docutils literal notranslate"><span class="pre">mqr.anova</span></code>)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="mqr.anova.adequacy.html">adequacy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.anova.summary.html">summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.anova.coeffs.html">coeffs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.anova.groups.html">groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.anova.interactions.html">interactions</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mqr.msa.html">Measurement system analysis (<code class="xref py py-mod docutils literal notranslate"><span class="pre">mqr.msa</span></code>)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="mqr.msa.GRR.html">GRR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.msa.NameMapping.html">NameMapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.msa.VarianceTable.html">VarianceTable</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mqr.doe.html">Design of Experiments (<code class="xref py py-mod docutils literal notranslate"><span class="pre">mqr.doe</span></code>)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="mqr.doe.Design.html">Design</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="mqr.doe.Design.as_block.html">as_block</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.doe.Design.from_axial.html">from_axial</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.doe.Design.from_ccdesign.html">from_ccdesign</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.doe.Design.from_centrepoints.html">from_centrepoints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.doe.Design.from_fracfact.html">from_fracfact</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.doe.Design.from_fullfact.html">from_fullfact</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.doe.Design.from_levels.html">from_levels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.doe.Design.get_factor_df.html">get_factor_df</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.doe.Design.randomise_runs.html">randomise_runs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.doe.Design.replicate.html">replicate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.doe.Design.to_df.html">to_df</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.doe.Design.transform.html">transform</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="mqr.doe.Transform.html">Transform</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="mqr.doe.Transform.from_map.html">from_map</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="mqr.doe.Affine.html">Affine</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="mqr.doe.Affine.__call__.html">__call__</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.doe.Affine.from_map.html">from_map</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mqr.spc.html">Statistical Process Control (<code class="xref py py-mod docutils literal notranslate"><span class="pre">mqr.spc</span></code>)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="mqr.spc.ControlParams.html">ControlParams</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.ControlParams.asdict.html">asdict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.ControlParams.lcl.html">lcl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.ControlParams.statistic.html">statistic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.ControlParams.target.html">target</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.ControlParams.ucl.html">ucl</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="mqr.spc.ShewhartParams.html">ShewhartParams</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.ShewhartParams.asdict.html">asdict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.ShewhartParams.lcl.html">lcl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.ShewhartParams.se.html">se</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.ShewhartParams.statistic.html">statistic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.ShewhartParams.target.html">target</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.ShewhartParams.ucl.html">ucl</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.spc.ControlStatistic.html">ControlStatistic</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="mqr.spc.XBarParams.html">XBarParams</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.XBarParams.asdict.html">asdict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.XBarParams.from_data.html">from_data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.XBarParams.from_range.html">from_range</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.XBarParams.from_stddev.html">from_stddev</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.XBarParams.lcl.html">lcl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.XBarParams.se.html">se</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.XBarParams.statistic.html">statistic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.XBarParams.target.html">target</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.XBarParams.ucl.html">ucl</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="mqr.spc.RParams.html">RParams</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.RParams.asdict.html">asdict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.RParams.from_data.html">from_data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.RParams.from_range.html">from_range</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.RParams.lcl.html">lcl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.RParams.se.html">se</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.RParams.statistic.html">statistic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.RParams.target.html">target</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.RParams.ucl.html">ucl</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="mqr.spc.SParams.html">SParams</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.SParams.asdict.html">asdict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.SParams.from_data.html">from_data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.SParams.lcl.html">lcl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.SParams.se.html">se</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.SParams.statistic.html">statistic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.SParams.target.html">target</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.SParams.ucl.html">ucl</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="mqr.spc.EwmaParams.html">EwmaParams</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.EwmaParams.asdict.html">asdict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.EwmaParams.from_data.html">from_data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.EwmaParams.from_stddev.html">from_stddev</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.EwmaParams.lcl.html">lcl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.EwmaParams.statistic.html">statistic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.EwmaParams.target.html">target</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.EwmaParams.ucl.html">ucl</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="mqr.spc.MewmaParams.html">MewmaParams</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.MewmaParams.asdict.html">asdict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.MewmaParams.from_data.html">from_data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.MewmaParams.lcl.html">lcl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.MewmaParams.statistic.html">statistic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.MewmaParams.target.html">target</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqr.spc.MewmaParams.ucl.html">ucl</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mqr.spc.rules.html">SPC alarm rules (<code class="xref py py-mod docutils literal notranslate"><span class="pre">mqr.spc.rules</span></code>)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="mqr.spc.rules.limits.html">limits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.spc.rules.aofb_nsigma.html">aofb_nsigma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.spc.rules.n_1side.html">n_1side</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.spc.rules.n_trending.html">n_trending</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.spc.rules.combine.html">combine</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mqr.spc.util.html">SPC utilities (<code class="xref py py-mod docutils literal notranslate"><span class="pre">mqr.spc.util</span></code>)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="mqr.spc.util.c4.html">c4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.spc.util.d2.html">d2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.spc.util.d3.html">d3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.spc.util.c4_fn.html">c4_fn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.spc.util.d2_integral.html">d2_integral</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.spc.util.d3_integral.html">d3_integral</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.spc.util.solve_arl.html">solve_arl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.spc.util.solve_h4.html">solve_h4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.spc.util.group_consecutives.html">group_consecutives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.spc.util.alarm_subsets.html">alarm_subsets</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mqr.plot.html">Plots (<code class="xref py py-mod docutils literal notranslate"><span class="pre">mqr.plot</span></code>)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="mqr.plot.Figure.html">Figure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.plot.ishikawa.html">ishikawa</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.plot.confint.html">confint</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../plot/mqr.plot.process.html">Process and capability (<code class="xref py py-mod docutils literal notranslate"><span class="pre">mqr.plot.process</span></code>)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../plot/generated/mqr.plot.process.summary.html">summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plot/generated/mqr.plot.process.pdf.html">pdf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plot/generated/mqr.plot.process.tolerance.html">tolerance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plot/generated/mqr.plot.process.capability.html">capability</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../plot/mqr.plot.correlation.html">Correlation matrix (<code class="xref py py-mod docutils literal notranslate"><span class="pre">mqr.plot.correlation</span></code>)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../plot/generated/mqr.plot.correlation.matrix.html">matrix</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../plot/mqr.plot.regression.html">Regression analysis (<code class="xref py py-mod docutils literal notranslate"><span class="pre">mqr.plot.regression</span></code>)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../plot/generated/mqr.plot.regression.residuals.html">residuals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plot/generated/mqr.plot.regression.influence.html">influence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plot/generated/mqr.plot.regression.res_probplot.html">res_probplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plot/generated/mqr.plot.regression.res_histogram.html">res_histogram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plot/generated/mqr.plot.regression.res_v_obs.html">res_v_obs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plot/generated/mqr.plot.regression.res_v_fit.html">res_v_fit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plot/generated/mqr.plot.regression.res_v_factor.html">res_v_factor</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../plot/mqr.plot.anova.html">Analysis of variance (<code class="xref py py-mod docutils literal notranslate"><span class="pre">mqr.plot.anova</span></code>)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../plot/generated/mqr.plot.anova.main_effects.html">main_effects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plot/generated/mqr.plot.anova.interactions.html">interactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plot/generated/mqr.plot.anova.model_means.html">model_means</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../plot/mqr.plot.msa.html">Measurement system analysis (<code class="xref py py-mod docutils literal notranslate"><span class="pre">mqr.plot.msa</span></code>)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../plot/generated/mqr.plot.msa.grr.html">grr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plot/generated/mqr.plot.msa.bar_var_pct.html">bar_var_pct</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plot/generated/mqr.plot.msa.box_measurement_by_part.html">box_measurement_by_part</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plot/generated/mqr.plot.msa.xbar_operator.html">xbar_operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plot/generated/mqr.plot.msa.box_measurement_by_operator.html">box_measurement_by_operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plot/generated/mqr.plot.msa.r_operator.html">r_operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plot/generated/mqr.plot.msa.line_part_operator_intn.html">line_part_operator_intn</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../plot/mqr.plot.spc.html">Statistical process control (<code class="xref py py-mod docutils literal notranslate"><span class="pre">mqr.plot.spc</span></code>)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../plot/generated/mqr.plot.spc.chart.html">chart</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plot/generated/mqr.plot.spc.alarms.html">alarms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plot/generated/mqr.plot.spc.oc.html">oc</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../plot/mqr.plot.tools.html">Plotting tools (<code class="xref py py-mod docutils literal notranslate"><span class="pre">mqr.plot.tools</span></code>)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../plot/generated/mqr.plot.tools.sharex.html">sharex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plot/generated/mqr.plot.tools.sharey.html">sharey</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mqr.transforms.html">Data transforms (<code class="xref py py-mod docutils literal notranslate"><span class="pre">mqr.transforms</span></code>)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="mqr.transforms.zscore.html">zscore</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mqr.nbtools.html">Notebook tools (<code class="xref py py-mod docutils literal notranslate"><span class="pre">mqr.nbtools</span></code>)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="mqr.nbtools.grab_figure.html">grab_figure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.nbtools.hstack.html">hstack</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.nbtools.vstack.html">vstack</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mqr.utils.html">Utilities (<code class="xref py py-mod docutils literal notranslate"><span class="pre">mqr.utils</span></code>)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="mqr.utils.make_ordinal.html">make_ordinal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.utils.clip_where.html">clip_where</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.utils.fredholm2.html">fredholm2</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../api-ref.html" class="nav-link">API Reference</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../mqr.inference.nonparametric.html" class="nav-link">Basic statistical inference (<code class="xref py py-mod docutils literal notranslate"><span class="pre">mqr.inference.nonparametric</span></code>)</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="mqr.inference.nonparametric.median.html" class="nav-link">median</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">test_nsample</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="prename">mqr.inference.nonparametric.median.</div>
+<div class="empty"></div><section id="test-nsample">
+<h1>test_nsample<a class="headerlink" href="#test-nsample" title="Link to this heading">#</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="mqr.inference.nonparametric.median.test_nsample">
+<span class="sig-prename descclassname"><span class="pre">mqr.inference.nonparametric.median.</span></span><span class="sig-name descname"><span class="pre">test_nsample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alternative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'two-sided'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'kruskal-wallis'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mqr.inference.nonparametric.median.test_nsample" title="Link to this definition">#</a></dt>
+<dd><p>Hypothesis test for equality of medians amongst samples.</p>
+<dl class="simple">
+<dt>Null-hypothesis</dt><dd><p>median(<cite>x[i]</cite>) == median(<cite>x[j]</cite>), for all <cite>i</cite>, <cite>j</cite></p>
+</dd>
+</dl>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>x</strong><span class="classifier">array_like</span></dt><dd><p>Test the medians of these samples.</p>
+</dd>
+<dt><strong>alternative</strong><span class="classifier">{‘two-sided’, ‘less’, ‘greater’}, optional</span></dt><dd><p>Sense of alternative hypothesis.</p>
+</dd>
+<dt><strong>method</strong><span class="classifier">{‘kruskal-wallis’, ‘mann-whitney’}, optional</span></dt><dd><div class="line-block">
+<div class="line">‘kruskal-wallis’</div>
+<div class="line-block">
+<div class="line">Kruskal-Wallis test. A one-way ANOVA based on ranks.
+Calls <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kruskal.html#scipy.stats.kruskal" title="(in SciPy v1.15.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy..kruskal</span></code></a>.</div>
+</div>
+<div class="line">‘mann-whitney’</div>
+<div class="line-block">
+<div class="line">Mann-Whitney U test for the differences between two samples.
+Calls <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.mannwhitneyu.html#scipy.stats.mannwhitneyu" title="(in SciPy v1.15.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy..mannwhitneyu</span></code></a>.</div>
+</div>
+</div>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><a class="reference internal" href="mqr.inference.hyptest.HypothesisTest.html#mqr.inference.hyptest.HypothesisTest" title="mqr.inference.hyptest.HypothesisTest"><code class="xref py py-class docutils literal notranslate"><span class="pre">mqr.inference.hyptest.HypothesisTest</span></code></a></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="mqr.inference.nonparametric.median.test_1sample.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">test_1sample</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="mqr.inference.nonparametric.quantile.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">quantile</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mqr.inference.nonparametric.median.test_nsample"><code class="docutils literal notranslate"><span class="pre">test_nsample</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024-2025 Nikolas Crossan and Kevin Otto.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

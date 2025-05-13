@@ -1,0 +1,41 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.msa.</div>
+   <div class="empty"></div>
+
+GRR
+===========
+
+.. currentmodule:: mqr.msa
+
+.. autoclass:: GRR
+   :no-members:
+   :no-inherited-members:
+   :no-special-members:
+
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+      
+  
+
+  
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         GRR.data
+         GRR.tolerance
+         GRR.names
+         GRR.include_interaction
+         GRR.include_intercept
+         GRR.nsigma
+         GRR.formula
+         GRR.counts
+         GRR.model
+         GRR.regression_result
+  
+  

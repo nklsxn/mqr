@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.spc.MewmaParams.</div>
+   <div class="empty"></div>
+
+ucl
+=======================
+
+.. currentmodule:: mqr.spc
+
+.. automethod:: MewmaParams.ucl

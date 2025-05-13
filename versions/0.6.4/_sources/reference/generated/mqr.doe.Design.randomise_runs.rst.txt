@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.doe.Design.</div>
+   <div class="empty"></div>
+
+randomise_runs
+=============================
+
+.. currentmodule:: mqr.doe
+
+.. automethod:: Design.randomise_runs

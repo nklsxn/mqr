@@ -1,0 +1,34 @@
+﻿.. py:module:: mqr.inference.mean
+
+.. raw:: html
+
+   <div class="prename">mqr.inference.</div>
+   <div class="empty"></div>
+
+mean
+==================
+
+.. currentmodule:: mqr.inference.mean
+
+
+
+
+
+
+.. rubric:: Functions
+.. autosummary::
+   :toctree:
+
+
+   confint_1sample
+   confint_2sample
+   confint_paired
+   size_1sample
+   size_2sample
+   size_paired
+   test_1sample
+   test_2sample
+   test_paired
+
+
+
