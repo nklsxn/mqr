@@ -86,6 +86,9 @@ class ConfidenceInterval:
         """
         return iter((self.lower, self.upper))
 
+    def __len__(self):
+        return 2
+
     def _html(self):
         alpha = 1 - self.conf
         if self.bounded == 'both':
