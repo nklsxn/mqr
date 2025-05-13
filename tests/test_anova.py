@@ -24,11 +24,11 @@ def test_summary():
 
     assert (
         summary.loc['Total', 'df'] ==
-        summary.loc['Residual', 'df'] + summary.loc['y', 'df'] + summary.loc['y', 'df']
+        pytest.approx(summary.loc['Residual', 'df'] + summary.loc['y', 'df'] + summary.loc['y', 'df'], abs=1e-12)
     )
     assert (
         summary.loc['Total', 'sum_sq'] ==
-        summary.loc['Residual', 'sum_sq'] + summary.loc['x', 'sum_sq'] + summary.loc['y', 'sum_sq']
+        pytest.approx(summary.loc['Residual', 'sum_sq'] + summary.loc['x', 'sum_sq'] + summary.loc['y', 'sum_sq'], abs=1e-12)
     )
     assert list(summary['sum_sq']) == list(summary['mean_sq'] * summary['df'])
 

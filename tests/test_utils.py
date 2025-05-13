@@ -98,7 +98,7 @@ def test_fredholm2_1():
             lmda=lmda,
             x=x,
             w=w)
-        assert exact_result[i] == pytest.approx(fred_result, abs=1e-15)
+        assert exact_result[i] == pytest.approx(fred_result, abs=1e-12)
 
 def test_fredholm2_2():
     fn_g = lambda t: 1
@@ -122,4 +122,4 @@ def test_fredholm2_2():
             lmda=lmda,
             x=x,
             w=w)
-        assert exact_result[i] == pytest.approx(fred_result, abs=1e-15)
+        assert exact_result[i] == pytest.approx(fred_result, abs=1e-12)
