@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Statistical Process Control &#8212; mqr 0.6.3 documentation</title>
+    <title>Statistical Process Control &#8212; mqr 0.6.4 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
 
     <script src="../_static/jquery.js?v=5d32c60e"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../_static/documentation_options.js?v=b8503983"></script>
+    <script src="../_static/documentation_options.js?v=73d9a94e"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/nklsxn/mqr/refs/heads/master/docs/switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.6.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.6.4';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -63,7 +63,7 @@
     <link rel="prev" title="Design of Experiments" href="design-of-experiments.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.6.3" />
+  <meta name="docsearch:version" content="0.6.4" />
   </head>
   
   
@@ -142,6 +142,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../getting-started.html">
     Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../quick-reference.html">
+    Quick Reference
   </a>
 </li>
 
@@ -259,6 +266,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../getting-started.html">
     Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../quick-reference.html">
+    Quick Reference
   </a>
 </li>
 
@@ -830,7 +844,7 @@ The XBar example above has the following limits.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1.3823085463760205, 7.61769145362398)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(np.float64(1.3823085463760205), np.float64(7.61769145362398))
 </pre></div>
 </div>
 </div>
@@ -975,7 +989,7 @@ This chart shows the sample data from <a class="reference internal" href="#alarm
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/0831d0b6d7d231150dcc0bff42d5d28353da89ac7a31b369e39fcb6776d70526.png" src="../_images/0831d0b6d7d231150dcc0bff42d5d28353da89ac7a31b369e39fcb6776d70526.png" />
+<img alt="../_images/537548d9b3ad941c8384534c5c3d23e94cf269b19462e2af54f40d9fcabd6fb9.png" src="../_images/537548d9b3ad941c8384534c5c3d23e94cf269b19462e2af54f40d9fcabd6fb9.png" />
 </div>
 </div>
 <p>Alarm rules are shown as an overlay on the statistic.
@@ -992,7 +1006,7 @@ The last point in the example above triggers an alarm according to the <a class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/fd292287d9ae6ca3e65295f3690e4efa6f39d233fd9ea51f557e482a08937089.png" src="../_images/fd292287d9ae6ca3e65295f3690e4efa6f39d233fd9ea51f557e482a08937089.png" />
+<img alt="../_images/1f297250b9fda85cb868307925b213952bd90100afa5aba54c871e345919b1f3.png" src="../_images/1f297250b9fda85cb868307925b213952bd90100afa5aba54c871e345919b1f3.png" />
 </div>
 </div>
 <p>The same data will trigger the <a class="reference internal" href="../reference/generated/mqr.spc.rules.n_trending.html#mqr.spc.rules.n_trending" title="mqr.spc.rules.n_trending"><span class="xref myst py py-func"><code class="docutils literal notranslate"><span class="pre">n_trending(4)</span></code></span></a> rule.
@@ -1008,7 +1022,7 @@ This example demonstrates that only the last of the points in a violating subset
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/77275a7c74ca6326dfe4038e169a3a84bfb35a5a5a169c58e6eb28d151c8b19a.png" src="../_images/77275a7c74ca6326dfe4038e169a3a84bfb35a5a5a169c58e6eb28d151c8b19a.png" />
+<img alt="../_images/6ecf31bee509426f9dc7bd124950e7bbb35582f05cf96cc8a811387fa5ebef73.png" src="../_images/6ecf31bee509426f9dc7bd124950e7bbb35582f05cf96cc8a811387fa5ebef73.png" />
 </div>
 </div>
 <p>See more examples in <a class="reference internal" href="../reference/mqr.spc.rules.html#module-mqr.spc.rules" title="mqr.spc.rules"><code class="xref myst py py-mod docutils literal notranslate"><span class="pre">mqr.spc.rules</span></code></a>.</p>
@@ -1040,7 +1054,7 @@ That is true for all the types: the class attributes are the reference parameter
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>XBarParams(centre=10.000053750000001, sigma=0.0018739437029978527)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>XBarParams(centre=np.float64(10.000053750000001), sigma=np.float64(0.0018739437029978527))
 </pre></div>
 </div>
 </div>
@@ -1062,7 +1076,7 @@ For example, RParams can be created from an historical sample range like this.</
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RParams(centre=2, sigma=0.8598714945002754)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RParams(centre=2, sigma=np.float64(0.8598714945002754))
 </pre></div>
 </div>
 </div>
@@ -1139,6 +1153,29 @@ That is, the JSON will be stored at a location that contains only RParams, or
 the type name (“mqr.spc.RParams”) could be stored as metadata with the JSON.</p>
 </section>
 </section>
+<section id="acceptance-sampling">
+<h2>Acceptance Sampling<a class="headerlink" href="#acceptance-sampling" title="Link to this heading">#</a></h2>
+<section id="aql-and-ltpd-conformance">
+<h3>AQL and LTPD conformance<a class="headerlink" href="#aql-and-ltpd-conformance" title="Link to this heading">#</a></h3>
+<p>Detailed examples of AQL and LTPD calculations are given in:
+<a class="github reference external" href="https://github.com/nklsxn/mqr-guide/tree/master/notebooks/9-AcceptanceSampling.ipynb" rel="noreferer noopener" target="_blank">nklsxn/mqr-guide</a>.</p>
+</section>
+<section id="oc-curves">
+<h3>OC curves<a class="headerlink" href="#oc-curves" title="Link to this heading">#</a></h3>
+<p>An OC-curve can be constructed using <code class="docutils literal notranslate"><span class="pre">mqr.plot.spc.oc</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Figure</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+    <span class="n">mqr</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">spc</span><span class="o">.</span><span class="n">oc</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">defect_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">),</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3ac2f73f7cacc40605f47e42faa556366c187a410598e3e208be9698b2754185.png" src="../_images/3ac2f73f7cacc40605f47e42faa556366c187a410598e3e208be9698b2754185.png" />
+</div>
+</div>
+</section>
+</section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
 </section>
@@ -1213,6 +1250,11 @@ New York: Wiley.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#control-charts">Control charts</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#historical-vs-live-data">Historical vs. live data</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#saving-controlparams">Saving ControlParams</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acceptance-sampling">Acceptance Sampling</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#aql-and-ltpd-conformance">AQL and LTPD conformance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#oc-curves">OC curves</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>

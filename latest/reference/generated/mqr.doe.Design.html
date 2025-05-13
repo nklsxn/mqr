@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Design &#8212; mqr 0.6.3 documentation</title>
+    <title>Design &#8212; mqr 0.6.4 documentation</title>
   
   
   
@@ -44,14 +44,14 @@
 
     <script src="../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../../_static/documentation_options.js?v=b8503983"></script>
+    <script src="../../_static/documentation_options.js?v=73d9a94e"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'reference/generated/mqr.doe.Design';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/nklsxn/mqr/refs/heads/master/docs/switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.6.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.6.4';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -61,7 +61,7 @@
     <link rel="prev" title="Design of Experiments (mqr.doe)" href="../mqr.doe.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.6.3" />
+  <meta name="docsearch:version" content="0.6.4" />
   </head>
   
   
@@ -140,6 +140,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../getting-started.html">
     Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../quick-reference.html">
+    Quick Reference
   </a>
 </li>
 
@@ -257,6 +264,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../getting-started.html">
     Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../quick-reference.html">
+    Quick Reference
   </a>
 </li>
 
@@ -654,6 +668,12 @@
 <li class="toctree-l2"><a class="reference internal" href="mqr.nbtools.vstack.html">vstack</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mqr.utils.html">Utilities (<code class="xref py py-mod docutils literal notranslate"><span class="pre">mqr.utils</span></code>)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="mqr.utils.make_ordinal.html">make_ordinal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.utils.clip_where.html">clip_where</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.utils.fredholm2.html">fredholm2</a></li>
+</ul>
+</details></li>
 </ul>
 </div>
 </nav></div>
@@ -729,9 +749,9 @@ calls to the pyDOE3 library. Designs can also be constructed manually,
 either from pyDOE3 or any other method, including directly from numpy arrays.
 See <a class="reference internal" href="../../user_guide/design-of-experiments.html"><span class="doc">Design of Experiments</span></a>.</p>
 <p>Designs are composable by concatenation with the <cite>+</cite> operator.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Attributes<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>names</strong><span class="classifier">list[str]</span></dt><dd><p>Names of variables.</p>
 </dd>
 <dt><strong>levels</strong><span class="classifier">np.ndarray</span></dt><dd><p>Two-dimensional array containing the levels for each experiment, with a
@@ -739,10 +759,14 @@ column for each variables and a row for each run.</p>
 </dd>
 <dt><strong>runs</strong><span class="classifier">np.ndarray</span></dt><dd><p>Numerical labels for each run. Useful for tracking runs after randomisation.</p>
 </dd>
-<dt><strong>pttypes</strong><span class="classifier">array_like</span></dt><dd><p>Numerical label for each point type:
-| 0 : centre point
-| 1 : corner point
-| 2 : axial point</p>
+<dt><strong>pttypes</strong><span class="classifier">array_like</span></dt><dd><dl>
+<dt>Numerical label for each point type:</dt><dd><div class="line-block">
+<div class="line">0 : centre point</div>
+<div class="line">1 : corner point</div>
+<div class="line">2 : axial point</div>
+</div>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd>

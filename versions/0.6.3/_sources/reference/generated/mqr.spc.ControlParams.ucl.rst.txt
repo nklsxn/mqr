@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.spc.ControlParams.</div>
+   <div class="empty"></div>
+
+ucl
+=========================
+
+.. currentmodule:: mqr.spc
+
+.. automethod:: ControlParams.ucl

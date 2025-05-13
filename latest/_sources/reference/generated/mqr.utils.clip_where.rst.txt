@@ -1,0 +1,11 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.utils.</div>
+   <div class="empty"></div>
+
+clip_where
+====================
+
+.. currentmodule:: mqr.utils
+
+.. autofunction:: clip_where

@@ -1,0 +1,42 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.spc.</div>
+   <div class="empty"></div>
+
+MewmaParams
+===================
+
+.. currentmodule:: mqr.spc
+
+.. autoclass:: MewmaParams
+   :no-members:
+   :no-inherited-members:
+   :no-special-members:
+
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         MewmaParams.asdict
+         MewmaParams.from_data
+         MewmaParams.lcl
+         MewmaParams.statistic
+         MewmaParams.target
+         MewmaParams.ucl
+      
+  
+
+  
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         MewmaParams.name
+         MewmaParams.mu
+         MewmaParams.cov
+         MewmaParams.lmda
+         MewmaParams.limit
+  
+  

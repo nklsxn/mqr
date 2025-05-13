@@ -1,0 +1,11 @@
+.. raw:: html
+
+   <div class="prename">mqr.inference.nonparametric.median.</div>
+   <div class="empty"></div>
+
+test_1sample
+===============================================
+
+.. currentmodule:: mqr.inference.nonparametric.median
+
+.. autofunction:: test_1sample

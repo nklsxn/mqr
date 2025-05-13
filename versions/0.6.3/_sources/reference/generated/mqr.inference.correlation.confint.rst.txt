@@ -1,0 +1,11 @@
+.. raw:: html
+
+   <div class="prename">mqr.inference.correlation.</div>
+   <div class="empty"></div>
+
+confint
+=================================
+
+.. currentmodule:: mqr.inference.correlation
+
+.. autofunction:: confint

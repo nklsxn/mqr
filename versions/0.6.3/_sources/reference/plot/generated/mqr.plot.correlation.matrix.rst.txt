@@ -1,0 +1,11 @@
+﻿.. raw:: html
+
+   <div class="prename">mqr.plot.correlation.</div>
+   <div class="empty"></div>
+
+matrix
+===========================
+
+.. currentmodule:: mqr.plot.correlation
+
+.. autofunction:: matrix

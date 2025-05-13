@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>GRR &#8212; mqr 0.6.3 documentation</title>
+    <title>GRR &#8212; mqr 0.6.4 documentation</title>
   
   
   
@@ -44,14 +44,14 @@
 
     <script src="../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../../_static/documentation_options.js?v=b8503983"></script>
+    <script src="../../_static/documentation_options.js?v=73d9a94e"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'reference/generated/mqr.msa.GRR';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/nklsxn/mqr/refs/heads/master/docs/switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.6.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.6.4';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -61,7 +61,7 @@
     <link rel="prev" title="Measurement system analysis (mqr.msa)" href="../mqr.msa.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.6.3" />
+  <meta name="docsearch:version" content="0.6.4" />
   </head>
   
   
@@ -140,6 +140,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../getting-started.html">
     Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../quick-reference.html">
+    Quick Reference
   </a>
 </li>
 
@@ -257,6 +264,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../getting-started.html">
     Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../quick-reference.html">
+    Quick Reference
   </a>
 </li>
 
@@ -654,6 +668,12 @@
 <li class="toctree-l2"><a class="reference internal" href="mqr.nbtools.vstack.html">vstack</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mqr.utils.html">Utilities (<code class="xref py py-mod docutils literal notranslate"><span class="pre">mqr.utils</span></code>)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="mqr.utils.make_ordinal.html">make_ordinal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.utils.clip_where.html">clip_where</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqr.utils.fredholm2.html">fredholm2</a></li>
+</ul>
+</details></li>
 </ul>
 </div>
 </nav></div>
@@ -723,7 +743,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="mqr.msa.GRR">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mqr.msa.</span></span><span class="sig-name descname"><span class="pre">GRR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.3)"><span class="pre">DataFrame</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="mqr.msa.NameMapping.html#mqr.msa.NameMapping" title="mqr.msa.NameMapping"><span class="pre">NameMapping</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_interaction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nsigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mqr.msa.GRR" title="Link to this definition">#</a></dt>
-<dd><p>A Gauge Repeatability and Reliability study.</p>
+<dd><p>A Gauge Repeatability and Reproducibility study.</p>
 <p>Constructs a model and calls <cite>statsmodels.formula.api.ols</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attributes<span class="colon">:</span></dt>

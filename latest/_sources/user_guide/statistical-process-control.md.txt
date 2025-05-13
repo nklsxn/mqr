@@ -397,6 +397,19 @@ That is, the JSON will be stored at a location that contains only RParams, or
 the type name ("mqr.spc.RParams") could be stored as metadata with the JSON.
 
 
+## Acceptance Sampling
+
+### AQL and LTPD conformance
+Detailed examples of AQL and LTPD calculations are given in:
+<https://github.com/nklsxn/mqr-guide/tree/master/notebooks/9-AcceptanceSampling.ipynb>.
+
+### OC curves
+An OC-curve can be constructed using `mqr.plot.spc.oc`:
+```{code-cell} ipython3
+with Figure(8, 3) as (fig, ax):
+    mqr.plot.spc.oc(n=40, c=6, defect_range=(0, 0.3), ax=ax)
+```
+
 ## References
 
 [^1]:   Montgomery, D. C. (2009).

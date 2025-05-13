@@ -1,0 +1,13 @@
+:orphan:
+
+.. raw:: html
+
+   <div class="prename">mqr.spc.EwmaParams.</div>
+   <div class="empty"></div>
+
+mqr.spc.EwmaParams.steady_state
+===============================
+
+.. currentmodule:: mqr.spc
+
+.. autoattribute:: EwmaParams.steady_state
